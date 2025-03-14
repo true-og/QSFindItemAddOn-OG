@@ -113,6 +113,7 @@
         </resources>
     </build>
 
+<<<<<<< HEAD
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -123,6 +124,10 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
+=======
+	<repositories>
+		<repository>
+>>>>>>> 0b434c7 (Add maven wrapper)
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
@@ -160,7 +165,11 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
+<<<<<<< HEAD
             <version>${spigot.version}</version>
+=======
+            <version>1.19.4-R0.1-SNAPSHOT</version>
+>>>>>>> 0b434c7 (Add maven wrapper)
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -265,6 +274,7 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
+<<<<<<< HEAD
         </dependency>
         <dependency>
             <groupId>com.olziedev</groupId>
@@ -285,6 +295,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+=======
+		</dependency>	
+	    <dependency>
+>>>>>>> 0b434c7 (Add maven wrapper)
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.7</version>
@@ -367,6 +381,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+<<<<<<< HEAD
             <groupId>com.github.KodySimpson</groupId>
             <artifactId>SimpAPI</artifactId>
             <version>4.6.1</version>
@@ -378,6 +393,8 @@
             </exclusions>
         </dependency>
         <dependency>
+=======
+>>>>>>> 0b434c7 (Add maven wrapper)
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.14.0</version>
