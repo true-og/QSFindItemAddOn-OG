@@ -1,13 +1,15 @@
-# Shop Search AddOn For QuickShop
-### Version: 2.0.7.4-RELEASE
+# QSFindItemAddOn-OG
+## Shop Search AddOn For QuickShop
+### Version: 2.0.7.4.1
 
-An unofficial add-on for the QuickShop Hikari and Reremake spigot plugin.
+An unofficial add-on for the [QuickShop-OG](https://github.com/true-og/QuickShop-OG) paper plugin maintained for 1.19.4 by [TrueOG Network](https://true-og.net).
+
 Adds a `/finditem` command in game for searching through all the shops on the server.
 
-[//]: # (![MC]&#40;https://img.shields.io/badge/Minecraft-Java%20Edition:%201.16.5%20--%201.20.4-brightgreen&#41;)
-![ModrinthAvailableFor](https://img.shields.io/badge/dynamic/json?label=Minecraft%20Java%20Edition:&color=4bab62&query=version&url=https://api.blueish.dev/api/minecraft/version?id=asp13ugE)
-![Ver](https://img.shields.io/spiget/version/95104?label=Latest%20Spigot%20Version)
-![Build Status](https://github.com/myzticbean/QSFindItemAddOn/actions/workflows/maven.yml/badge.svg?branch=master)
+## Building
+./mvnw clean package
+
+.jar will be in target/
 
 ## Features
 - Search items based on buying/selling shops
@@ -24,9 +26,11 @@ Adds a `/finditem` command in game for searching through all the shops on the se
 - Support for world blacklisting (Shops in blacklisted worlds are ignored in the search result)
 - Support for material blacklisting that prevents players for searching for specific items
 
-
-**QuickShop-Hikari Support**
-- It supports both [QuickShop-Hikari](https://www.spigotmc.org/resources/100125/) and [QuickShop-Reremake](https://www.spigotmc.org/resources/62575/).
+## Changes over QSFindItemAddOn
+- Downgraded plugin to support 1.19.4.
+- Removed PlayerWarps and BentoBox support.
+- Switch to maven wrapper.
+- Fix build.
 
 **Hexcode color support**
 - All messages in the config.yml support hexcodes.
@@ -44,7 +48,6 @@ command-alias: []
 ```
 
 ## Integrations
-- Supports [PlayerWarps](https://www.spigotmc.org/resources/66692/) (by Olzie-12) integration. It shows the nearest warp to each shop in the search result GUI.
 - Supports EssentialsX Warps integration for fetching nearest warps.
   - Global warps list for essentials is updated in batches every 15 minutes due to technical limitations, which is then used in every search query.
   - If you added a new warp and want it to get updated immediately, run **/finditemadmin reload**
@@ -54,28 +57,10 @@ command-alias: []
 
 >Check out the sample config.yml [here](https://github.com/myzticbean/QSFindItemAddOn/wiki/Sample-config.yml).
 
-## Requires
-- [QuickShop-Hikari](https://www.spigotmc.org/resources/100125/) v6.0 or higher
-
-**OR**
-
-- [QuickShop Reremake](https://www.spigotmc.org/resources/62575/) 5.1 or higher (Use add-on v1.7 for QuickShop version 4.0.*)
-
 ## Assumptions
-- A compatible economy plugin is installed
-- [Vault](https://www.spigotmc.org/resources/34315/) 1.7.3 or higher is installed
+- A compatible economy plugin is installed.
+- [Vault](https://github.com/true-og/Vault-OG) is installed.
 
-## Issue Tracking
-Please create a new issue [here](https://github.com/myzticbean/QSFindItemAddOn/issues) if you encounter any errors. Please try to explain in detail about your issue, and attach your console log if possible.
-You can also find the list of features currently being worked on (if any) in the same link.
-
-## How to contribute?
-See more details [here](https://github.com/myzticbean/QSFindItemAddOn/blob/master/CONTRIBUTING.md).
-
-## BStats Metrics
-[![BigImage](https://bstats.org/signatures/bukkit/QSFindItemAddOn.svg)](https://bstats.org/plugin/bukkit/QSFindItemAddOn/12382)
-
-## Demo
 ### How to use `/finditem`?
 ![/finditem_usage](https://cdn.modrinth.com/data/asp13ugE/images/bb37966809c9d7ab3201988ef58b2060688584f3.png)
 ![alt text](https://cdn.modrinth.com/data/asp13ugE/images/878e9b703343a65c963d790d875ad5dbe6ac309d.png)

@@ -18,44 +18,49 @@
  */
 package io.myzticbean.finditemaddon.handlers.gui;
 
-import io.myzticbean.finditemaddon.models.FoundShopItemModel;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.UUID;
+import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 
 /**
  * @author myzticbean
  */
 public class PlayerMenuUtility {
-    private UUID owner;
+	private UUID owner;
 
-    @Setter
-    @Getter
-    private List<FoundShopItemModel> playerShopSearchResult;
+	public List<FoundShopItemModel> getPlayerShopSearchResult() {
+		return playerShopSearchResult;
+	}
 
-    public PlayerMenuUtility(Player owner) {
-        this.owner = owner.getUniqueId();
-    }
+	public void setPlayerShopSearchResult(List<FoundShopItemModel> playerShopSearchResult) {
+		this.playerShopSearchResult = playerShopSearchResult;
+	}
 
-    public PlayerMenuUtility(UUID owner) {
-        this.owner = owner;
-    }
+	private List<FoundShopItemModel> playerShopSearchResult;
 
-    @Nullable
-    public Player getOwner() {
-        return Bukkit.getPlayer(owner);
-    }
+	public PlayerMenuUtility(Player owner) {
+		this.owner = owner.getUniqueId();
+	}
 
-    public void setOwner(Player owner) {
-        this.owner = owner.getUniqueId();
-    }
+	public PlayerMenuUtility(UUID owner) {
+		this.owner = owner;
+	}
 
-    public void setOwner(UUID owner) {
-        this.owner = owner;
-    }
+	@Nullable
+	public Player getOwner() {
+		return Bukkit.getPlayer(owner);
+	}
+
+	public void setOwner(Player owner) {
+		this.owner = owner.getUniqueId();
+	}
+
+	public void setOwner(UUID owner) {
+		this.owner = owner;
+	}
 }

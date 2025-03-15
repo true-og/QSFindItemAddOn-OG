@@ -18,8 +18,6 @@
  */
 package io.myzticbean.finditemaddon.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,13 +27,39 @@ import java.util.UUID;
  * Model for the Shop Item lore that will be shown in the search GUI
  * @author myzticbean
  */
-@Getter
-@AllArgsConstructor
 public class FoundShopItemModel {
-    private final double shopPrice;
-    private final int remainingStockOrSpace;
-    private final UUID shopOwner;
-    private final Location shopLocation;
-    private final ItemStack item;
-    private final boolean toBuy;
+    public FoundShopItemModel(double shopPrice, int remainingStockOrSpace, UUID shopOwner, Location shopLocation,
+		ItemStack item, boolean toBuy) {
+		super();
+		this.shopPrice = shopPrice;
+		this.remainingStockOrSpace = remainingStockOrSpace;
+		this.shopOwner = shopOwner;
+		this.shopLocation = shopLocation;
+		this.item = item;
+		this.toBuy = toBuy;
+	}
+	public double getShopPrice() {
+		return shopPrice;
+	}
+	public int getRemainingStockOrSpace() {
+		return remainingStockOrSpace;
+	}
+	public UUID getShopOwner() {
+		return shopOwner;
+	}
+	public Location getShopLocation() {
+		return shopLocation;
+	}
+	public ItemStack getItem() {
+		return item;
+	}
+	public boolean isToBuy() {
+		return toBuy;
+	}
+	private double shopPrice;
+    private int remainingStockOrSpace;
+    private UUID shopOwner;
+    private Location shopLocation;
+    private ItemStack item;
+    private boolean toBuy;
 }

@@ -18,9 +18,8 @@
  */
 package io.myzticbean.finditemaddon.handlers.gui;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
-import io.myzticbean.finditemaddon.models.FoundShopItemModel;
-import io.myzticbean.finditemaddon.utils.log.Logger;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -30,7 +29,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 
 /**
  * Based on an awesome tutorial from https://www.youtube.com/watch?v=xebH6M_7k18
@@ -40,52 +40,52 @@ import java.util.List;
  */
 public abstract class Menu implements InventoryHolder {
 
-    protected Inventory inventory;
+	protected Inventory inventory;
 
-    protected PlayerMenuUtility playerMenuUtility;
+	protected PlayerMenuUtility playerMenuUtility;
 
-    protected ItemStack GUI_FILLER_ITEM;
+	protected ItemStack GUI_FILLER_ITEM;
 
-    protected Menu(PlayerMenuUtility playerMenuUtility) {
-        this.playerMenuUtility = playerMenuUtility;
+	protected Menu(PlayerMenuUtility playerMenuUtility) {
+		this.playerMenuUtility = playerMenuUtility;
 
-        assert FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
-        Material fillerMaterial = Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM);
-        if (fillerMaterial == null) {
-            fillerMaterial = Material.GRAY_STAINED_GLASS_PANE;
-        }
-        if (!fillerMaterial.isAir()) {
-            GUI_FILLER_ITEM = new ItemStack(fillerMaterial);
-            ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
-            assert FILLER_GLASS_meta != null;
-            FILLER_GLASS_meta.setDisplayName(" ");
-            this.GUI_FILLER_ITEM.setItemMeta(FILLER_GLASS_meta);
-        }
-    }
+		assert FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
+		Material fillerMaterial = Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM);
+		if (fillerMaterial == null) {
+			fillerMaterial = Material.GRAY_STAINED_GLASS_PANE;
+		}
+		if (!fillerMaterial.isAir()) {
+			GUI_FILLER_ITEM = new ItemStack(fillerMaterial);
+			ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
+			assert FILLER_GLASS_meta != null;
+			FILLER_GLASS_meta.setDisplayName(" ");
+			this.GUI_FILLER_ITEM.setItemMeta(FILLER_GLASS_meta);
+		}
+	}
 
-    public abstract String getMenuName();
+	public abstract String getMenuName();
 
-    public abstract int getSlots();
+	public abstract int getSlots();
 
-    public abstract void handleMenu(InventoryClickEvent e);
+	public abstract void handleMenu(InventoryClickEvent e);
 
-    public abstract void setMenuItems(List<FoundShopItemModel> foundShops);
+	public abstract void setMenuItems(List<FoundShopItemModel> foundShops);
 
-    /*public void open() {
+	/*public void open() {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
         this.setMenuItems();
         playerMenuUtility.getOwner().openInventory(inventory);
     }*/
 
-    public void open(List<FoundShopItemModel> foundShops) {
-        inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
-        this.setMenuItems(foundShops);
-        playerMenuUtility.getOwner().openInventory(inventory);
-    }
+	public void open(List<FoundShopItemModel> foundShops) {
+		inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
+		this.setMenuItems(foundShops);
+		playerMenuUtility.getOwner().openInventory(inventory);
+	}
 
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        return inventory;
-    }
+	@NotNull
+	@Override
+	public Inventory getInventory() {
+		return inventory;
+	}
 }
