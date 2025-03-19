@@ -1,4 +1,4 @@
-# Shop Search AddOn For QuickShop
+# QSFindItemAddOn-OG: Shop Search AddOn For QuickShop
 ### Version: 2.0.7.4.1
 
 An unofficial add-on for the QuickShop Hikari and Reremake spigot plugin.
