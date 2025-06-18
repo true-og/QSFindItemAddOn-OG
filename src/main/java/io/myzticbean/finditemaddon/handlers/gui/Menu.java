@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
+import net.kyori.adventure.text.TextComponent;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 /**
  * Based on an awesome tutorial from https://www.youtube.com/watch?v=xebH6M_7k18
@@ -58,12 +60,12 @@ public abstract class Menu implements InventoryHolder {
 			GUI_FILLER_ITEM = new ItemStack(fillerMaterial);
 			ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
 			assert FILLER_GLASS_meta != null;
-			FILLER_GLASS_meta.setDisplayName(" ");
+			FILLER_GLASS_meta.displayName(UtilitiesOG.trueogColorize(" "));
 			this.GUI_FILLER_ITEM.setItemMeta(FILLER_GLASS_meta);
 		}
 	}
 
-	public abstract String getMenuName();
+	public abstract TextComponent getMenuName();
 
 	public abstract int getSlots();
 

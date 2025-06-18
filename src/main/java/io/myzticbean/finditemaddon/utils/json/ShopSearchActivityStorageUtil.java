@@ -41,7 +41,6 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,9 +51,7 @@ import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.models.HiddenShopModel;
 import io.myzticbean.finditemaddon.models.PlayerShopVisitModel;
 import io.myzticbean.finditemaddon.models.ShopSearchActivityModel;
-import io.myzticbean.finditemaddon.utils.log.Logger;
 import lombok.Getter;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
 
 /**
  * @author myzticbean
@@ -66,13 +63,9 @@ public class ShopSearchActivityStorageUtil {
 	}
 
 	private static final String SHOP_SEARCH_ACTIVITY_JSON_FILE_NAME = "shops.json";
-	private static final String COOLDOWNS_YAML_FILE_NAME = "cooldowns.yml";
 
 	@Getter
 	private static final Map<String, Long> cooldowns = new HashMap<>();
-
-	private static File cooldownsYaml;
-	private static FileConfiguration cooldownsConfig;
 
 	@Getter
 	private static List<ShopSearchActivityModel> globalShopsList = new ArrayList<>();
@@ -108,19 +101,20 @@ public class ShopSearchActivityStorageUtil {
 					isCooldownTimeElapsed = true;
 				}
 				if(isCooldownTimeElapsed) {
-					Logger.logDebugInfo(ColorTranslator.translateColorCodes("&6" + player.getName() + " is out of cooldown"));
+					FindItemAddOn.logger("&6" + player.getName() + " is out of cooldown");
 					return true;
 				}
 				else {
-					Logger.logDebugInfo(ColorTranslator.translateColorCodes("&6" + player.getName() + " still has cooldown"));
+					FindItemAddOn.logger("&6" + player.getName() + " still has cooldown");
 					return false;
 				}
 			}
 		}
-		Logger.logDebugInfo(ColorTranslator.translateColorCodes("&6Shop not found, returning false for cooldown check"));
+		FindItemAddOn.logger("&6Shop not found, returning false for cooldown check");
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void syncShops() {
 		globalShopsList = FindItemAddOn.getQsApiInstance().syncShopsListForStorage(globalShopsList);
 	}
@@ -173,6 +167,7 @@ public class ShopSearchActivityStorageUtil {
 		globalShopsList.add(shopModel);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void loadShopsFromFile() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/" + SHOP_SEARCH_ACTIVITY_JSON_FILE_NAME);
@@ -186,9 +181,9 @@ public class ShopSearchActivityStorageUtil {
 				else {
 					globalShopsList = new ArrayList<>();
 				}
-				Logger.logInfo("Loaded shops from file");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				FindItemAddOn.logger("Loaded shops from file");
+			} catch (FileNotFoundException error) {
+				error.printStackTrace();
 			}
 		}
 		globalShopsList = FindItemAddOn.getQsApiInstance().syncShopsListForStorage(globalShopsList);
@@ -204,7 +199,7 @@ public class ShopSearchActivityStorageUtil {
 			gson.toJson(globalShopsList, writer);
 			writer.flush();
 			writer.close();
-			Logger.logInfo("Saved shops to file");
+			FindItemAddOn.logger("Saved shops to file");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -227,17 +222,17 @@ public class ShopSearchActivityStorageUtil {
 							tempHiddenShop = hiddenShop_i;
 							shopSearchActivity.setHiddenFromSearch(true);
 							globalShopsList.set(globalShopsList_i, shopSearchActivity);
-							Logger.logDebugInfo("Converted shop: " + shopSearchActivity);
+							FindItemAddOn.logger("Converted shop: " + shopSearchActivity);
 						}
 					}
 					HiddenShopStorageUtil.hiddenShopsList.remove(tempHiddenShop);
 				}
 			}
-			Logger.logDebugInfo("Here we will delete the hiddenShops.json");
+			FindItemAddOn.logger("Here we will delete the hiddenShops.json");
 			hiddenShopsJsonfile.delete();
 		}
 		else {
-			Logger.logDebugInfo("hiddenshops.json: No conversion required");
+			FindItemAddOn.logger("hiddenshops.json: No conversion required");
 		}
 	}
 
@@ -258,7 +253,7 @@ public class ShopSearchActivityStorageUtil {
 						playerShopVisit.setPlayerUUID(visitingPlayer.getUniqueId());
 						playerShopVisit.setVisitDateTime();
 						globalShopsList.get(i).getPlayerVisitList().add(playerShopVisit);
-						Logger.logDebugInfo("Added new player visit entry at " + shopLocation.toString());
+						FindItemAddOn.logger("Added new player visit entry at " + shopLocation.toString());
 						break;
 					}
 					i++;

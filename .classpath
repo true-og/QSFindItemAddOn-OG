@@ -1,27 +1,428 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/classes" path="src/main/java">
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry output="bin/main" kind="src" path="src/main/java">
 		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+	<classpathentry output="bin/main" kind="src" path="src/main/resources">
 		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="optional" value="true"/>
+			<attribute name="gradle_scope" value="main"/>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.purpurmc.purpur/purpur-api/1.19.4-R0.1-SNAPSHOT/c2e4c45e24de3a51bb4288911e60d154288fec32/purpur-api-1.19.4-R0.1-SNAPSHOT-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.purpurmc.purpur/purpur-api/1.19.4-R0.1-SNAPSHOT/4eb8a5f1a392861b7e32675189a2abbf1033e444/purpur-api-1.19.4-R0.1-SNAPSHOT.jar">
 		<attributes>
-			<attribute name="module" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ghostchu/quickshop-api/6.2.0.5/9f6539e49027e6d640eb9d6c26b8a4fedcccc543/quickshop-api-6.2.0.5.jar">
 		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="target/classes"/>
+	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ghostchu/quickshop-bukkit/6.2.0.5/99c51bba702bca27845c45b753ac05d0e257560c/quickshop-bukkit-6.2.0.5-shaded.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.maxgamer/QuickShop/5.1.2.5-SNAPSHOT/c3d6d532e88d7884267640266a5fe2b5e82616a4/QuickShop-5.1.2.5-SNAPSHOT.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/EssentialsX/2.20.1/9991e2fb0452851a40a9ba081ffd692f5312567d/EssentialsX-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/EssentialsX/2.20.1/44b52fbc1945b3545bd9704aea8c5cbc90b7b969/EssentialsX-2.20.1-unshaded.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.olziedev/playerwarps-api/7.7.1/f07668500015a6baf1fb122372e1a59ee1cb52a1/playerwarps-api-7.7.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.olziedev/playerwarps-api/7.7.1/4e762ea798e2da2b6120fddd822aeccecb2f99cc/playerwarps-api-7.7.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-bukkit/7.0.7/5f778dfd361b863c1a71e68a4aef5554f4d143c5/worldguard-bukkit-7.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-bukkit/7.0.7/2210782eead79eec51019d5ce466459e169f12a1/worldguard-bukkit-7.0.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-key/4.16.0/c98d527bb92dcc718441f6e7eb2c47dbb928104e/adventure-key-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-key/4.16.0/b695c40a7d2fd658246de78ea428e8f8dc7ffd2d/adventure-key-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-logger-slf4j/4.16.0/cedfa1e66726bd34145bcb243ba25798cf544c27/adventure-text-logger-slf4j-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-logger-slf4j/4.16.0/a2e7eadb8d26481fb3da619a761cf3a47a1da43f/adventure-text-logger-slf4j-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-minimessage/4.16.0/d25f050227d5b4e153502175070157fa01cb67b3/adventure-text-minimessage-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-minimessage/4.16.0/7f319fbd29ecd725eeebb0cb3dca2195fbb65c07/adventure-text-minimessage-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-gson/4.16.0/692f781857007619054842148b4b6202ecbbd5f9/adventure-text-serializer-gson-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-gson/4.16.0/5650ed18040e070aa05855ebcb890e6e1e36ee0e/adventure-text-serializer-gson-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-legacy/4.16.0/6d980e93664effb774ae0ed142f8e49fe09093b3/adventure-text-serializer-legacy-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-legacy/4.16.0/21b9450c659146ea4ac6ef3555b5ea1008566b69/adventure-text-serializer-legacy-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-plain/4.16.0/1e427726d7960fa2b09c9396cfa69795378ea5e9/adventure-text-serializer-plain-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-plain/4.16.0/4d5e8b73aac1e5e17dd24a75edd8fd077098e18c/adventure-text-serializer-plain-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-json/4.16.0/c319d2139a6f01eff1548c1e450450f2adc9b908/adventure-text-serializer-json-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-text-serializer-json/4.16.0/a78b40dd5b41ae2468d6299c630afdf2ac6d7c64/adventure-text-serializer-json-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-api/4.16.0/1d488afe26fa06464c6ebd0fec218c8a4225962a/adventure-api-4.16.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/adventure-api/4.16.0/cb966704b813d30d4ee9f0b97167b4063a249c34/adventure-api-4.16.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-hikaricp/0.4.7/bc10f0f9276851585e27e7569c71706380fdd0f8/easysql-hikaricp-0.4.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-hikaricp/0.4.7/b0003905b8fb28d878985b315fdb580fcd4e8f09/easysql-hikaricp-0.4.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-impl/0.4.7/bb5e0f8b28c199d4e587460e1e8e3299c2f18f46/easysql-impl-0.4.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-impl/0.4.7/6d52d074f1173fe334f2cd4e8f0091d925cdea06/easysql-impl-0.4.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-api/0.4.7/a44e11e67bd43b325b7f3b4406a8dafd0f40abf5/easysql-api-0.4.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-api/0.4.7/5c90459363ea63e240b0b498aab40db9a6a6ea61/easysql-api-0.4.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/world.bentobox/bentobox/3.2.3-SNAPSHOT/f405d8857aec64dc33b3f66176b1248e53ab3585/bentobox-3.2.3-SNAPSHOT-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/world.bentobox/bentobox/3.2.3-SNAPSHOT/9493f68f40e0df861500339e3b4f4cb657f518eb/bentobox-3.2.3-SNAPSHOT.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.GriefPrevention/GriefPrevention/16.18.4/8d79f5b16383548105d19c9d81b4fd1932477c2f/GriefPrevention-16.18.4-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.GriefPrevention/GriefPrevention/16.18.4/4bb5520e8c5aa4f53f0bc3999b3f2639568c68ac/GriefPrevention-16.18.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.34/861d5074b9a04a7f1c1e128584a66b2b815fc3d4/lombok-1.18.34-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.34/ec547ef414ab1d2c040118fb9c1c265ada63af14/lombok-1.18.34.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/io.papermc/paperlib/1.0.7/16a3c21ef3737c69349cab73be4ebb761573e1e0/paperlib-1.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/io.papermc/paperlib/1.0.7/f23783182df5de147e1e4b147c3ac13d263ba68f/paperlib-1.0.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/BaseProviders/2.20.1/e9766f7c39872c628a7e10d5ef4cb3d78d91ad8/BaseProviders-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/BaseProviders/2.20.1/db4480b40f53e6875335f2fc1c804af3d07b7ae/BaseProviders-2.20.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.spigotmc/spigot-api/1.20.1-R0.1-SNAPSHOT/db707b55ae958245adecc7f15b611e1a571e7fe4/spigot-api-1.20.1-R0.1-SNAPSHOT-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.spigotmc/spigot-api/1.20.1-R0.1-SNAPSHOT/23c0dae3633c3dd31d4503969fa7f9f3d36840fb/spigot-api-1.20.1-R0.1-SNAPSHOT.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.md-5/bungeecord-chat/1.20-R0.1/27e401a811784a25a45f4ec35e48df89bbb4e00e/bungeecord-chat-1.20-R0.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.md-5/bungeecord-chat/1.20-R0.1/29f53c8d16cfdefe9af98c450b9bdff51eca78e4/bungeecord-chat-1.20-R0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-core/7.0.7/a3f6ca29dd2b8a04249350c0ce2af526ac9d88ff/worldguard-core-7.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-core/7.0.7/92ce5f12f52508201548a4a6d331e15a29127102/worldguard-core-7.0.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-core/7.2.7/7c5416628726913810733f7d3b2a8ebd5359ca43/worldedit-core-7.2.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-core/7.2.7/eb2bc7a5ed160d30a66c31e1c262a4c78220dcf2/worldedit-core-7.2.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/6ed5748c6f0860e81e09d4d2582fe914cfa41d1e/gson-2.10-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10/dd9b193aef96e973d5a11ab13cd17430c2e4306b/gson-2.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-resolver-provider/3.8.5/dcc3675d8bd3d4a0259bbd9e327fc67df7be3aed/maven-resolver-provider-3.8.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-resolver-provider/3.8.5/91f423a4584f2fc7f45cac5b0b58edc33c077249/maven-resolver-provider-3.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-impl/1.6.3/3d2c6bc74b5a685285d503d5178318127589dcce/maven-resolver-impl-1.6.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-impl/1.6.3/2714ffe60bd71259a41b3e4816122504b5f2db93/maven-resolver-impl-1.6.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-model-builder/3.8.5/8731fcc8ec0dc60b793af5d275fda9fe0993b760/maven-model-builder-3.8.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-model-builder/3.8.5/d719e354056fcf486cd2300cce3d1a422349fd38/maven-model-builder-3.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.8.5/63964307a951bff155bcd09bfa647afadbd95dca/maven-artifact-3.8.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-artifact/3.8.5/4433f50c07debefaed0553bd0068f4f48d449313/maven-artifact-3.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.14.0/9ef3e18356f4ac30b15bfa48c02a7f54b51af382/commons-lang3-3.14.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.14.0/1ed471194b02f2c6cb734a0cd6f6f107c673afae/commons-lang3-3.14.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/examination-string/1.3.0/d06d07677cf2022bdf38136ba550aea9852cc1bd/examination-string-1.3.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/examination-string/1.3.0/6f34afef5c54ccce4996bc321abf77518b55b4bd/examination-string-1.3.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/examination-api/1.3.0/24ee397e9360897e1a5053e269be691abc611ca2/examination-api-1.3.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/examination-api/1.3.0/8a2d185275307f1e2ef2adf7152b9a0d1d44c30b/examination-api-1.3.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/option/1.0.0/61ae980594e69740c1abf8cf26c4877a327fdbb4/option-1.0.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.kyori/option/1.0.0/59c5ae54c47ae294322ad979eaf7cdcde7ad0646/option-1.0.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.1.0/d90a405211798b013b8ee3d54f70edc0913a28b0/annotations-24.1.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.1.0/7af6a669488450c4a07c2c3254e2151df42d7d04/annotations-24.1.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/c388a68bc2b17a314dfa7c769d858ada0fc32dcf/guava-31.1-jre-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/2.0/b29e84cfffae4be26d4a4c9443d9f246ad4ec63e/snakeyaml-2.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/2.0/3aab2116756442bf0d4cd1c089b24d34c3baa253/snakeyaml-2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/c1f2266a7d0386d7643879ed1b93f51d29126180/joml-1.10.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.10.5/22566d58af70ad3d72308bab63b8339906deb649/joml-1.10.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1.1/15bba08e3a239d54b68209c001f9c911559d2fed/json-simple-1.1.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1.1/c9ad4a0850ab676c5c64461a05ca524cdfff59f1/json-simple-1.1.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.6/cae16d296ddc343bfb4e20ef67fbcef07fca40e/fastutil-8.5.6-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/8.5.6/76f95700418a68fbc4ac050525261f05dc681ca1/fastutil-8.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.1/d23d37cc41300a7f6eba7813855dbb224e2a3177/log4j-api-2.17.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.17.1/d771af8e336e372fb5399c99edabe0919aeaf5b2/log4j-api-2.17.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.8.0-beta4/b36a694fefcf7c2a274765143dc63e86389b33d1/slf4j-api-1.8.0-beta4-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.8.0-beta4/83b0359d847ee053d745be7ec0d8e9e8a44304b4/slf4j-api-1.8.0-beta4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/io.sentry/sentry/5.4.0/533d682fecf5eb543d7944ea3a383a2f41a3c760/sentry-5.4.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/io.sentry/sentry/5.4.0/34634400caa75e05c768a182d9afa566571f8b26/sentry-5.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.21.0/667fc6fda7a4c89fa2a768675f3faa0217810ec3/checker-qual-3.21.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.21.0/55aaf38ec65c7aee19697257d644493c06dee1fe/checker-qual-3.21.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.stefvanschie.inventoryframework/IF/0.10.13/c62146fd615380978fef6ab9effca5f1734e1486/IF-0.10.13-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.stefvanschie.inventoryframework/IF/0.10.13/f0130b9fd5b51146d4909d2dd27dd177e61a73d/IF-0.10.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.25.0/f2bc5736ee1966f2af837b13a695e843ad5ce435/commons-compress-1.25.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.25.0/9d35aec423da6c8a7f93d7e9e1c6b1d9fe14bb5e/commons-compress-1.25.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bstats/bstats-bukkit/2.2.1/f81bb33ae91f426286c0228ded663b89b65f5db/bstats-bukkit-2.2.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bstats/bstats-bukkit/2.2.1/fe73ff3e2153925cc8391ed81e834e7d544e84ed/bstats-bukkit-2.2.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/PaperProvider/2.20.1/39267d03912d6de8edbd50c80cb8e1084524db1c/PaperProvider-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/PaperProvider/2.20.1/cd5a062480a8d6cd32784c9e548061ce3361fbec/PaperProvider-2.20.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/1_12Provider/2.20.1/a43fb9ea96d5954d68f803ca172a222a952a7ef2/1_12Provider-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/1_12Provider/2.20.1/d7492344d244d6378fd29496ce95a92cbc548c6/1_12Provider-2.20.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/NMSReflectionProvider/2.20.1/828e20c51697876eb23898af2698ea4eee34eac7/NMSReflectionProvider-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/NMSReflectionProvider/2.20.1/313f1c77f05040bd3702ca342effec5939c65932/NMSReflectionProvider-2.20.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/1_8Provider/2.20.1/8c73b023d2d49d5b1bb9761c2571a715f8f458fa/1_8Provider-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/1_8Provider/2.20.1/b0529b6f159a9c7a2708eb2be2682ee02d89c41a/1_8Provider-2.20.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/7.2.7/102ce192ba100dd339ed3da05987bcbecb36107d/worldedit-bukkit-7.2.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/7.2.7/e0abbe90becdbd3de81e25866f76639beba76a70/worldedit-bukkit-7.2.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/org.eclipse.jdt.annotation/2.2.600/6b09ce7c2f8ed715e2a74c1b6614fa97cde7c50a/org.eclipse.jdt.annotation-2.2.600-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/org.eclipse.jdt.annotation/2.2.600/f3126a50091c5b3f40a2e4c5b478f18476d54c00/org.eclipse.jdt.annotation-2.2.600.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bstats/bstats-base/2.2.1/4e767a2aef10d115c117d80d215836c4bf5fc49a/bstats-base-2.2.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bstats/bstats-base/2.2.1/c2bb62e2937b87ac1d5462b7f5b48370e41c7948/bstats-base-2.2.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard.worldguard-libs/core/7.0.7/be84a518c730381f650ae05c0307aa23812986d7/core-7.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard.worldguard-libs/core/7.0.7/4f495ba202cf25916d409216d6712b064e1ac610/core-7.0.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/d060e42b6aa896a3abe2ec612e1cf8cc307f8a49/error_prone_annotations-2.11.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/d26c56180205cbb50447c3eca98ecb617cf9f58b/j2objc-annotations-1.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit.worldedit-libs/core/7.2.7/afeab4b4c6cacc594241bf1c2b5dc5bc5bafad4e/core-7.2.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit.worldedit-libs/core/7.2.7/98bfc197adc9a4882608ad09d3c7681e5ef8888e/core-7.2.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.9.1/9d70dea79a33b4bc3e69c4f582829af95dec46ce/antlr4-4.9.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4/4.9.1/e92af8ab33e428461927b484e90bb155a4f3a052/antlr4-4.9.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-model/3.8.5/d2d3a9d521d6ee544ca0e15e2526c05e98a2f3d6/maven-model-3.8.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-model/3.8.5/a22c2ed76cbd2f78120d9c653f89e15123d473fe/maven-model-3.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-repository-metadata/3.8.5/9b3c4cba55454f73317136bd870806be5300f269/maven-repository-metadata-3.8.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-repository-metadata/3.8.5/a9cf3ff3e565dedd8231c05f4ccb6b61e6215a82/maven-repository-metadata-3.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-spi/1.6.3/edd97fbfbe496907590d60299050f6495587a751/maven-resolver-spi-1.6.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-spi/1.6.3/176425f73fe768bf9cdb8b5a742e7a00c1d8d178/maven-resolver-spi-1.6.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-util/1.6.3/72030ddca05ee6702eff31871b1213b8fdbc25c9/maven-resolver-util-1.6.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-util/1.6.3/7d5a6879037b34c61c2f527dfcfb59084e86ed0/maven-resolver-util-1.6.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-api/1.6.3/6290ba70106329e257e10fca4f7e97cb6b5d169b/maven-resolver-api-1.6.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven.resolver/maven-resolver-api/1.6.3/5ee235aa5ac5994b5dc847f8e78ffe9d77dd55d7/maven-resolver-api-1.6.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-utils/3.3.0/ebfaf7070f7a3f5314ff28180d81088aa8cd2f41/plexus-utils-3.3.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-utils/3.3.0/cf43b5391de623b36fe066a21127baef82c64022/plexus-utils-3.3.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/a00123f261762a7c5e0ec916a2c7c8298d29c400/javax.inject-1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.9.1/17b7d09ad295b93223e965df5860331cbccaa797/antlr4-runtime-4.9.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.9.1/428664f05d2b7f7b7610204b5aa7c1763f62011a/antlr4-runtime-4.9.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.3/f5c1c1b500028db7d102067b8e0f3e15f685cbec/ST4-4.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/ST4/4.3/92f2c1ad8d84abcbeead6cf7f2c53a04166293c2/ST4-4.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/5214ea45dd20d3a2e4caa6f1ad2248ad107e0daf/antlr-runtime-3.5.2-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.antlr/antlr-runtime/3.5.2/cd9cd41361c155f3af0f653009dcecb08d8b4afd/antlr-runtime-3.5.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.3/98d31576a54fd48dabf1fcf67a311dd9f0e4f66e/org.abego.treelayout.core-1.0.3-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.abego.treelayout/org.abego.treelayout.core/1.0.3/457216e8e6578099ae63667bb1e4439235892028/org.abego.treelayout.core-1.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/ef782abad0d3f1d30644c4023a6bbc6fe371e23a/javax.json-1.0.4-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.glassfish/javax.json/1.0.4/3178f73569fd7a1e5ffc464e680f7a8cc784b85a/javax.json-1.0.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/61.1/df1b5d109cd3734abc5ea028b48c67b5a1a44365/icu4j-61.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j/61.1/28d33b5e44e72edcc66a5da7a34a42147f38d987/icu4j-61.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-interpolation/1.26/7182d32d452bbfedfe88ecd86245ef7b90048460/plexus-interpolation-1.26-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.codehaus.plexus/plexus-interpolation/1.26/25b919c664b79795ccde0ede5cee0fd68b544197/plexus-interpolation-1.26.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-builder-support/3.8.5/5de3489f483f45a8c2aa45e13c476efe5de15886/maven-builder-support-3.8.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.maven/maven-builder-support/3.8.5/941dd5bbaaa1b2134510e7b3c6175911d0bbecca/maven-builder-support-3.8.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.eclipse.sisu/org.eclipse.sisu.inject/0.3.5/2627739a2c89b6c35718458774d9847616e12b44/org.eclipse.sisu.inject-0.3.5-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.eclipse.sisu/org.eclipse.sisu.inject/0.3.5/d4265dd4f0f1d7a06d80df5a5f475d5ff9c17140/org.eclipse.sisu.inject-0.3.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/notalexnoyle/Downloads/QSFindItemAddOn-OG/lib/Residence5.1.5.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/notalexnoyle/Downloads/QSFindItemAddOn-OG/lib/GPFlags-5.13.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 </classpath>

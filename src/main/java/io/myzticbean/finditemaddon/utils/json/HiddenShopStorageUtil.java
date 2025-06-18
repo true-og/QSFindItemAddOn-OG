@@ -40,7 +40,6 @@ import com.google.gson.GsonBuilder;
 import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.models.HiddenShopModel;
 import io.myzticbean.finditemaddon.models.ShopSearchActivityModel;
-import io.myzticbean.finditemaddon.utils.log.Logger;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -167,7 +166,7 @@ public class HiddenShopStorageUtil {
 				else {
 					hiddenShopsList = new ArrayList<>();
 				}
-				Logger.logInfo("Loaded hidden shops from file");
+				FindItemAddOn.logger("Loaded hidden shops from file");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -184,9 +183,9 @@ public class HiddenShopStorageUtil {
 			gson.toJson(hiddenShopsList, writer);
 			writer.flush();
 			writer.close();
-			Logger.logInfo("Saved hidden shops to file");
-		} catch (IOException e) {
-			e.printStackTrace();
+			FindItemAddOn.logger("Saved hidden shops to file");
+		} catch (IOException error) {
+			error.printStackTrace();
 		}
 	}
 

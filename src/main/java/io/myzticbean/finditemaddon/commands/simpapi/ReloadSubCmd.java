@@ -18,53 +18,63 @@
  */
 package io.myzticbean.finditemaddon.commands.simpapi;
 
-import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
-import me.kodysimpson.simpapi.command.SubCommand;
+import java.util.Collections;
+import java.util.List;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
 
 /**
  * Sub Command Handler for /finditemadmin reload
  * @author myzticbean
  */
-public class ReloadSubCmd extends SubCommand {
+public class ReloadSubCmd implements CommandExecutor, TabCompleter {
 
-    private final CmdExecutorHandler cmdExecutor;
+	private final CmdExecutorHandler cmdExecutor;
 
-    public ReloadSubCmd() {
-        cmdExecutor = new CmdExecutorHandler();
-    }
+	public ReloadSubCmd() {
+		cmdExecutor = new CmdExecutorHandler();
+	}
 
-    @Override
-    public String getName() {
-        return "reload";
-    }
+	public String getName() {
+		return "reload";
+	}
 
-    @Override
-    public List<String> getAliases() {
-        return null;
-    }
+	public List<String> getAliases() {
+		return null;
+	}
 
-    @Override
-    public String getDescription() {
-        return "Reloads config.yml";
-    }
+	public String getDescription() {
+		return "Reloads config.yml";
+	}
 
-    @Override
-    public String getSyntax() {
-        return "/finditemadmin reload";
-    }
+	public String getSyntax() {
+		return "/finditemadmin reload";
+	}
 
-    @Override
-    public void perform(CommandSender commandSender, String[] strings) {
-        cmdExecutor.handlePluginReload(commandSender);
-    }
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+			cmdExecutor.handlePluginReload(sender);
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
-        return null;
-    }
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (args.length == 1 && "reload".startsWith(args[0].toLowerCase())) {
+			return Collections.singletonList("reload");
+		}
+		return Collections.emptyList();
+	}
+
+	public List<String> getSubcommandArguments(Player player, String[] strings) {
+		return null;
+	}
 }
-

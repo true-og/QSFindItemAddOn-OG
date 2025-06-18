@@ -1,11 +1,11 @@
 name: QSFindItemAddOn-OG
-version: ${project.version}
+version: '${version}'
 main: io.myzticbean.finditemaddon.FindItemAddOn
 website: https://github.com/true-og/QSFindItemAddOn-OG
-api-version: 1.19
+api-version: '${apiVersion}'
 authors: [ myzticbean, NotAlexNoyle ]
 softdepend:
-  - QuickShop-Hikari
+  - QuickShop-OG
   - WorldGuard
   - Essentials
 

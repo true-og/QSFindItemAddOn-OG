@@ -1,3 +1,6 @@
+## Release 2.0.8
+- Replace SimpAPI and all deprecation warnings with TrueOG Network APIs.
+
 ## Release 2.0.7.4
 ### Bug fixes
 - Fix for /finditem shows only 'searching...' but no GUI (PR #69)

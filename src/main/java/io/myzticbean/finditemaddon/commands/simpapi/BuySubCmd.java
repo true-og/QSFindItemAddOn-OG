@@ -18,87 +18,94 @@
  */
 package io.myzticbean.finditemaddon.commands.simpapi;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
-import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
-import me.kodysimpson.simpapi.command.SubCommand;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+
+import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 /**
  * Sub Command Handler for /finditem TO_BUY
  * @author myzticbean
  */
-public class BuySubCmd extends SubCommand {
+public final class BuySubCmd implements TabExecutor {
 
-    private final String buySubCommand;
-    private final List<String> itemsList = new ArrayList<>();
-    private final CmdExecutorHandler cmdExecutor;
+	private final String subName;
+	private final List<String> materials = new ArrayList<>();
+	private final CmdExecutorHandler executor = new CmdExecutorHandler();
 
-    public BuySubCmd() {
-        // to-buy
-        if(StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE)
-                || StringUtils.containsIgnoreCase(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE, " ")) {
-            buySubCommand = "TO_BUY";
-        }
-        else {
-            buySubCommand = FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE;
-        }
-        if(itemsList.isEmpty()) {
-            itemsList.addAll(Arrays.stream(Material.values())
-                    .filter(mat -> !FindItemAddOn.getConfigProvider().getBlacklistedMaterials().contains(mat))
-                    .map(Material::name)
-                    .toList());
-        }
-        cmdExecutor = new CmdExecutorHandler();
-    }
+	public BuySubCmd() {
+		var cfg = FindItemAddOn.getConfigProvider();
+		subName = StringUtils.isBlank(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE)
+				|| StringUtils.containsAny(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE, ' ')
+				? "TO_BUY"
+						: cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE;
+		materials.addAll(Arrays.stream(Material.values())
+				.filter(mat -> !cfg.getBlacklistedMaterials().contains(mat))
+				.map(Material::name)
+				.toList());
+	}
 
-    @Override
-    public String getName() {
-        return buySubCommand;
-    }
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-    @Override
-    public List<String> getAliases() {
-        return null;
-    }
+		if(sender instanceof Player) {
 
-    @Override
-    public String getDescription() {
-        return "Find shops that buy a specific item";
-    }
+			if (args.length != 2 || !args[0].equalsIgnoreCase(subName)) {
 
-    @Override
-    public String getSyntax() {
-        return "/finditem " + buySubCommand + " {item type | item name}";
-    }
+				UtilitiesOG.trueogMessage((Player) sender,
+						FindItemAddOn.getConfigProvider().PLUGIN_PREFIX +
+						FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
 
-    @Override
-    public void perform(CommandSender commandSender, String[] args) {
-        if(args.length != 2)
-            commandSender.sendMessage(ColorTranslator.translateColorCodes(
-                    FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG));
-        else
-            cmdExecutor.handleShopSearch(buySubCommand, commandSender, args[1]);
-    }
+				return true;
 
-    @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
-        List<String> result = new ArrayList<>();
-        for(String a : itemsList) {
-            if(a.toLowerCase().startsWith(args[1].toLowerCase())) {
-                result.add(a);
-            }
-        }
-        return result;
-    }
+			}
+
+			executor.handleShopSearch(subName, sender, args[1]);
+
+			return true;
+
+		}
+		else {
+
+			UtilitiesOG.logToConsole("QSFindItemAddOn-OG", "&4ERROR: That command can only be run by a player in-game.");
+
+			return true;
+
+		}
+
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+		if (!(sender instanceof Player)) return List.of();
+		if (args.length == 1) {
+			return subName.toLowerCase().startsWith(args[0].toLowerCase())
+					? List.of(subName)
+							: List.of();
+		}
+		if (args.length == 2 && args[0].equalsIgnoreCase(subName)) {
+			String partial = args[1].toLowerCase();
+			List<String> out = new ArrayList<>();
+			for (String m : materials) {
+				if (m.toLowerCase().startsWith(partial)) out.add(m);
+			}
+			return out;
+		}
+		return List.of();
+	}
+
+	public String getSubName() {
+		return subName;
+	}
+
 }
-

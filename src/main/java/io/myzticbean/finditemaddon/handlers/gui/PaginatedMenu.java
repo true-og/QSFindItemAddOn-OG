@@ -18,8 +18,6 @@
  */
 package io.myzticbean.finditemaddon.handlers.gui;
 
-import java.net.URL;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,23 +27,18 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerProfile;
-import org.bukkit.profile.PlayerTextures;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 
 import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
-import io.myzticbean.finditemaddon.utils.log.Logger;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 /**
  * @author myzticbean
  */
 public abstract class PaginatedMenu extends Menu {
-
-	private static final Gson gson = new Gson();
 
 	protected int page = 0;
 	protected int index = 0;
@@ -105,7 +98,7 @@ public abstract class PaginatedMenu extends Menu {
 		ItemMeta backButtonMeta = backButton.getItemMeta();
 		assert backButtonMeta != null;
 		if(!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT)) {
-			backButtonMeta.setDisplayName(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT));
+			backButtonMeta.displayName(UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT));
 		}
 		int backButtonCMD;
 		try {
@@ -114,8 +107,8 @@ public abstract class PaginatedMenu extends Menu {
 				backButtonMeta.setCustomModelData(backButtonCMD);
 			}
 		}
-		catch (NumberFormatException e) {
-			Logger.logDebugInfo("Invalid Custom Model Data for Back Button in config.yml");
+		catch (NumberFormatException error) {
+			FindItemAddOn.logger("Invalid Custom Model Data for Back Button in config.yml");
 		}
 		backButton.setItemMeta(backButtonMeta);
 	}
@@ -131,7 +124,7 @@ public abstract class PaginatedMenu extends Menu {
 		ItemMeta nextButtonMeta = nextButton.getItemMeta();
 		assert nextButtonMeta != null;
 		if(!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT)) {
-			nextButtonMeta.setDisplayName(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT));
+			nextButtonMeta.displayName(UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT));
 		}
 		int nextButtonCMD;
 		try {
@@ -140,8 +133,8 @@ public abstract class PaginatedMenu extends Menu {
 				nextButtonMeta.setCustomModelData(nextButtonCMD);
 			}
 		}
-		catch (NumberFormatException e) {
-			Logger.logDebugInfo("Invalid Custom Model Data for Next Button in config.yml");
+		catch (NumberFormatException error) {
+			FindItemAddOn.logger("Invalid Custom Model Data for Next Button in config.yml");
 		}
 		nextButton.setItemMeta(nextButtonMeta);
 	}
@@ -154,7 +147,7 @@ public abstract class PaginatedMenu extends Menu {
 			firstPageButton = new ItemStack(firstPageButtonMaterial);
 		ItemMeta firstPageButtonMeta = firstPageButton.getItemMeta();
 		if(firstPageButtonMeta != null && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT))
-			firstPageButtonMeta.setDisplayName(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT));
+			firstPageButtonMeta.displayName(UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT));
 		int firstPageButtonCMD;
 		try {
 			if(firstPageButtonMeta != null && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_CMD)) {
@@ -162,8 +155,8 @@ public abstract class PaginatedMenu extends Menu {
 				firstPageButtonMeta.setCustomModelData(firstPageButtonCMD);
 			}
 		}
-		catch (NumberFormatException e) {
-			Logger.logDebugInfo("Invalid Custom Model Data for Goto First Page Button in config.yml");
+		catch (NumberFormatException error) {
+			FindItemAddOn.logger("Invalid Custom Model Data for Goto First Page Button in config.yml");
 		}
 		firstPageButton.setItemMeta(firstPageButtonMeta);
 	}
@@ -175,17 +168,17 @@ public abstract class PaginatedMenu extends Menu {
 		else
 			lastPageButton = new ItemStack(lastPageButtonMaterial);
 		ItemMeta lastPageButtonMeta = lastPageButton.getItemMeta();
-		if(lastPageButtonMeta != null && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT))
-			lastPageButtonMeta.setDisplayName(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT));
+		if(lastPageButtonMeta != null && ! StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT))
+			lastPageButtonMeta.displayName(UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT));
 		int lastPageButtonCMD;
 		try {
-			if(lastPageButtonMeta != null && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD)) {
+			if(lastPageButtonMeta != null && ! StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD)) {
 				lastPageButtonCMD = Integer.parseInt(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD);
 				lastPageButtonMeta.setCustomModelData(lastPageButtonCMD);
 			}
 		}
-		catch (NumberFormatException e) {
-			Logger.logDebugInfo("Invalid Custom Model Data for Goto Last Page Button in config.yml");
+		catch (NumberFormatException error) {
+			FindItemAddOn.logger("Invalid Custom Model Data for Goto Last Page Button in config.yml");
 		}
 		lastPageButton.setItemMeta(lastPageButtonMeta);
 	}
@@ -199,7 +192,7 @@ public abstract class PaginatedMenu extends Menu {
 		ItemMeta closeInvMeta = closeInvButton.getItemMeta();
 		assert closeInvMeta != null;
 		if(!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT)) {
-			closeInvMeta.setDisplayName(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT));
+			closeInvMeta.displayName(UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT));
 		}
 		int closeInvButtonCMD;
 		try {
@@ -208,40 +201,25 @@ public abstract class PaginatedMenu extends Menu {
 				closeInvMeta.setCustomModelData(closeInvButtonCMD);
 			}
 		}
-		catch (NumberFormatException e) {
-			Logger.logDebugInfo("Invalid Custom Model Data for Close Button in config.yml");
+		catch (NumberFormatException error) {
+			FindItemAddOn.logger("Invalid Custom Model Data for Close Button in config.yml");
 		}
 		closeInvButton.setItemMeta(closeInvMeta);
 	}
 
+
 	private ItemStack createPlayerHead(String textureValue) {
-		ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+		ItemStack head = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) head.getItemMeta();
+
 		if (meta != null) {
-			PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID(), null);
-			PlayerTextures textures = profile.getTextures();
-			try {
-				String decodedValue = new String(Base64.getDecoder().decode(textureValue));
-				Logger.logDebugInfo("Decoded Value: " + decodedValue);
-				String textureUrl = extractTextureUrl(decodedValue);
-				URL url = new URL(textureUrl);
-				textures.setSkin(url);
-			} catch (Exception e) {
-				Logger.logError(e);
-			}
-			profile.setTextures(textures);
-			meta.setOwnerProfile(profile);
+			PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
+			profile.setProperty(new ProfileProperty("textures", textureValue));
+			meta.setPlayerProfile(profile);
 			head.setItemMeta(meta);
 		}
+
 		return head;
 	}
 
-	private String extractTextureUrl(String decodedValue) {
-		JsonObject jsonObject = gson.fromJson(decodedValue, JsonObject.class);
-		return jsonObject
-				.getAsJsonObject("textures")
-				.getAsJsonObject("SKIN")
-				.get("url")
-				.getAsString();
-	}
 }
