@@ -19,76 +19,89 @@
 package io.myzticbean.finditemaddon.models;
 
 import java.util.Date;
-
 import org.bukkit.Location;
 
 public class CachedShop {
-	private long shopId;
-	private Location shopLocation;
-	private int remainingStock;
-	private int remainingSpace;
-	private Date lastFetched;
+    private long shopId;
+    private Location shopLocation;
+    private int remainingStock;
+    private int remainingSpace;
+    private Date lastFetched;
 
-	// Private constructor to enforce usage of Builder
-	private CachedShop(Builder builder) {
-		this.shopId = builder.shopId;
-		this.shopLocation = builder.shopLocation;
-		this.remainingStock = builder.remainingStock;
-		this.remainingSpace = builder.remainingSpace;
-		this.lastFetched = builder.lastFetched;
-	}
+    // Private constructor to enforce usage of Builder
+    private CachedShop(Builder builder) {
+        this.shopId = builder.shopId;
+        this.shopLocation = builder.shopLocation;
+        this.remainingStock = builder.remainingStock;
+        this.remainingSpace = builder.remainingSpace;
+        this.lastFetched = builder.lastFetched;
+    }
 
-	// Getters
-	public long getShopId() { return shopId; }
-	public Location getShopLocation() { return shopLocation; }
-	public int getRemainingStock() { return remainingStock; }
-	public int getRemainingSpace() { return remainingSpace; }
-	public Date getLastFetched() { return lastFetched; }
+    // Getters
+    public long getShopId() {
+        return shopId;
+    }
 
-	// Builder class
-	public static class Builder {
-		private long shopId;
-		private Location shopLocation;
-		private int remainingStock;
-		private int remainingSpace;
-		private Date lastFetched;
+    public Location getShopLocation() {
+        return shopLocation;
+    }
 
-		public static Builder builder() {
-			return new Builder();
-		}
+    public int getRemainingStock() {
+        return remainingStock;
+    }
 
-		public Builder shopId(long shopId) {
-			this.shopId = shopId;
-			return this;
-		}
+    public int getRemainingSpace() {
+        return remainingSpace;
+    }
 
-		public Builder shopLocation(Location shopLocation) {
-			this.shopLocation = shopLocation;
-			return this;
-		}
+    public Date getLastFetched() {
+        return lastFetched;
+    }
 
-		public Builder remainingStock(int remainingStock) {
-			this.remainingStock = remainingStock;
-			return this;
-		}
+    // Builder class
+    public static class Builder {
+        private long shopId;
+        private Location shopLocation;
+        private int remainingStock;
+        private int remainingSpace;
+        private Date lastFetched;
 
-		public Builder remainingSpace(int remainingSpace) {
-			this.remainingSpace = remainingSpace;
-			return this;
-		}
+        public static Builder builder() {
+            return new Builder();
+        }
 
-		public Builder lastFetched(Date lastFetched) {
-			this.lastFetched = lastFetched;
-			return this;
-		}
+        public Builder shopId(long shopId) {
+            this.shopId = shopId;
+            return this;
+        }
 
-		public CachedShop build() {
-			return new CachedShop(this);
-		}
-	}
+        public Builder shopLocation(Location shopLocation) {
+            this.shopLocation = shopLocation;
+            return this;
+        }
 
-	// Static method to start the builder
-	public static Builder builder() {
-		return new Builder();
-	}
+        public Builder remainingStock(int remainingStock) {
+            this.remainingStock = remainingStock;
+            return this;
+        }
+
+        public Builder remainingSpace(int remainingSpace) {
+            this.remainingSpace = remainingSpace;
+            return this;
+        }
+
+        public Builder lastFetched(Date lastFetched) {
+            this.lastFetched = lastFetched;
+            return this;
+        }
+
+        public CachedShop build() {
+            return new CachedShop(this);
+        }
+    }
+
+    // Static method to start the builder
+    public static Builder builder() {
+        return new Builder();
+    }
 }

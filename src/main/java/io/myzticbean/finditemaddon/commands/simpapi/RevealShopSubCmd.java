@@ -18,9 +18,10 @@
  */
 package io.myzticbean.finditemaddon.commands.simpapi;
 
+import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,63 +29,60 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
-import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
-
 /**
  * Sub Command Handler for /finditemadmin revealshop
  * @author myzticbean
  */
 public class RevealShopSubCmd implements CommandExecutor, TabCompleter {
 
-	private final String revealShopSubCommand;
-	private final CmdExecutorHandler cmdExecutor;
+    private final String revealShopSubCommand;
+    private final CmdExecutorHandler cmdExecutor;
 
-	public RevealShopSubCmd() {
-		if (StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE)
-				|| StringUtils.containsIgnoreCase(
-						FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " ")) {
-			revealShopSubCommand = "revealshop";
-		} else {
-			revealShopSubCommand = FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE;
-		}
-		cmdExecutor = new CmdExecutorHandler();
-	}
+    public RevealShopSubCmd() {
+        if (StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE)
+                || StringUtils.containsIgnoreCase(
+                        FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " ")) {
+            revealShopSubCommand = "revealshop";
+        } else {
+            revealShopSubCommand = FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE;
+        }
+        cmdExecutor = new CmdExecutorHandler();
+    }
 
-	public String getName() {
-		return revealShopSubCommand;
-	}
+    public String getName() {
+        return revealShopSubCommand;
+    }
 
-	public List<String> getAliases() {
-		return null;
-	}
+    public List<String> getAliases() {
+        return null;
+    }
 
-	public String getDescription() {
-		return "Run this command while looking at a hidden shop to make it public again";
-	}
+    public String getDescription() {
+        return "Run this command while looking at a hidden shop to make it public again";
+    }
 
-	public String getSyntax() {
-		return "/finditem " + revealShopSubCommand;
-	}
+    public String getSyntax() {
+        return "/finditem " + revealShopSubCommand;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (args.length == 1 && args[0].equalsIgnoreCase(revealShopSubCommand)) {
-			cmdExecutor.handleRevealShop(sender);
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 1 && args[0].equalsIgnoreCase(revealShopSubCommand)) {
+            cmdExecutor.handleRevealShop(sender);
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		if (args.length == 1 && revealShopSubCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
-			return Collections.singletonList(revealShopSubCommand);
-		}
-		return Collections.emptyList();
-	}
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (args.length == 1 && revealShopSubCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
+            return Collections.singletonList(revealShopSubCommand);
+        }
+        return Collections.emptyList();
+    }
 
-	public List<String> getSubcommandArguments(Player player, String[] strings) {
-		return null;
-	}
+    public List<String> getSubcommandArguments(Player player, String[] strings) {
+        return null;
+    }
 }

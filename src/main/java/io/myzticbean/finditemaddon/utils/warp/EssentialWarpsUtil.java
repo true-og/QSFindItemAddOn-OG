@@ -21,15 +21,14 @@ package io.myzticbean.finditemaddon.utils.warp;
 import io.myzticbean.finditemaddon.dependencies.EssentialsXPlugin;
 import io.myzticbean.finditemaddon.models.EssentialWarpModel;
 import io.myzticbean.finditemaddon.utils.CommonUtils;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @author myzticbean
@@ -40,7 +39,7 @@ public class EssentialWarpsUtil {
     @Nullable
     public static String findNearestWarp(Location shopLocation) {
         List<EssentialWarpModel> allWarps = EssentialsXPlugin.getAllWarps();
-        if(allWarps != null && !allWarps.isEmpty()) {
+        if (allWarps != null && !allWarps.isEmpty()) {
             Map<Double, String> warpDistanceMap = new TreeMap<>();
             allWarps.forEach(warp -> {
                 Double distance = CommonUtils.calculateDistance3D(
@@ -49,8 +48,7 @@ public class EssentialWarpsUtil {
                         shopLocation.getZ(),
                         warp.warpLoc.getX(),
                         warp.warpLoc.getY(),
-                        warp.warpLoc.getZ()
-                );
+                        warp.warpLoc.getZ());
                 warpDistanceMap.put(distance, warp.warpName);
             });
             /*if(FindItemAddOn.getConfigProvider().DEBUG_MODE) {
@@ -59,8 +57,7 @@ public class EssentialWarpsUtil {
                 }
             }*/
             return warpDistanceMap.entrySet().iterator().next().getValue();
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -68,5 +65,4 @@ public class EssentialWarpsUtil {
     public static void warpPlayer(Player player, String warpName) {
         Bukkit.dispatchCommand(player, "essentials:warp " + warpName);
     }
-
 }

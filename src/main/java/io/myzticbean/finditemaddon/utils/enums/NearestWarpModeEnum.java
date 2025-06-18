@@ -22,7 +22,6 @@ package io.myzticbean.finditemaddon.utils.enums;
  * @author myzticbean
  */
 public enum NearestWarpModeEnum {
-
     ESSENTIAL_WARPS(1),
     PLAYER_WARPS(2),
     WORLDGUARD_REGION(3),
@@ -37,5 +36,4 @@ public enum NearestWarpModeEnum {
     public int value() {
         return mode;
     }
-
 }

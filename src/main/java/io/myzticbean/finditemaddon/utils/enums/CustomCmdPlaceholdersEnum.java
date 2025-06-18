@@ -22,7 +22,6 @@ package io.myzticbean.finditemaddon.utils.enums;
  * @author myzticbean
  */
 public enum CustomCmdPlaceholdersEnum {
-
     PLAYER_NAME("{PLAYER_NAME}"),
     SHOP_LOC_X("{SHOP_LOC_X}"),
     SHOP_LOC_Y("{SHOP_LOC_Y}"),
@@ -37,5 +36,4 @@ public enum CustomCmdPlaceholdersEnum {
     public String value() {
         return placeholder;
     }
-
 }

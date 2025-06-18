@@ -36,5 +36,8 @@ public enum ShopLorePlaceholdersEnum {
     ShopLorePlaceholdersEnum(String placeholder) {
         this.placeholder = placeholder;
     }
-    public String value() {return placeholder;}
+
+    public String value() {
+        return placeholder;
+    }
 }

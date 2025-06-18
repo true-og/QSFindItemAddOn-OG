@@ -1,12 +1,15 @@
 plugins {
-    id("com.gradleup.shadow") version "8.3.6"
-	id("java-library")
-    java
-    eclipse
+    id("java") // Tell gradle this is a java project.
+    id("java-library") // Import helper for source-based libraries.
+    id("com.diffplug.spotless") version "7.0.4"
+    id("com.gradleup.shadow") version "8.3.6" // Import shadow API.
+    eclipse // Import eclipse plugin for IDE integration.
 }
 
 group = "io.myzticbean.finditemaddon"
+
 version = "2.0.8"
+
 val apiVersion = "1.19"
 
 java {
@@ -19,7 +22,9 @@ java {
 
 tasks.named<ProcessResources>("processResources") {
     val props = mapOf("version" to version, "apiVersion" to apiVersion)
-    inputs.properties(props)
+
+    inputs.properties(props) // Indicates to rerun if version changes.
+
     filesMatching("plugin.yml") { expand(props) }
     from("LICENSE") { into("/") }
     from("src/main/doc/README.md") { into("/") }
@@ -37,10 +42,16 @@ repositories {
     maven("https://repo.olziedev.com/")
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.codemc.io/repository/maven-public/") {
-        metadataSources { mavenPom(); artifact() }
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
     }
     maven("https://repo.codemc.io/repository/bentoboxworld/") {
-        metadataSources { mavenPom(); artifact() }
+        metadataSources {
+            mavenPom()
+            artifact()
+        }
     }
 }
 
@@ -48,7 +59,7 @@ val playerwarpsApiOld = "6.30.0"
 val playerwarpsApiNew = "7.7.1"
 
 dependencies {
-    compileOnly("org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT") // Declare purpur API version to be packaged.
     compileOnly("com.ghostchu:quickshop-api:6.2.0.5")
     compileOnly("com.ghostchu:quickshop-bukkit:6.2.0.5:shaded") {
         exclude("org.jetbrains", "annotations")
@@ -59,9 +70,7 @@ dependencies {
         exclude("me.xanium", "GemsEconomy")
         exclude("com.ghostchu", "quickshop-common")
     }
-    compileOnly("org.maxgamer:QuickShop:5.1.2.5-SNAPSHOT") {
-        isTransitive = false
-    }
+    compileOnly("org.maxgamer:QuickShop:5.1.2.5-SNAPSHOT") { isTransitive = false }
     compileOnly("net.essentialsx:EssentialsX:2.20.1")
     compileOnly("com.olziedev:playerwarps-api:$playerwarpsApiOld") { exclude("*", "*") }
     compileOnly("com.olziedev:playerwarps-api:$playerwarpsApiNew")
@@ -87,23 +96,45 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
 }
 
-tasks.withType<AbstractArchiveTask>().configureEach {
+tasks.withType<AbstractArchiveTask>().configureEach { // Ensure reproducible .jars
     isPreserveFileTimestamps = false
     isReproducibleFileOrder = true
 }
 
 tasks.shadowJar {
-    archiveClassifier.set("")
+    exclude("io.github.miniplaceholders.*") // Exclude the MiniPlaceholders package from being shadowed.
+    archiveClassifier.set("") // Use empty string instead of null.
     minimize()
 }
 
-tasks.build { dependsOn(tasks.shadowJar) }
+tasks.build {
+    dependsOn(tasks.spotlessApply)
+    dependsOn(tasks.shadowJar)
+}
 
 tasks.jar { archiveClassifier.set("part") }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.compilerArgs.addAll(listOf("-parameters", "-Xlint:deprecation"))
+    options.compilerArgs.add("-parameters")
+    options.compilerArgs.add("-Xlint:deprecation") // Triggers deprecation warning messages.
     options.encoding = "UTF-8"
     options.isFork = true
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.GRAAL_VM
+    }
+}
+
+spotless {
+    java {
+        removeUnusedImports()
+        palantirJavaFormat()
+    }
+    kotlinGradle {
+        ktfmt().kotlinlangStyle().configure { it.setMaxWidth(120) }
+        target("build.gradle.kts", "settings.gradle.kts")
+    }
+}

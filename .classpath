@@ -415,12 +415,12 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/notalexnoyle/Downloads/QSFindItemAddOn-OG/lib/Residence5.1.5.1.jar">
+	<classpathentry kind="lib" path="/home/notalexnoyle/eclipse-workspace/QSFindItemAddOn-OG/lib/Residence5.1.5.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/notalexnoyle/Downloads/QSFindItemAddOn-OG/lib/GPFlags-5.13.4.jar">
+	<classpathentry kind="lib" path="/home/notalexnoyle/eclipse-workspace/QSFindItemAddOn-OG/lib/GPFlags-5.13.4.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>

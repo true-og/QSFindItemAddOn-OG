@@ -18,11 +18,10 @@
  */
 package io.myzticbean.finditemaddon.models;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import java.time.Instant;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * @author myzticbean

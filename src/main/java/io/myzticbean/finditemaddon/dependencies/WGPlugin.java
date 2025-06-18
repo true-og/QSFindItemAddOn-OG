@@ -18,38 +18,36 @@
  */
 package io.myzticbean.finditemaddon.dependencies;
 
-import org.bukkit.Bukkit;
-
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
 import io.myzticbean.finditemaddon.FindItemAddOn;
+import org.bukkit.Bukkit;
 
 /**
  * @author myzticbean
  */
 public class WGPlugin {
 
-	private static boolean isPluginEnabled;
+    private static boolean isPluginEnabled;
 
-	public static void setup() {
-		if(Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-			FindItemAddOn.logger("Found WorldGuard");
-			isPluginEnabled = true;
-		}
-		else {
-			isPluginEnabled = false;
-		}
-	}
+    public static void setup() {
+        if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
+            FindItemAddOn.logger("Found WorldGuard");
+            isPluginEnabled = true;
+        } else {
+            isPluginEnabled = false;
+        }
+    }
 
-	public static WorldGuardPlugin getWgPluginInstance() {
-		return WorldGuardPlugin.inst();
-	}
+    public static WorldGuardPlugin getWgPluginInstance() {
+        return WorldGuardPlugin.inst();
+    }
 
-	public static WorldGuard getWgInstance () { return WorldGuard.getInstance(); }
+    public static WorldGuard getWgInstance() {
+        return WorldGuard.getInstance();
+    }
 
-	public static boolean isEnabled() {
-		return isPluginEnabled;
-	}
-
+    public static boolean isEnabled() {
+        return isPluginEnabled;
+    }
 }

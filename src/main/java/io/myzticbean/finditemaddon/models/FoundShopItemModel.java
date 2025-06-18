@@ -18,45 +18,56 @@
  */
 package io.myzticbean.finditemaddon.models;
 
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.UUID;
 
 /**
  * Model for the Shop Item lore that will be shown in the search GUI
  * @author myzticbean
  */
 public class FoundShopItemModel {
-    public FoundShopItemModel(double shopPrice, int remainingStockOrSpace, UUID shopOwner, Location shopLocation,
-		ItemStack item, boolean toBuy) {
-		super();
-		this.shopPrice = shopPrice;
-		this.remainingStockOrSpace = remainingStockOrSpace;
-		this.shopOwner = shopOwner;
-		this.shopLocation = shopLocation;
-		this.item = item;
-		this.toBuy = toBuy;
-	}
-	public double getShopPrice() {
-		return shopPrice;
-	}
-	public int getRemainingStockOrSpace() {
-		return remainingStockOrSpace;
-	}
-	public UUID getShopOwner() {
-		return shopOwner;
-	}
-	public Location getShopLocation() {
-		return shopLocation;
-	}
-	public ItemStack getItem() {
-		return item;
-	}
-	public boolean isToBuy() {
-		return toBuy;
-	}
-	private double shopPrice;
+    public FoundShopItemModel(
+            double shopPrice,
+            int remainingStockOrSpace,
+            UUID shopOwner,
+            Location shopLocation,
+            ItemStack item,
+            boolean toBuy) {
+        super();
+        this.shopPrice = shopPrice;
+        this.remainingStockOrSpace = remainingStockOrSpace;
+        this.shopOwner = shopOwner;
+        this.shopLocation = shopLocation;
+        this.item = item;
+        this.toBuy = toBuy;
+    }
+
+    public double getShopPrice() {
+        return shopPrice;
+    }
+
+    public int getRemainingStockOrSpace() {
+        return remainingStockOrSpace;
+    }
+
+    public UUID getShopOwner() {
+        return shopOwner;
+    }
+
+    public Location getShopLocation() {
+        return shopLocation;
+    }
+
+    public ItemStack getItem() {
+        return item;
+    }
+
+    public boolean isToBuy() {
+        return toBuy;
+    }
+
+    private double shopPrice;
     private int remainingStockOrSpace;
     private UUID shopOwner;
     private Location shopLocation;
