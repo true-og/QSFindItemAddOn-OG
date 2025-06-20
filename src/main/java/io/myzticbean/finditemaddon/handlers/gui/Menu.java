@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.handlers.gui;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 import java.util.List;
 import net.kyori.adventure.text.TextComponent;
@@ -49,8 +49,8 @@ public abstract class Menu implements InventoryHolder {
     protected Menu(PlayerMenuUtility playerMenuUtility) {
         this.playerMenuUtility = playerMenuUtility;
 
-        assert FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
-        Material fillerMaterial = Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM);
+        assert QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
+        Material fillerMaterial = Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_FILLER_ITEM);
         if (fillerMaterial == null) {
             fillerMaterial = Material.GRAY_STAINED_GLASS_PANE;
         }

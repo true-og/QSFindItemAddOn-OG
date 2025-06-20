@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.utils;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.utils.enums.PlayerPermsEnum;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,7 +105,7 @@ public class LocationUtils {
     @Nullable
     public static Location findSafeLocationAroundShop(Location shopLocation, Player player) {
         Location roundedShopLoc = getRoundedDestination(shopLocation);
-        FindItemAddOn.logger("Rounded location: " + roundedShopLoc.getX() + ", " + roundedShopLoc.getY() + ", "
+        QSFindItemAddOnOG.logger("Rounded location: " + roundedShopLoc.getX() + ", " + roundedShopLoc.getY() + ", "
                 + roundedShopLoc.getZ());
         // Creating a list of four block locations in 4 sides of the shop
         List<Location> possibleSafeLocList = new ArrayList<>();
@@ -118,11 +118,12 @@ public class LocationUtils {
         possibleSafeLocList.add(new Location(
                 roundedShopLoc.getWorld(), roundedShopLoc.getX(), roundedShopLoc.getY(), roundedShopLoc.getZ() - 1));
         for (Location loc_i : possibleSafeLocList) {
-            FindItemAddOn.logger("Possible safe location: " + loc_i.getX() + ", " + loc_i.getY() + ", " + loc_i.getZ());
+            QSFindItemAddOnOG.logger(
+                    "Possible safe location: " + loc_i.getX() + ", " + loc_i.getY() + ", " + loc_i.getZ());
             if (loc_i.getBlock()
                     .getType()
-                    .equals(FindItemAddOn.getQsApiInstance().getShopSignMaterial())) {
-                FindItemAddOn.logger(
+                    .equals(QSFindItemAddOnOG.getQsApiInstance().getShopSignMaterial())) {
+                QSFindItemAddOnOG.logger(
                         "Shop sign block found at " + loc_i.getX() + ", " + loc_i.getY() + ", " + loc_i.getZ());
                 // Adding a check for a safe location check bypass permission
                 if (player.hasPermission(PlayerPermsEnum.FINDITEM_SHOPTP_BYPASS_SAFETYCHECK.value())) {
@@ -140,7 +141,7 @@ public class LocationUtils {
                 // check if the block above is suffocating
                 Location blockAbove =
                         new Location(loc_i.getWorld(), loc_i.getBlockX(), loc_i.getBlockY() + 1, loc_i.getBlockZ());
-                FindItemAddOn.logger("Block above shop sign: " + blockAbove.getX() + ", " + blockAbove.getY() + ", "
+                QSFindItemAddOnOG.logger("Block above shop sign: " + blockAbove.getX() + ", " + blockAbove.getY() + ", "
                         + blockAbove.getZ());
                 if (!isBlockSuffocating(blockAbove)) {
                     Location blockBelow = null;
@@ -148,7 +149,7 @@ public class LocationUtils {
                     for (int i = 1; i <= BELOW_SAFE_BLOCK_CHECK_LIMIT; i++) {
                         blockBelow = new Location(
                                 loc_i.getWorld(), loc_i.getBlockX(), loc_i.getBlockY() - i, loc_i.getBlockZ());
-                        FindItemAddOn.logger("Block below shop sign: "
+                        QSFindItemAddOnOG.logger("Block below shop sign: "
                                 + blockBelow.getBlock().getType() + " " + blockBelow.getX() + ", " + blockBelow.getY()
                                 + ", " + blockBelow.getZ());
                         if (blockBelow.getBlock().getType().equals(Material.AIR)
@@ -157,11 +158,12 @@ public class LocationUtils {
                                 || blockBelow
                                         .getBlock()
                                         .getType()
-                                        .equals(FindItemAddOn.getQsApiInstance().getShopSignMaterial())) {
+                                        .equals(QSFindItemAddOnOG.getQsApiInstance()
+                                                .getShopSignMaterial())) {
                             // do nothing and let the loop run.
-                            FindItemAddOn.logger("Shop or Air found below");
+                            QSFindItemAddOnOG.logger("Shop or Air found below");
                         } else if (!isBlockDamaging(blockBelow)) {
-                            FindItemAddOn.logger("Safe block found!");
+                            QSFindItemAddOnOG.logger("Safe block found!");
                             safeLocFound = true;
                             break;
                         } else {
@@ -181,16 +183,16 @@ public class LocationUtils {
                         return null;
                     }
                 } else {
-                    FindItemAddOn.logger("Block above shop sign found not air. Block type: "
+                    QSFindItemAddOnOG.logger("Block above shop sign found not air. Block type: "
                             + blockAbove.getBlock().getType());
                     return null;
                 }
             } else {
-                FindItemAddOn.logger(
+                QSFindItemAddOnOG.logger(
                         "Block not shop sign. Block type: " + loc_i.getBlock().getType());
             }
         }
-        FindItemAddOn.logger("No safe block found near shop");
+        QSFindItemAddOnOG.logger("No safe block found near shop");
         return null;
     }
 

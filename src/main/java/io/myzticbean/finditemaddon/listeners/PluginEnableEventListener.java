@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.listeners;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
@@ -29,16 +29,16 @@ import org.bukkit.event.server.PluginEnableEvent;
 public class PluginEnableEventListener implements Listener {
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
-        if (!FindItemAddOn.isQSReremakeInstalled() && !FindItemAddOn.isQSHikariInstalled()) {
+        if (!QSFindItemAddOnOG.isQSReremakeInstalled() && !QSFindItemAddOnOG.isQSHikariInstalled()) {
             //            if(!event.getPlugin().getName().equalsIgnoreCase("QuickShop")
             //                    && !event.getPlugin().getName().equalsIgnoreCase("QuickShop-Hikari")) {
             //                // do nothing
             //            }
-            if (event.getPlugin().getName().equalsIgnoreCase("QuickShop") && !FindItemAddOn.isQSHikariInstalled()) {
-                FindItemAddOn.setQSReremakeInstalled(true);
+            if (event.getPlugin().getName().equalsIgnoreCase("QuickShop") && !QSFindItemAddOnOG.isQSHikariInstalled()) {
+                QSFindItemAddOnOG.setQSReremakeInstalled(true);
             } else if (event.getPlugin().getName().equalsIgnoreCase("QuickShop-Hikari")
-                    && !FindItemAddOn.isQSReremakeInstalled()) {
-                FindItemAddOn.setQSHikariInstalled(true);
+                    && !QSFindItemAddOnOG.isQSReremakeInstalled()) {
+                QSFindItemAddOnOG.setQSHikariInstalled(true);
             }
         }
     }

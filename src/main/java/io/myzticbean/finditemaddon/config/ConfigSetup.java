@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.config;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,16 +38,16 @@ public class ConfigSetup {
     private static final int CURRENT_CONFIG_VERSION = 20;
 
     public static void setupConfig() {
-        configFile = new File(FindItemAddOn.getInstance().getDataFolder(), "config.yml");
+        configFile = new File(QSFindItemAddOnOG.getInstance().getDataFolder(), "config.yml");
 
         if (!configFile.exists()) {
             try {
                 boolean isConfigGenerated = configFile.createNewFile();
                 if (isConfigGenerated) {
-                    FindItemAddOn.logger("Generated a new config.yml");
+                    QSFindItemAddOnOG.logger("Generated a new config.yml");
                 }
             } catch (IOException e) {
-                FindItemAddOn.logger("Error generating config.yml");
+                QSFindItemAddOnOG.logger("Error generating config.yml");
             }
         }
 
@@ -58,7 +58,7 @@ public class ConfigSetup {
         try {
             configFileConfiguration.save(configFile);
         } catch (IOException e) {
-            FindItemAddOn.logger("Error saving config.yml");
+            QSFindItemAddOnOG.logger("Error saving config.yml");
         }
     }
 
@@ -72,13 +72,13 @@ public class ConfigSetup {
             try {
                 int nearestWarpMode = configFileConfiguration.getInt("nearest-warp-mode");
                 if (nearestWarpMode != 1 && nearestWarpMode != 2 && nearestWarpMode != 3 && nearestWarpMode != 4) {
-                    FindItemAddOn.logger("Invalid value for 'nearest-warp-mode' in config.yml!");
-                    FindItemAddOn.logger("Resetting by default to &e1");
+                    QSFindItemAddOnOG.logger("Invalid value for 'nearest-warp-mode' in config.yml!");
+                    QSFindItemAddOnOG.logger("Resetting by default to &e1");
                     configFileConfiguration.set("nearest-warp-mode", 1);
                 }
             } catch (Exception e) {
-                FindItemAddOn.logger("Invalid value for 'nearest-warp-mode' in config.yml!");
-                FindItemAddOn.logger("Resetting by default to &e1");
+                QSFindItemAddOnOG.logger("Invalid value for 'nearest-warp-mode' in config.yml!");
+                QSFindItemAddOnOG.logger("Resetting by default to &e1");
                 configFileConfiguration.set("nearest-warp-mode", 1);
             }
         }
@@ -412,6 +412,6 @@ public class ConfigSetup {
      * Added in 2.0
      */
     public static void copySampleConfig() {
-        FindItemAddOn.getInstance().saveResource("sample-config.yml", true);
+        QSFindItemAddOnOG.getInstance().saveResource("sample-config.yml", true);
     }
 }

@@ -20,7 +20,7 @@ package io.myzticbean.finditemaddon.dependencies;
 
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import org.bukkit.Bukkit;
 
 /**
@@ -32,7 +32,7 @@ public class WGPlugin {
 
     public static void setup() {
         if (Bukkit.getPluginManager().isPluginEnabled("WorldGuard")) {
-            FindItemAddOn.logger("Found WorldGuard");
+            QSFindItemAddOnOG.logger("Found WorldGuard");
             isPluginEnabled = true;
         } else {
             isPluginEnabled = false;

@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.listeners;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.event.EventHandler;
@@ -34,8 +34,8 @@ public class PlayerCommandSendEventListener implements Listener {
         if (!event.getPlayer().isOp()) {
             List<String> blockedCommands = new ArrayList<>();
             blockedCommands.add("finditem:finditem");
-            assert FindItemAddOn.getConfigProvider().FIND_ITEM_COMMAND_ALIAS != null;
-            for (String cmd : FindItemAddOn.getConfigProvider().FIND_ITEM_COMMAND_ALIAS) {
+            assert QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_COMMAND_ALIAS != null;
+            for (String cmd : QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_COMMAND_ALIAS) {
                 blockedCommands.add("finditem:" + cmd);
             }
             blockedCommands.add("finditemadmin:finditemadmin");

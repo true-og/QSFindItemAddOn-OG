@@ -19,7 +19,7 @@
 package io.myzticbean.finditemaddon.dependencies;
 
 import com.earth2me.essentials.Essentials;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.models.EssentialWarpModel;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +43,7 @@ public class EssentialsXPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
             essAPI = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
             if (essAPI != null) {
-                FindItemAddOn.logger("Found Essentials");
+                QSFindItemAddOnOG.logger("Found Essentials");
             }
         }
     }
@@ -83,13 +83,13 @@ public class EssentialsXPlugin {
             essWarp.warpLoc = essAPI.getWarps().getWarp(warp);
             allWarpsList.add(essWarp);
         } catch (Exception ignored) {
-            FindItemAddOn.logger("Error adding warp to list: " + warp);
+            QSFindItemAddOnOG.logger("Error adding warp to list: " + warp);
         }
     }
 
     private static void logUpdateCompletion(long startTime) {
         long duration = System.currentTimeMillis() - startTime;
-        FindItemAddOn.logger(String.format(
+        QSFindItemAddOnOG.logger(String.format(
                 "Update complete for Essentials warps list! Found %d warps. Time took: %dms.",
                 getAllWarps().size(), duration));
     }

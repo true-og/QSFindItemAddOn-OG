@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.commands.simpapi;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,14 +40,14 @@ public class SellSubCmd implements CommandExecutor, TabCompleter {
     private final CmdExecutorHandler cmdExecutor;
 
     public SellSubCmd() {
-        if (StringUtils.isBlank(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)) {
+        if (StringUtils.isBlank(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)) {
             sellSubCommand = "TO_SELL";
         } else {
-            sellSubCommand = FindItemAddOn.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE;
+            sellSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE;
         }
         if (itemsList.isEmpty()) {
             itemsList.addAll(Arrays.stream(Material.values())
-                    .filter(mat -> !FindItemAddOn.getConfigProvider()
+                    .filter(mat -> !QSFindItemAddOnOG.getConfigProvider()
                             .getBlacklistedMaterials()
                             .contains(mat))
                     .map(Material::name)
@@ -82,8 +82,8 @@ public class SellSubCmd implements CommandExecutor, TabCompleter {
         if (args.length != 2) {
             UtilitiesOG.trueogMessage(
                     player,
-                    FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
+                    QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
         } else {
             cmdExecutor.handleShopSearch(sellSubCommand, player, args[1]);
         }

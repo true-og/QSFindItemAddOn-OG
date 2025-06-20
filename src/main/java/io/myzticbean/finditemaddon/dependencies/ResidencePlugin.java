@@ -2,7 +2,7 @@ package io.myzticbean.finditemaddon.dependencies;
 
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.api.ResidenceInterface;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import org.bukkit.Bukkit;
 
 /**
@@ -14,7 +14,7 @@ public class ResidencePlugin {
 
     public static void setup() {
         if (Bukkit.getPluginManager().isPluginEnabled("Residence")) {
-            FindItemAddOn.logger("Found Residence");
+            QSFindItemAddOnOG.logger("Found Residence");
             isPluginEnabled = true;
         } else {
             isPluginEnabled = false;

@@ -60,8 +60,9 @@ val playerwarpsApiNew = "7.7.1"
 
 dependencies {
     compileOnly("org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT") // Declare purpur API version to be packaged.
-    compileOnly("com.ghostchu:quickshop-api:6.2.0.5")
-    compileOnly("com.ghostchu:quickshop-bukkit:6.2.0.5:shaded") {
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("com.ghostchu:quickshop-api:5.2.0.7")
+    compileOnly("com.ghostchu:quickshop-bukkit:5.2.0.7:shaded") {
         exclude("org.jetbrains", "annotations")
         exclude("net.kyori", "adventure-platform-bukkit")
         exclude("com.github.juliomarcopineda", "jdbc-stream")
@@ -74,7 +75,7 @@ dependencies {
     compileOnly("net.essentialsx:EssentialsX:2.20.1")
     compileOnly("com.olziedev:playerwarps-api:$playerwarpsApiOld") { exclude("*", "*") }
     compileOnly("com.olziedev:playerwarps-api:$playerwarpsApiNew")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.7") {
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.8") {
         exclude("org.bstats", "bstats-bukkit")
         exclude("org.slf4j", "slf4j-api")
         exclude("com.google.guava", "guava")

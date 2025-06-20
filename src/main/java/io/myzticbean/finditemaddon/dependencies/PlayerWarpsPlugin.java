@@ -20,7 +20,7 @@ package io.myzticbean.finditemaddon.dependencies;
 
 import com.olziedev.playerwarps.api.PlayerWarpsAPI;
 import com.olziedev.playerwarps.api.warp.Warp;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.utils.enums.NearestWarpModeEnum;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +41,7 @@ public class PlayerWarpsPlugin {
 
     public static void setup() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlayerWarps")) {
-            FindItemAddOn.logger("Found PlayerWarps");
+            QSFindItemAddOnOG.logger("Found PlayerWarps");
             PlayerWarpsAPI.getInstance(api -> {
                 playerWarpsAPI = api;
                 isEnabled = true;
@@ -76,22 +76,22 @@ public class PlayerWarpsPlugin {
             // Issue #24 Fix: Changing api instance to callback
             PlayerWarpsAPI.getInstance(api -> {
                 allWarpsList = api.getPlayerWarps(false);
-                FindItemAddOn.logger("Update complete for PlayerWarps list! Found "
+                QSFindItemAddOnOG.logger("Update complete for PlayerWarps list! Found "
                         + getAllWarps().size() + " warps. Time took: " + (System.currentTimeMillis() - start) + "ms.");
             });
         }
     }
 
     public static void updateWarpsOnEventCall(Warp warp, boolean isRemoved) {
-        FindItemAddOn.logger("Got a PlayerWarps event call... checking nearest-warp-mode");
-        if (FindItemAddOn.getConfigProvider().NEAREST_WARP_MODE == NearestWarpModeEnum.PLAYER_WARPS.value()) {
-            FindItemAddOn.logger("'nearest-warp-mode' found set to 2");
+        QSFindItemAddOnOG.logger("Got a PlayerWarps event call... checking nearest-warp-mode");
+        if (QSFindItemAddOnOG.getConfigProvider().NEAREST_WARP_MODE == NearestWarpModeEnum.PLAYER_WARPS.value()) {
+            QSFindItemAddOnOG.logger("'nearest-warp-mode' found set to 2");
             if (getIsEnabled()) {
-                FindItemAddOn.logger("PlayerWarps plugin is enabled");
+                QSFindItemAddOnOG.logger("PlayerWarps plugin is enabled");
                 tryUpdateWarps(warp, isRemoved, 1);
             }
         } else {
-            FindItemAddOn.logger(
+            QSFindItemAddOnOG.logger(
                     "No update required to '" + ALL_WARPS_LIST_CLASSPATH + "' as PlayerWarps integration is disabled.");
         }
     }
@@ -102,14 +102,14 @@ public class PlayerWarpsPlugin {
             if (isRemoved) {
                 if (allWarpsList.contains(warp)) {
                     allWarpsList.remove(warp);
-                    FindItemAddOn.logger("Warp removed from allWarpsList: " + warp.getWarpName());
+                    QSFindItemAddOnOG.logger("Warp removed from allWarpsList: " + warp.getWarpName());
                 } else {
-                    FindItemAddOn.logger("Error occurred while updating '" + ALL_WARPS_LIST_CLASSPATH
+                    QSFindItemAddOnOG.logger("Error occurred while updating '" + ALL_WARPS_LIST_CLASSPATH
                             + "'. Warp name: '" + warp.getWarpName() + "' does not exist!");
                 }
             } else {
                 allWarpsList.add(warp);
-                FindItemAddOn.logger("New warp added to allWarpsList: " + warp.getWarpName());
+                QSFindItemAddOnOG.logger("New warp added to allWarpsList: " + warp.getWarpName());
             }
         } else {
             // Issue #21 Fix: forcing update of allWarpsList
@@ -124,7 +124,7 @@ public class PlayerWarpsPlugin {
                         .append(
                                 "Please install PlayerWarps by Olzie-12 if you would like to use 'nearest-warp-mode' as 2. ")
                         .append("If PlayerWarps plugin is installed and issue persists, please contact the developer!");
-                FindItemAddOn.logger(errorMsg.toString());
+                QSFindItemAddOnOG.logger(errorMsg.toString());
             }
         }
     }

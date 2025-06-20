@@ -1,7 +1,7 @@
 package io.myzticbean.finditemaddon.utils.warp;
 
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.dependencies.ResidencePlugin;
 import javax.annotation.Nullable;
 import lombok.experimental.UtilityClass;
@@ -21,7 +21,7 @@ public class ResidenceUtils {
     }
 
     public static String getResidenceName(ClaimedResidence residence) {
-        if (!FindItemAddOn.getConfigProvider().USE_RESIDENCE_SUBZONES) {
+        if (!QSFindItemAddOnOG.getConfigProvider().USE_RESIDENCE_SUBZONES) {
             return residence.getParent() == null ? residence.getResidenceName() : residence.getTopParentName();
         }
         return residence.getName();

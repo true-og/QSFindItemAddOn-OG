@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.commands.simpapi;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
 import java.util.Collections;
 import java.util.List;
@@ -39,12 +39,12 @@ public class RevealShopSubCmd implements CommandExecutor, TabCompleter {
     private final CmdExecutorHandler cmdExecutor;
 
     public RevealShopSubCmd() {
-        if (StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE)
+        if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE)
                 || StringUtils.containsIgnoreCase(
-                        FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " ")) {
+                        QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " ")) {
             revealShopSubCommand = "revealshop";
         } else {
-            revealShopSubCommand = FindItemAddOn.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE;
+            revealShopSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE;
         }
         cmdExecutor = new CmdExecutorHandler();
     }

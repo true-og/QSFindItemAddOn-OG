@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.milkbowl.vault.economy.Economy;
 import net.trueog.utilitiesog.UtilitiesOG;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -56,13 +57,14 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author myzticbean
  */
 @Slf4j
-public final class FindItemAddOn extends JavaPlugin {
+public final class QSFindItemAddOnOG extends JavaPlugin {
 
     public static ConfigProvider getConfigProvider() {
         return configProvider;
@@ -76,12 +78,18 @@ public final class FindItemAddOn extends JavaPlugin {
 
     private static Plugin pluginInstance;
 
-    public FindItemAddOn() {
+    public QSFindItemAddOnOG() {
         pluginInstance = this;
     }
 
     public static Plugin getInstance() {
         return pluginInstance;
+    }
+
+    private static Economy econ;
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
     public static String serverVersion;
@@ -140,6 +148,12 @@ public final class FindItemAddOn extends JavaPlugin {
             qSHikariInstalled = true;
         }
 
+        if (!setupEconomy()) {
+            getLogger().severe("Vault not found – disabling plugin.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         // Registering Bukkit event listeners
         initBukkitEventListeners();
 
@@ -156,7 +170,7 @@ public final class FindItemAddOn extends JavaPlugin {
         initCommands();
 
         // Run plugin startup logic after server is done loading
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FindItemAddOn.getInstance(), this::runPluginStartupTasks);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(QSFindItemAddOnOG.getInstance(), this::runPluginStartupTasks);
     }
 
     @Override
@@ -261,12 +275,12 @@ public final class FindItemAddOn extends JavaPlugin {
 
     private void initFindItemCmd() {
         List<String> alias;
-        if (StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)
+        if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)
                 || StringUtils.containsIgnoreCase(
-                        FindItemAddOn.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE, " ")) {
+                        QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE, " ")) {
             alias = Arrays.asList("shopsearch", "searchshop", "searchitem");
         } else {
-            alias = FindItemAddOn.getConfigProvider().FIND_ITEM_COMMAND_ALIAS;
+            alias = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_COMMAND_ALIAS;
         }
 
         PluginCommand cmd = this.getCommand("finditem");
@@ -304,11 +318,11 @@ public final class FindItemAddOn extends JavaPlugin {
     }
 
     public static void setQSReremakeInstalled(boolean qSReremakeInstalled) {
-        FindItemAddOn.qSReremakeInstalled = qSReremakeInstalled;
+        QSFindItemAddOnOG.qSReremakeInstalled = qSReremakeInstalled;
     }
 
     public static void setQSHikariInstalled(boolean qSHikariInstalled) {
-        FindItemAddOn.qSHikariInstalled = qSHikariInstalled;
+        QSFindItemAddOnOG.qSHikariInstalled = qSHikariInstalled;
     }
 
     @SuppressWarnings("rawtypes")
@@ -345,7 +359,7 @@ public final class FindItemAddOn extends JavaPlugin {
                 send(sender, "&7------------------------");
                 send(sender, "&#ff9933/finditem buy <item> &#a3a3c2Search shops buying your item");
                 send(sender, "&#ff9933/finditem sell <item> &#a3a3c2Search shops selling your item");
-                if (!FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS) {
+                if (!QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS) {
                     send(sender, "&#ff9933/finditem hideshop &#a3a3c2Hide your shop");
                     send(sender, "&#ff9933/finditem revealshop &#a3a3c2Reveal your shop");
                 }
@@ -362,7 +376,7 @@ public final class FindItemAddOn extends JavaPlugin {
         @Override
         public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
             if (args.length == 1) {
-                if (FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS) {
+                if (QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS) {
                     return List.of("buy", "sell");
                 }
                 return List.of("buy", "sell", "hideshop", "revealshop");
@@ -410,7 +424,8 @@ public final class FindItemAddOn extends JavaPlugin {
             }
 
             if (args[0].equalsIgnoreCase("reload")) {
-                FindItemAddOn plugin = FindItemAddOn.getInstance() instanceof FindItemAddOn fia ? fia : null;
+                QSFindItemAddOnOG plugin =
+                        QSFindItemAddOnOG.getInstance() instanceof QSFindItemAddOnOG fia ? fia : null;
                 if (plugin != null) {
                     plugin.reloadConfig();
                     ConfigSetup.reloadConfig();
@@ -429,5 +444,18 @@ public final class FindItemAddOn extends JavaPlugin {
             if (args.length == 1) return List.of("reload");
             return List.of();
         }
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp =
+                getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 }

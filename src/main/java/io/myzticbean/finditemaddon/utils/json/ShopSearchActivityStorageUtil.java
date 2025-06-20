@@ -20,7 +20,7 @@ package io.myzticbean.finditemaddon.utils.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.models.HiddenShopModel;
 import io.myzticbean.finditemaddon.models.PlayerShopVisitModel;
 import io.myzticbean.finditemaddon.models.ShopSearchActivityModel;
@@ -85,7 +85,8 @@ public class ShopSearchActivityStorageUtil {
                 boolean isCooldownTimeElapsed;
                 if (playerShopVisitList.size() > 0) {
                     isCooldownTimeElapsed = Instant.now()
-                            .minusSeconds(FindItemAddOn.getConfigProvider().SHOP_PLAYER_VISIT_COOLDOWN_IN_MINUTES * 60)
+                            .minusSeconds(
+                                    QSFindItemAddOnOG.getConfigProvider().SHOP_PLAYER_VISIT_COOLDOWN_IN_MINUTES * 60)
                             .isAfter(playerShopVisitList
                                     .get(playerShopVisitList.size() - 1)
                                     .getVisitDateTime());
@@ -93,21 +94,21 @@ public class ShopSearchActivityStorageUtil {
                     isCooldownTimeElapsed = true;
                 }
                 if (isCooldownTimeElapsed) {
-                    FindItemAddOn.logger("&6" + player.getName() + " is out of cooldown");
+                    QSFindItemAddOnOG.logger("&6" + player.getName() + " is out of cooldown");
                     return true;
                 } else {
-                    FindItemAddOn.logger("&6" + player.getName() + " still has cooldown");
+                    QSFindItemAddOnOG.logger("&6" + player.getName() + " still has cooldown");
                     return false;
                 }
             }
         }
-        FindItemAddOn.logger("&6Shop not found, returning false for cooldown check");
+        QSFindItemAddOnOG.logger("&6Shop not found, returning false for cooldown check");
         return false;
     }
 
     @SuppressWarnings("unchecked")
     public static void syncShops() {
-        globalShopsList = FindItemAddOn.getQsApiInstance().syncShopsListForStorage(globalShopsList);
+        globalShopsList = QSFindItemAddOnOG.getQsApiInstance().syncShopsListForStorage(globalShopsList);
     }
 
     /**
@@ -159,7 +160,7 @@ public class ShopSearchActivityStorageUtil {
     @SuppressWarnings("unchecked")
     public static void loadShopsFromFile() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/"
+        File file = new File(QSFindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
                 + SHOP_SEARCH_ACTIVITY_JSON_FILE_NAME);
         if (file.exists()) {
             try {
@@ -170,17 +171,17 @@ public class ShopSearchActivityStorageUtil {
                 } else {
                     globalShopsList = new ArrayList<>();
                 }
-                FindItemAddOn.logger("Loaded shops from file");
+                QSFindItemAddOnOG.logger("Loaded shops from file");
             } catch (FileNotFoundException error) {
                 error.printStackTrace();
             }
         }
-        globalShopsList = FindItemAddOn.getQsApiInstance().syncShopsListForStorage(globalShopsList);
+        globalShopsList = QSFindItemAddOnOG.getQsApiInstance().syncShopsListForStorage(globalShopsList);
     }
 
     public static void saveShopsToFile() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/"
+        File file = new File(QSFindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
                 + SHOP_SEARCH_ACTIVITY_JSON_FILE_NAME);
         file.getParentFile().mkdir();
         try {
@@ -189,7 +190,7 @@ public class ShopSearchActivityStorageUtil {
             gson.toJson(globalShopsList, writer);
             writer.flush();
             writer.close();
-            FindItemAddOn.logger("Saved shops to file");
+            QSFindItemAddOnOG.logger("Saved shops to file");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -197,7 +198,7 @@ public class ShopSearchActivityStorageUtil {
 
     public static void migrateHiddenShopsToShopsJson() {
         File hiddenShopsJsonfile =
-                new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/"
+                new File(QSFindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
                         + HiddenShopStorageUtil.HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
         if (hiddenShopsJsonfile.exists()) {
             HiddenShopStorageUtil.loadHiddenShopsFromFile();
@@ -215,21 +216,21 @@ public class ShopSearchActivityStorageUtil {
                             tempHiddenShop = hiddenShop_i;
                             shopSearchActivity.setHiddenFromSearch(true);
                             globalShopsList.set(globalShopsList_i, shopSearchActivity);
-                            FindItemAddOn.logger("Converted shop: " + shopSearchActivity);
+                            QSFindItemAddOnOG.logger("Converted shop: " + shopSearchActivity);
                         }
                     }
                     HiddenShopStorageUtil.hiddenShopsList.remove(tempHiddenShop);
                 }
             }
-            FindItemAddOn.logger("Here we will delete the hiddenShops.json");
+            QSFindItemAddOnOG.logger("Here we will delete the hiddenShops.json");
             hiddenShopsJsonfile.delete();
         } else {
-            FindItemAddOn.logger("hiddenshops.json: No conversion required");
+            QSFindItemAddOnOG.logger("hiddenshops.json: No conversion required");
         }
     }
 
     public static void addPlayerVisitEntryAsync(Location shopLocation, Player visitingPlayer) {
-        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(QSFindItemAddOnOG.getInstance(), () -> {
             if (handleCooldownIfPresent(shopLocation, visitingPlayer)) {
                 Iterator<ShopSearchActivityModel> shopSearchActivityIterator = globalShopsList.iterator();
                 int i = 0;
@@ -244,7 +245,7 @@ public class ShopSearchActivityStorageUtil {
                         playerShopVisit.setPlayerUUID(visitingPlayer.getUniqueId());
                         playerShopVisit.setVisitDateTime();
                         globalShopsList.get(i).getPlayerVisitList().add(playerShopVisit);
-                        FindItemAddOn.logger("Added new player visit entry at " + shopLocation.toString());
+                        QSFindItemAddOnOG.logger("Added new player visit entry at " + shopLocation.toString());
                         break;
                     }
                     i++;
@@ -285,8 +286,8 @@ public class ShopSearchActivityStorageUtil {
                 try {
                     return UUID.fromString(uuidStr);
                 } catch (IllegalArgumentException e) {
-                    if (!FindItemAddOn.isQSReremakeInstalled()) {
-                        UUID uuid = FindItemAddOn.getQsApiInstance().convertNameToUuid(uuidStr);
+                    if (!QSFindItemAddOnOG.isQSReremakeInstalled()) {
+                        UUID uuid = QSFindItemAddOnOG.getQsApiInstance().convertNameToUuid(uuidStr);
                         int index = globalShopsList.indexOf(shopSearchActivity);
                         globalShopsList.get(index).setShopOwnerUUID(uuid.toString());
                     }

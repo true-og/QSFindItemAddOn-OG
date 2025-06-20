@@ -20,7 +20,7 @@ package io.myzticbean.finditemaddon.handlers.gui.menus;
 
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.olziedev.playerwarps.api.warp.Warp;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.config.ConfigProvider;
 import io.myzticbean.finditemaddon.dependencies.EssentialsXPlugin;
 import io.myzticbean.finditemaddon.dependencies.PlayerWarpsPlugin;
@@ -77,7 +77,7 @@ public class FoundShopsMenu extends PaginatedMenu {
 
     public FoundShopsMenu(PlayerMenuUtility playerMenuUtility, List<FoundShopItemModel> searchResult) {
         super(playerMenuUtility, searchResult);
-        configProvider = FindItemAddOn.getConfigProvider();
+        configProvider = QSFindItemAddOnOG.getConfigProvider();
     }
 
     @Override
@@ -112,7 +112,7 @@ public class FoundShopsMenu extends PaginatedMenu {
 
         // Ignore clicks on empty slots
         if (event.getCurrentItem().getType().equals(Material.AIR)) {
-            FindItemAddOn.logger(player.getName() + " just clicked on AIR!");
+            QSFindItemAddOnOG.logger(player.getName() + " just clicked on AIR!");
             return;
         }
 
@@ -158,11 +158,11 @@ public class FoundShopsMenu extends PaginatedMenu {
     private void handleShopItemClick(@NotNull InventoryClickEvent event, Player player) {
         ItemStack item = event.getCurrentItem();
         ItemMeta meta = item.getItemMeta();
-        NamespacedKey key = new NamespacedKey(FindItemAddOn.getInstance(), NAMEDSPACE_KEY_LOCATION_DATA);
+        NamespacedKey key = new NamespacedKey(QSFindItemAddOnOG.getInstance(), NAMEDSPACE_KEY_LOCATION_DATA);
 
         // Check if the item has the required location data
         if (!meta.getPersistentDataContainer().has(key, PersistentDataType.STRING)) {
-            FindItemAddOn.logger("PersistentDataContainer doesn't have the right kind of data!");
+            QSFindItemAddOnOG.logger("PersistentDataContainer doesn't have the right kind of data!");
             return;
         }
 
@@ -325,7 +325,7 @@ public class FoundShopsMenu extends PaginatedMenu {
      */
     private void applyTeleportDelay(Player player, Location locToTeleport) {
         long delay = Long.parseLong(configProvider.TP_DELAY_IN_SECONDS);
-        FindItemAddOn.logger("Teleporting delay is set to: " + delay);
+        QSFindItemAddOnOG.logger("Teleporting delay is set to: " + delay);
         String tpDelayMsg = configProvider.TP_DELAY_MESSAGE;
         if (!StringUtils.isEmpty(tpDelayMsg)) {
             UtilitiesOG.trueogMessage(
@@ -333,7 +333,7 @@ public class FoundShopsMenu extends PaginatedMenu {
         }
         Bukkit.getScheduler()
                 .scheduleSyncDelayedTask(
-                        FindItemAddOn.getInstance(),
+                        QSFindItemAddOnOG.getInstance(),
                         () -> PaperLib.teleportAsync(player, locToTeleport, PlayerTeleportEvent.TeleportCause.PLUGIN),
                         delay * 20);
     }
@@ -403,10 +403,10 @@ public class FoundShopsMenu extends PaginatedMenu {
             double totalPages = listSize / MAX_ITEMS_PER_PAGE;
             if (totalPages % 10 == 0) {
                 page = (int) Math.floor(totalPages);
-                FindItemAddOn.logger("Floor page value: " + page);
+                QSFindItemAddOnOG.logger("Floor page value: " + page);
             } else {
                 page = (int) Math.ceil(totalPages);
-                FindItemAddOn.logger("Ceiling page value: " + page);
+                QSFindItemAddOnOG.logger("Ceiling page value: " + page);
             }
             super.open(super.playerMenuUtility.getPlayerShopSearchResult());
         } else {
@@ -567,7 +567,7 @@ public class FoundShopsMenu extends PaginatedMenu {
                 }
                 break;
             default:
-                FindItemAddOn.logger("Invalid value in 'nearest-warp-mode' in config.yml!");
+                QSFindItemAddOnOG.logger("Invalid value in 'nearest-warp-mode' in config.yml!");
         }
         return configProvider.NO_WARP_NEAR_SHOP_ERROR_MSG;
     }
@@ -579,7 +579,7 @@ public class FoundShopsMenu extends PaginatedMenu {
      * @param foundShop The shop to get location data from
      */
     private void setLocationData(ItemMeta meta, FoundShopItemModel foundShop) {
-        NamespacedKey key = new NamespacedKey(FindItemAddOn.getInstance(), NAMEDSPACE_KEY_LOCATION_DATA);
+        NamespacedKey key = new NamespacedKey(QSFindItemAddOnOG.getInstance(), NAMEDSPACE_KEY_LOCATION_DATA);
         String locData = "";
 
         if (configProvider.TP_PLAYER_DIRECTLY_TO_SHOP) {
@@ -651,7 +651,7 @@ public class FoundShopsMenu extends PaginatedMenu {
     }
 
     private int processUnknownStockSpace(FoundShopItemModel shop) {
-        return FindItemAddOn.getQsApiInstance().processUnknownStockSpace(shop.getShopLocation(), shop.isToBuy());
+        return QSFindItemAddOnOG.getQsApiInstance().processUnknownStockSpace(shop.getShopLocation(), shop.isToBuy());
     }
 
     private String replaceDelayPlaceholder(String tpDelayMsg, long delay) {

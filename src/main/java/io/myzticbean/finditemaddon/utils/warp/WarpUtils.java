@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.utils.warp;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.dependencies.EssentialsXPlugin;
 import io.myzticbean.finditemaddon.dependencies.PlayerWarpsPlugin;
 
@@ -27,11 +27,12 @@ import io.myzticbean.finditemaddon.dependencies.PlayerWarpsPlugin;
  */
 public class WarpUtils {
     public static void updateWarps() {
-        if (FindItemAddOn.getConfigProvider().shopGUIItemLoreHasKey("{NEAREST_WARP}")) {
-            if (FindItemAddOn.getConfigProvider().NEAREST_WARP_MODE == 1 && EssentialsXPlugin.isEnabled()) {
+        if (QSFindItemAddOnOG.getConfigProvider().shopGUIItemLoreHasKey("{NEAREST_WARP}")) {
+            if (QSFindItemAddOnOG.getConfigProvider().NEAREST_WARP_MODE == 1 && EssentialsXPlugin.isEnabled()) {
                 EssentialsXPlugin.updateAllWarps();
 
-            } else if (FindItemAddOn.getConfigProvider().NEAREST_WARP_MODE == 2 && PlayerWarpsPlugin.getIsEnabled()) {
+            } else if (QSFindItemAddOnOG.getConfigProvider().NEAREST_WARP_MODE == 2
+                    && PlayerWarpsPlugin.getIsEnabled()) {
                 PlayerWarpsPlugin.updateAllWarpsFromAPI();
             }
         }

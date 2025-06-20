@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.config;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import java.util.ArrayList;
 import java.util.List;
 import net.kyori.adventure.text.TextComponent;
@@ -167,7 +167,7 @@ public class ConfigProvider {
     public ConfigProvider() {
         loadBlacklistedWorlds();
         loadBlacklistedMaterials();
-        FindItemAddOn.logger("Config loaded!");
+        QSFindItemAddOnOG.logger("Config loaded!");
     }
 
     public List<World> getBlacklistedWorlds() {

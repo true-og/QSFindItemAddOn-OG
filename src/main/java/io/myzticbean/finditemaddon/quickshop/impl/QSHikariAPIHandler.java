@@ -19,14 +19,13 @@
 package io.myzticbean.finditemaddon.quickshop.impl;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.QuickShopBukkit;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.commands.quickshop.subcommands.FindItemCmdHikariImpl;
 import io.myzticbean.finditemaddon.models.CachedShop;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
@@ -46,10 +45,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -76,23 +76,23 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
                 .getPlugin("QuickShop-Hikari")
                 .getPluginMeta()
                 .getVersion();
-        FindItemAddOn.logger("Initializing Shop caching");
+        QSFindItemAddOnOG.logger("Initializing Shop caching");
         shopCache = new ConcurrentHashMap<>();
         isQSHikariShopCacheImplemented = checkIfQSHikariShopCacheImplemented();
     }
 
     public List<FoundShopItemModel> findItemBasedOnTypeFromAllShops(
             ItemStack item, boolean toBuy, Player searchingPlayer) {
-        FindItemAddOn.logger(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
+        QSFindItemAddOnOG.logger(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
         var begin = Instant.now();
         List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
         List<Shop> allShops = fetchAllShopsFromQS();
-        FindItemAddOn.logger(QS_TOTAL_SHOPS_ON_SERVER + allShops.size());
+        QSFindItemAddOnOG.logger(QS_TOTAL_SHOPS_ON_SERVER + allShops.size());
         for (Shop shopIterator : allShops) {
             // check for Quickshop-Hikari internal per-shop based search permission
             if (shopIterator.playerAuthorize(searchingPlayer.getUniqueId(), BuiltInShopPermission.SEARCH)
                     // check for blacklisted worlds
-                    && (!FindItemAddOn.getConfigProvider()
+                    && (!QSFindItemAddOnOG.getConfigProvider()
                                     .getBlacklistedWorlds()
                                     .contains(shopIterator.getLocation().getWorld())
                             && shopIterator.getItem().getType().equals(item.getType())
@@ -113,38 +113,35 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
      * @return true if owner has enough balance, false otherwise
      */
     private static boolean isOwnerHavingEnoughBalance(@NotNull Shop shop) {
-        // Skip check for admin shops
         if (shop.getOwner().getUniqueIdOptional().isEmpty()) {
             return true;
         }
 
-        double price = shop.getPrice();
-        double itemAmount = shop.getItem().getAmount();
-        double pricePerTransaction = price * itemAmount;
+        double pricePerTransaction = shop.getPrice() * shop.getItem().getAmount();
 
-        var economy = getQuickShop().getEconomy();
-        var qUser = shop.getOwner();
-        World world = shop.getLocation().getWorld();
-        var uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
-        // return true if not a real player
-        if (Objects.isNull(uuid)) {
+        UUID ownerId = shop.getOwner().getUniqueIdIfRealPlayer().orElse(null);
+        if (ownerId == null) {
             return true;
         }
-        var bukkitPlayer = Bukkit.getOfflinePlayer(uuid);
-        var hasPlayed = bukkitPlayer.hasPlayedBefore();
-        if (hasPlayed == false) {
-            FindItemAddOn.logger("Shop owner hasn't played before ever in the server (?) - ShopInfo: "
-                    + shop.getOwner().getUsername());
+        // TODO: Replace Vault here with DiamondBank-OG API.
+        OfflinePlayer owner = Bukkit.getOfflinePlayer(ownerId);
+
+        if (!owner.hasPlayedBefore()) {
+            QSFindItemAddOnOG.logger(
+                    "Shop owner has never joined: " + shop.getOwner().getUsername());
             return true;
         }
-        var currency = shop.getCurrency();
 
-        // Get owner's balance through QuickShop API
-        return economy.getBalance(qUser, world, currency) >= pricePerTransaction;
-    }
+        Economy econ = QSFindItemAddOnOG.getEconomy();
+        if (econ == null || !econ.isEnabled()) {
+            QSFindItemAddOnOG.logger("Economy provider unavailable; " + "skipping balance check.");
+            return true;
+        }
 
-    private static QuickShop getQuickShop() {
-        return ((QuickShopBukkit) QuickShopAPI.getPluginInstance()).getQuickShop();
+        String worldName = shop.getLocation().getWorld().getName();
+        double balance = econ.getBalance(owner, worldName);
+
+        return balance >= pricePerTransaction;
     }
 
     @NotNull
@@ -152,10 +149,10 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
         if (!shopsFoundList.isEmpty()) {
             int sortingMethod = 2;
             try {
-                sortingMethod = FindItemAddOn.getConfigProvider().SHOP_SORTING_METHOD;
+                sortingMethod = QSFindItemAddOnOG.getConfigProvider().SHOP_SORTING_METHOD;
             } catch (Exception error) {
-                FindItemAddOn.logger("Invalid value in config.yml : 'shop-sorting-method'");
-                FindItemAddOn.logger("Defaulting to sorting by prices method");
+                QSFindItemAddOnOG.logger("Invalid value in config.yml : 'shop-sorting-method'");
+                QSFindItemAddOnOG.logger("Defaulting to sorting by prices method");
             }
             return QSApi.sortShops(sortingMethod, shopsFoundList, toBuy);
         }
@@ -164,11 +161,11 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
 
     public List<FoundShopItemModel> findItemBasedOnDisplayNameFromAllShops(
             String displayName, boolean toBuy, Player searchingPlayer) {
-        FindItemAddOn.logger(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
+        QSFindItemAddOnOG.logger(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
         var begin = Instant.now();
         List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
         List<Shop> allShops = fetchAllShopsFromQS();
-        FindItemAddOn.logger(QS_TOTAL_SHOPS_ON_SERVER + allShops.size());
+        QSFindItemAddOnOG.logger(QS_TOTAL_SHOPS_ON_SERVER + allShops.size());
         for (Shop shopIterator : allShops) {
             ItemStack item = shopIterator.getItem();
             ItemMeta meta = item.getItemMeta();
@@ -179,7 +176,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
                 // check for QuickShop-Hikari internal per-shop based search permission
                 if (shopIterator.playerAuthorize(searchingPlayer.getUniqueId(), BuiltInShopPermission.SEARCH)
                         // check for blacklisted worlds
-                        && !FindItemAddOn.getConfigProvider()
+                        && !QSFindItemAddOnOG.getConfigProvider()
                                 .getBlacklistedWorlds()
                                 .contains(shopIterator.getLocation().getWorld())
                         // match the item based on query
@@ -200,16 +197,16 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     public List<FoundShopItemModel> fetchAllItemsFromAllShops(boolean toBuy, Player searchingPlayer) {
-        FindItemAddOn.logger(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
+        QSFindItemAddOnOG.logger(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
         var begin = Instant.now();
         List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
         List<Shop> allShops = fetchAllShopsFromQS();
-        FindItemAddOn.logger(QS_TOTAL_SHOPS_ON_SERVER + allShops.size());
+        QSFindItemAddOnOG.logger(QS_TOTAL_SHOPS_ON_SERVER + allShops.size());
         for (Shop shopIterator : allShops) {
             // check for QuickShop-Hikari internal per-shop based search permission
             if (shopIterator.playerAuthorize(searchingPlayer.getUniqueId(), BuiltInShopPermission.SEARCH)
                     // check for blacklisted worlds
-                    && (!FindItemAddOn.getConfigProvider()
+                    && (!QSFindItemAddOnOG.getConfigProvider()
                                     .getBlacklistedWorlds()
                                     .contains(shopIterator.getLocation().getWorld())
                             && (toBuy ? shopIterator.isSelling() : shopIterator.isBuying()))
@@ -229,7 +226,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
 
     private List<Shop> fetchAllShopsFromQS() {
         List<Shop> allShops;
-        if (FindItemAddOn.getConfigProvider().SEARCH_LOADED_SHOPS_ONLY) {
+        if (QSFindItemAddOnOG.getConfigProvider().SEARCH_LOADED_SHOPS_ONLY) {
             allShops = new ArrayList<>(api.getShopManager().getLoadedShops());
         } else {
             allShops = getAllShops();
@@ -264,7 +261,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     public boolean isShopOwnerCommandRunner(Player player, Shop shop) {
-        FindItemAddOn.logger("Shop owner: " + shop.getOwner() + " | Player: " + player.getUniqueId());
+        QSFindItemAddOnOG.logger("Shop owner: " + shop.getOwner() + " | Player: " + player.getUniqueId());
         return shop.getOwner()
                 .getUniqueId()
                 .toString()
@@ -312,7 +309,8 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
             }
             if (tempShopToRemove != null) globalShopsList.remove(tempShopToRemove);
         }
-        FindItemAddOn.logger("Shops List sync complete. Time took: " + (System.currentTimeMillis() - start) + "ms.");
+        QSFindItemAddOnOG.logger(
+                "Shops List sync complete. Time took: " + (System.currentTimeMillis() - start) + "ms.");
         return tempGlobalShopsList;
     }
 
@@ -322,14 +320,14 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
      */
     @Override
     public void registerSubCommand() {
-        FindItemAddOn.logger("Unregistered find sub-command for /qs");
+        QSFindItemAddOnOG.logger("Unregistered find sub-command for /qs");
         for (CommandContainer cmdContainer : api.getCommandManager().getRegisteredCommands()) {
             if (cmdContainer.getPrefix().equalsIgnoreCase("find")) {
                 api.getCommandManager().unregisterCmd(cmdContainer);
                 break;
             }
         }
-        FindItemAddOn.logger("Registered finditem sub-command for /qs");
+        QSFindItemAddOnOG.logger("Registered finditem sub-command for /qs");
         api.getCommandManager()
                 .registerCmd(CommandContainer.builder()
                         .prefix("finditem")
@@ -350,7 +348,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     public int processUnknownStockSpace(Location shopLoc, boolean toBuy) {
         // This process needs to run in MAIN thread!
         Util.ensureThread(false);
-        FindItemAddOn.logger("Fetching stock/space from MAIN thread...");
+        QSFindItemAddOnOG.logger("Fetching stock/space from MAIN thread...");
         Shop qsShop = api.getShopManager().getShop(shopLoc);
         if (qsShop != null) {
             return (toBuy ? qsShop.getRemainingStock() : qsShop.getRemainingSpace());
@@ -380,7 +378,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
      * @return If shop needs to be ignored from list
      */
     private boolean isShopToBeIgnoredForFullOrEmpty(int stockOrSpace) {
-        boolean ignoreEmptyChests = FindItemAddOn.getConfigProvider().IGNORE_EMPTY_CHESTS;
+        boolean ignoreEmptyChests = QSFindItemAddOnOG.getConfigProvider().IGNORE_EMPTY_CHESTS;
         if (ignoreEmptyChests) {
             return stockOrSpace == 0;
         }
@@ -394,11 +392,12 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
             // New feature available
             Util.ensureThread(true);
             int stockOrSpace = (fetchRemainingStock ? shop.getRemainingStock() : shop.getRemainingSpace());
-            FindItemAddOn.logger("Stock/Space from cache: " + stockOrSpace);
+            QSFindItemAddOnOG.logger("Stock/Space from cache: " + stockOrSpace);
             return stockOrSpace;
         } else {
             // Show warning.
-            FindItemAddOn.logger("Update recommended to QuickShop-Hikari v6+! You are still using v" + pluginVersion);
+            QSFindItemAddOnOG.logger(
+                    "Update recommended to QuickShop-Hikari v6+! You are still using v" + pluginVersion);
             // PREPARE FOR LAG.
             CachedShop cachedShop = shopCache.get(shop.getShopId());
             if (cachedShop == null
@@ -411,7 +410,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
                         .lastFetched(new Date())
                         .build();
                 shopCache.put(cachedShop.getShopId(), cachedShop);
-                FindItemAddOn.logger("Adding to ShopCache: " + shop.getShopId());
+                QSFindItemAddOnOG.logger("Adding to ShopCache: " + shop.getShopId());
             }
             return (fetchRemainingStock ? cachedShop.getRemainingStock() : cachedShop.getRemainingSpace());
         }
@@ -425,7 +424,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
 
     private void processPotentialShopMatchAndAddToFoundList(
             boolean toBuy, Shop shopIterator, List<FoundShopItemModel> shopsFoundList, Player searchingPlayer) {
-        FindItemAddOn.logger("Shop match found: " + shopIterator.getLocation());
+        QSFindItemAddOnOG.logger("Shop match found: " + shopIterator.getLocation());
         // check for stock / space
         int stockOrSpace = (toBuy
                 ? getRemainingStockOrSpaceFromShopCache(shopIterator, true)
@@ -435,7 +434,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
         }
         // check if owner has enough balance for buying shops
         if (!toBuy && !isOwnerHavingEnoughBalance(shopIterator)) {
-            FindItemAddOn.logger("Shop Owner is poor");
+            QSFindItemAddOnOG.logger("Shop Owner is poor");
             return;
         }
         shopsFoundList.add(new FoundShopItemModel(

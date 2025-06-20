@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.scheduledtasks;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.utils.json.ShopSearchActivityStorageUtil;
 import io.myzticbean.finditemaddon.utils.warp.WarpUtils;
 import org.bukkit.Bukkit;
@@ -30,7 +30,7 @@ public class Task15MinInterval implements Runnable {
     @Override
     public void run() {
         // v2.0.6.0 - Changed tasks to run in async thread
-        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(QSFindItemAddOnOG.getInstance(), () -> {
             WarpUtils.updateWarps();
             ShopSearchActivityStorageUtil.syncShops();
         });

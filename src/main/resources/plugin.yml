@@ -1,6 +1,6 @@
 name: QSFindItemAddOn-OG
 version: '${version}'
-main: io.myzticbean.finditemaddon.FindItemAddOn
+main: io.myzticbean.finditemaddon.QSFindItemAddOnOG
 website: https://github.com/true-og/QSFindItemAddOn-OG
 api-version: '${apiVersion}'
 authors: [ myzticbean, NotAlexNoyle ]
@@ -8,6 +8,7 @@ softdepend:
   - QuickShop-OG
   - WorldGuard
   - Essentials
+  - Vault
 
 permissions:
   finditem.use:

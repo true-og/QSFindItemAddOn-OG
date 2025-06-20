@@ -21,7 +21,7 @@ package io.myzticbean.finditemaddon.utils.warp;
 import com.olziedev.playerwarps.api.PlayerWarpsAPI;
 import com.olziedev.playerwarps.api.events.warp.PlayerWarpTeleportEvent;
 import com.olziedev.playerwarps.api.warp.Warp;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.dependencies.PlayerWarpsPlugin;
 import io.myzticbean.finditemaddon.utils.CommonUtils;
 import java.util.List;
@@ -41,14 +41,14 @@ public class PlayerWarpsUtil {
 
     @Nullable
     public static Warp findNearestWarp(Location shopLocation, UUID shopOwner) {
-        FindItemAddOn.logger("Find nearest warp for shop location " + shopLocation);
+        QSFindItemAddOnOG.logger("Find nearest warp for shop location " + shopLocation);
         List<Warp> playersWarps = PlayerWarpsPlugin.getAllWarps().stream()
                 .filter(warp -> warp.getWarpLocation().getWorld() != null)
                 .filter(warp -> warp.getWarpLocation()
                         .getWorld()
                         .equals(shopLocation.getWorld().getName()))
                 .toList();
-        if (FindItemAddOn.getConfigProvider().ONLY_SHOW_PLAYER_OWNDED_WARPS) {
+        if (QSFindItemAddOnOG.getConfigProvider().ONLY_SHOW_PLAYER_OWNDED_WARPS) {
             playersWarps = playersWarps.stream()
                     .filter(warp -> warp.getWarpPlayer().getUUID().equals(shopOwner))
                     .toList();
@@ -64,17 +64,17 @@ public class PlayerWarpsUtil {
                         warp.getWarpLocation().getY(),
                         warp.getWarpLocation().getZ());
                 warpDistanceMap.put(distance3D, warp);
-                FindItemAddOn.logger("Warp Distance: " + distance3D + " Warp Name: " + warp.getWarpName()
+                QSFindItemAddOnOG.logger("Warp Distance: " + distance3D + " Warp Name: " + warp.getWarpName()
                         + ", Warp World: " + warp.getWarpLocation().getWorld());
             });
             for (Map.Entry<Double, Warp> doubleWarpEntry : warpDistanceMap.entrySet()) {
                 Double distance3D = doubleWarpEntry.getKey();
                 Warp warp = doubleWarpEntry.getValue();
-                FindItemAddOn.logger(
+                QSFindItemAddOnOG.logger(
                         "Warp: " + warp.getWarpName() + " " + warp.isWarpLocked() + " Distance in 3D: " + distance3D);
                 // Is the config set to not tp if player warp is locked, and if so, is the warp locked?
                 // also check distance from shop (should not be too long)
-                if (FindItemAddOn.getConfigProvider().DO_NOT_TP_IF_PLAYER_WARP_LOCKED
+                if (QSFindItemAddOnOG.getConfigProvider().DO_NOT_TP_IF_PLAYER_WARP_LOCKED
                         && doubleWarpEntry.getValue().isWarpLocked()
                         && distance3D > 500) {
                     continue;
@@ -96,7 +96,7 @@ public class PlayerWarpsUtil {
             if (playerWarp != null) {
                 playerWarp.getWarpLocation().teleportWarp(player, PlayerWarpTeleportEvent.Cause.PLAYER_WARP_MENU);
             } else {
-                FindItemAddOn.logger(
+                QSFindItemAddOnOG.logger(
                         "&e" + player.getName() + " &cis trying to teleport to a PlayerWarp that does not exist!");
             }
         });

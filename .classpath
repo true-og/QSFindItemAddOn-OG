@@ -20,12 +20,17 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ghostchu/quickshop-api/6.2.0.5/9f6539e49027e6d640eb9d6c26b8a4fedcccc543/quickshop-api-6.2.0.5.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.MilkBowl/VaultAPI/1.7/b9809d8834b59f4c492207af3520335ec2148fc5/VaultAPI-1.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.MilkBowl/VaultAPI/1.7/5c4ad4b33bbfe93c061e8c8a37d0542f7539415/VaultAPI-1.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ghostchu/quickshop-bukkit/6.2.0.5/99c51bba702bca27845c45b753ac05d0e257560c/quickshop-bukkit-6.2.0.5-shaded.jar">
+	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ghostchu/quickshop-api/5.2.0.7/7396fadfd4ee5fc572ffc6b98c6f6ce00cbe1bca/quickshop-api-5.2.0.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.ghostchu/quickshop-bukkit/5.2.0.7/88de0b4d3992820b9635f9ac3a371dabc0ea53fc/quickshop-bukkit-5.2.0.7-shaded.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -45,7 +50,7 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-bukkit/7.0.7/5f778dfd361b863c1a71e68a4aef5554f4d143c5/worldguard-bukkit-7.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-bukkit/7.0.7/2210782eead79eec51019d5ce466459e169f12a1/worldguard-bukkit-7.0.7.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-bukkit/7.0.8/33fd68f1c4b1f3774131bb5416519e7e2be042ca/worldguard-bukkit-7.0.8-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-bukkit/7.0.8/c01dbcaabf14a01a9b2ac39b5d938d810e7cd4e6/worldguard-bukkit-7.0.8.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -90,16 +95,6 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-hikaricp/0.4.7/bc10f0f9276851585e27e7569c71706380fdd0f8/easysql-hikaricp-0.4.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-hikaricp/0.4.7/b0003905b8fb28d878985b315fdb580fcd4e8f09/easysql-hikaricp-0.4.7.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value=""/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-impl/0.4.7/bb5e0f8b28c199d4e587460e1e8e3299c2f18f46/easysql-impl-0.4.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-impl/0.4.7/6d52d074f1173fe334f2cd4e8f0091d925cdea06/easysql-impl-0.4.7.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value=""/>
-		</attributes>
-	</classpathentry>
 	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-api/0.4.7/a44e11e67bd43b325b7f3b4406a8dafd0f40abf5/easysql-api-0.4.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/cc.carm.lib/easysql-api/0.4.7/5c90459363ea63e240b0b498aab40db9a6a6ea61/easysql-api-0.4.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
@@ -125,6 +120,11 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bukkit/bukkit/1.13.1-R0.1-SNAPSHOT/d486e4c8d09a8b30acc0397fd15db479cf9f9e06/bukkit-1.13.1-R0.1-SNAPSHOT-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bukkit/bukkit/1.13.1-R0.1-SNAPSHOT/4aae819591911e88ffa46e5bee3f2870d28a8db7/bukkit-1.13.1-R0.1-SNAPSHOT.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/BaseProviders/2.20.1/e9766f7c39872c628a7e10d5ef4cb3d78d91ad8/BaseProviders-2.20.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/net.essentialsx/BaseProviders/2.20.1/db4480b40f53e6875335f2fc1c804af3d07b7ae/BaseProviders-2.20.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
@@ -140,12 +140,12 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-core/7.0.7/a3f6ca29dd2b8a04249350c0ce2af526ac9d88ff/worldguard-core-7.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-core/7.0.7/92ce5f12f52508201548a4a6d331e15a29127102/worldguard-core-7.0.7.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-core/7.0.8/fc92e8c75fc551ccfe1de7d1e7294a201edba45a/worldguard-core-7.0.8-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard/worldguard-core/7.0.8/bf499b020c49b5bfb96fca5654c035054c01c0/worldguard-core-7.0.8.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-core/7.2.7/7c5416628726913810733f7d3b2a8ebd5359ca43/worldedit-core-7.2.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-core/7.2.7/eb2bc7a5ed160d30a66c31e1c262a4c78220dcf2/worldedit-core-7.2.7.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-core/7.2.12/d079dcbc375a5a13bdd74b37a8177a9bdeb74efd/worldedit-core-7.2.12-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-core/7.2.12/2184b04284a75f93908f86804c32e4cb9fa46131/worldedit-core-7.2.12.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -245,12 +245,7 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.stefvanschie.inventoryframework/IF/0.10.13/c62146fd615380978fef6ab9effca5f1734e1486/IF-0.10.13-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.github.stefvanschie.inventoryframework/IF/0.10.13/f0130b9fd5b51146d4909d2dd27dd177e61a73d/IF-0.10.13.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value=""/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.25.0/f2bc5736ee1966f2af837b13a695e843ad5ce435/commons-compress-1.25.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.25.0/9d35aec423da6c8a7f93d7e9e1c6b1d9fe14bb5e/commons-compress-1.25.0.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.vdurmont/semver4j/3.1.0/6e8b0bba0f4d70754dbe2027fa8b3aab93349cc7/semver4j-3.1.0-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.vdurmont/semver4j/3.1.0/de1248f09dfe8df3b021c84e0642ee222cceb13/semver4j-3.1.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -280,7 +275,7 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/7.2.7/102ce192ba100dd339ed3da05987bcbecb36107d/worldedit-bukkit-7.2.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/7.2.7/e0abbe90becdbd3de81e25866f76639beba76a70/worldedit-bukkit-7.2.7.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/7.2.12/b204312378f78e24b9d119d9d5ae9b8feddb2a25/worldedit-bukkit-7.2.12-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit/worldedit-bukkit/7.2.12/a8ce39a2b1c7ce1b35921643bf3d9197747a433a/worldedit-bukkit-7.2.12.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -290,12 +285,22 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/67313d715fbf0ea4fd0bdb69217fb77f807a8ce5/commons-lang-2.6-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/ce1edb914c94ebc388f086c6827e8bdeec71ac2/commons-lang-2.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bstats/bstats-base/2.2.1/4e767a2aef10d115c117d80d215836c4bf5fc49a/bstats-base-2.2.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.bstats/bstats-base/2.2.1/c2bb62e2937b87ac1d5462b7f5b48370e41c7948/bstats-base-2.2.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard.worldguard-libs/core/7.0.7/be84a518c730381f650ae05c0307aa23812986d7/core-7.0.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard.worldguard-libs/core/7.0.7/4f495ba202cf25916d409216d6712b064e1ac610/core-7.0.7.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard.worldguard-libs/core/7.0.8/52034f04a662b1310a0520f843b2e0b99d4dfb73/core-7.0.8-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldguard.worldguard-libs/core/7.0.8/cc6e4091b30fc49549423e7fc9438e559845a7f0/core-7.0.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/junit/junit/4.10/6c98d6766e72d5575f96c9479d1c1d3b865c6e25/junit-4.10-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/junit/junit/4.10/e4f1766ce7404a08f45d859fb9c226fc9e41a861/junit-4.10.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -325,7 +330,7 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit.worldedit-libs/core/7.2.7/afeab4b4c6cacc594241bf1c2b5dc5bc5bafad4e/core-7.2.7-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit.worldedit-libs/core/7.2.7/98bfc197adc9a4882608ad09d3c7681e5ef8888e/core-7.2.7.jar">
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit.worldedit-libs/core/7.2.12/e4b088a6c14437fdc97bee40dd4fc91c0342179f/core-7.2.12-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/com.sk89q.worldedit.worldedit-libs/core/7.2.12/c279f3c5c4613b845ab4582e712521b1220e6b22/core-7.2.12.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -366,6 +371,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/a00123f261762a7c5e0ec916a2c7c8298d29c400/javax.inject-1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.1/2ccf1154d1a8936042a8a742dc3e611d02ac7213/hamcrest-core-1.1-sources.jar" kind="lib" path="/home/notalexnoyle/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.1/860340562250678d1a344907ac75754e259cdb14/hamcrest-core-1.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>

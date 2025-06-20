@@ -1,6 +1,6 @@
 package io.myzticbean.finditemaddon.dependencies;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import me.ryanhamshire.GPFlags.GPFlags;
 import org.bukkit.Bukkit;
 
@@ -12,7 +12,7 @@ public class GPFlagsPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("GPFlags")) {
             gpFlags = (GPFlags) Bukkit.getServer().getPluginManager().getPlugin("GPFlags");
             if (gpFlags != null) {
-                FindItemAddOn.logger("Found GPFlags");
+                QSFindItemAddOnOG.logger("Found GPFlags");
             }
         }
     }

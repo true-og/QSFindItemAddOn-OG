@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.quickshop;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 import io.myzticbean.finditemaddon.models.ShopSearchActivityModel;
 import java.time.Duration;
@@ -104,14 +104,14 @@ public interface QSApi<QSType, Shop> {
                 Collections.reverse(shopsFoundList);
             }
             default -> {
-                FindItemAddOn.logger("Invalid value in config.yml : 'shop-sorting-method'");
-                FindItemAddOn.logger("Defaulting to sorting by prices method");
+                QSFindItemAddOnOG.logger("Invalid value in config.yml : 'shop-sorting-method'");
+                QSFindItemAddOnOG.logger("Defaulting to sorting by prices method");
                 shopsFoundList.sort(Comparator.comparing(FoundShopItemModel::getShopPrice));
             }
         }
-        if (FindItemAddOn.getConfigProvider().DEBUG_MODE)
+        if (QSFindItemAddOnOG.getConfigProvider().DEBUG_MODE)
             shopsFoundList.forEach(foundShopItem ->
-                    FindItemAddOn.logger(QS_REMAINING_STOCK_OR_SPACE + foundShopItem.getRemainingStockOrSpace()));
+                    QSFindItemAddOnOG.logger(QS_REMAINING_STOCK_OR_SPACE + foundShopItem.getRemainingStockOrSpace()));
         return shopsFoundList;
     }
 
@@ -134,13 +134,13 @@ public interface QSApi<QSType, Shop> {
         Duration duration = Duration.between(instant1, instant2);
         long secondsDifference = Math.abs(duration.getSeconds());
 
-        FindItemAddOn.logger("Difference: " + secondsDifference);
+        QSFindItemAddOnOG.logger("Difference: " + secondsDifference);
 
         return secondsDifference >= seconds;
     }
 
     static void logTimeTookMsg(Instant timeStart) {
-        FindItemAddOn.logger(
+        QSFindItemAddOnOG.logger(
                 "Shop search took " + Duration.between(timeStart, Instant.now()).toMillis() + "ms");
     }
 }

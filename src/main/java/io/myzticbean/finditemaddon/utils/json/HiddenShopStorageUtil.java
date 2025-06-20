@@ -20,7 +20,7 @@ package io.myzticbean.finditemaddon.utils.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.models.HiddenShopModel;
 import io.myzticbean.finditemaddon.models.ShopSearchActivityModel;
 import java.io.File;
@@ -53,7 +53,7 @@ public class HiddenShopStorageUtil {
      * @param shop
      */
     public static void handleShopSearchVisibilityAsync(Shop shop, boolean hideShop) {
-        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(QSFindItemAddOnOG.getInstance(), () -> {
             Iterator<ShopSearchActivityModel> shopSearchActivityIterator =
                     ShopSearchActivityStorageUtil.getGlobalShopsList().iterator();
             int i = 0;
@@ -78,7 +78,7 @@ public class HiddenShopStorageUtil {
      * @param shop
      */
     public static void handleShopSearchVisibilityAsync(com.ghostchu.quickshop.api.shop.Shop shop, boolean hideShop) {
-        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(QSFindItemAddOnOG.getInstance(), () -> {
             Iterator<ShopSearchActivityModel> shopSearchActivityIterator =
                     ShopSearchActivityStorageUtil.getGlobalShopsList().iterator();
             int i = 0;
@@ -140,7 +140,7 @@ public class HiddenShopStorageUtil {
 
     public static void loadHiddenShopsFromFile() {
         Gson gson = new Gson();
-        File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/"
+        File file = new File(QSFindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
                 + HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
         if (file.exists()) {
             try {
@@ -151,7 +151,7 @@ public class HiddenShopStorageUtil {
                 } else {
                     hiddenShopsList = new ArrayList<>();
                 }
-                FindItemAddOn.logger("Loaded hidden shops from file");
+                QSFindItemAddOnOG.logger("Loaded hidden shops from file");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -160,7 +160,7 @@ public class HiddenShopStorageUtil {
 
     public static void saveHiddenShopsToFile() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/"
+        File file = new File(QSFindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
                 + HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
         file.getParentFile().mkdir();
         try {
@@ -169,7 +169,7 @@ public class HiddenShopStorageUtil {
             gson.toJson(hiddenShopsList, writer);
             writer.flush();
             writer.close();
-            FindItemAddOn.logger("Saved hidden shops to file");
+            QSFindItemAddOnOG.logger("Saved hidden shops to file");
         } catch (IOException error) {
             error.printStackTrace();
         }

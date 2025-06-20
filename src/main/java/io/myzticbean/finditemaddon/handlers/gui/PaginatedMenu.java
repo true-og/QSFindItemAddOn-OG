@@ -20,7 +20,7 @@ package io.myzticbean.finditemaddon.handlers.gui;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 import java.util.List;
 import java.util.UUID;
@@ -90,7 +90,7 @@ public abstract class PaginatedMenu extends Menu {
 
     private void createGUIBackButton() {
         Material backButtonMaterial =
-                Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_MATERIAL);
+                Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_MATERIAL);
         if (backButtonMaterial == null) {
             backButton = createPlayerHead(BACK_BUTTON_SKIN_ID);
         } else {
@@ -98,25 +98,25 @@ public abstract class PaginatedMenu extends Menu {
         }
         ItemMeta backButtonMeta = backButton.getItemMeta();
         assert backButtonMeta != null;
-        if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT)) {
+        if (!StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT)) {
             backButtonMeta.displayName(
-                    UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT));
+                    UtilitiesOG.trueogColorize(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT));
         }
         int backButtonCMD;
         try {
-            if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_CMD)) {
-                backButtonCMD = Integer.parseInt(FindItemAddOn.getConfigProvider().SHOP_GUI_BACK_BUTTON_CMD);
+            if (!StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_CMD)) {
+                backButtonCMD = Integer.parseInt(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_CMD);
                 backButtonMeta.setCustomModelData(backButtonCMD);
             }
         } catch (NumberFormatException error) {
-            FindItemAddOn.logger("Invalid Custom Model Data for Back Button in config.yml");
+            QSFindItemAddOnOG.logger("Invalid Custom Model Data for Back Button in config.yml");
         }
         backButton.setItemMeta(backButtonMeta);
     }
 
     private void createGUINextButton() {
         Material nextButtonMaterial =
-                Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_MATERIAL);
+                Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_MATERIAL);
         if (nextButtonMaterial == null) {
             nextButton = createPlayerHead(NEXT_BUTTON_SKIN_ID);
         } else {
@@ -124,91 +124,92 @@ public abstract class PaginatedMenu extends Menu {
         }
         ItemMeta nextButtonMeta = nextButton.getItemMeta();
         assert nextButtonMeta != null;
-        if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT)) {
+        if (!StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT)) {
             nextButtonMeta.displayName(
-                    UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT));
+                    UtilitiesOG.trueogColorize(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT));
         }
         int nextButtonCMD;
         try {
-            if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_CMD)) {
-                nextButtonCMD = Integer.parseInt(FindItemAddOn.getConfigProvider().SHOP_GUI_NEXT_BUTTON_CMD);
+            if (!StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_CMD)) {
+                nextButtonCMD = Integer.parseInt(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_CMD);
                 nextButtonMeta.setCustomModelData(nextButtonCMD);
             }
         } catch (NumberFormatException error) {
-            FindItemAddOn.logger("Invalid Custom Model Data for Next Button in config.yml");
+            QSFindItemAddOnOG.logger("Invalid Custom Model Data for Next Button in config.yml");
         }
         nextButton.setItemMeta(nextButtonMeta);
     }
 
     private void createGUIFirstPageButton() {
         Material firstPageButtonMaterial =
-                Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_MATERIAL);
+                Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_MATERIAL);
         if (firstPageButtonMaterial == null) firstPageButton = createPlayerHead(FIRST_PAGE_BUTTON_SKIN_ID);
         else firstPageButton = new ItemStack(firstPageButtonMaterial);
         ItemMeta firstPageButtonMeta = firstPageButton.getItemMeta();
         if (firstPageButtonMeta != null
-                && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT))
-            firstPageButtonMeta.displayName(
-                    UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT));
+                && !StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT))
+            firstPageButtonMeta.displayName(UtilitiesOG.trueogColorize(
+                    QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT));
         int firstPageButtonCMD;
         try {
             if (firstPageButtonMeta != null
-                    && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_CMD)) {
+                    && !StringUtils.isEmpty(
+                            QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_CMD)) {
                 firstPageButtonCMD =
-                        Integer.parseInt(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_CMD);
+                        Integer.parseInt(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_CMD);
                 firstPageButtonMeta.setCustomModelData(firstPageButtonCMD);
             }
         } catch (NumberFormatException error) {
-            FindItemAddOn.logger("Invalid Custom Model Data for Goto First Page Button in config.yml");
+            QSFindItemAddOnOG.logger("Invalid Custom Model Data for Goto First Page Button in config.yml");
         }
         firstPageButton.setItemMeta(firstPageButtonMeta);
     }
 
     private void createGUILastPageButton() {
         Material lastPageButtonMaterial =
-                Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_MATERIAL);
+                Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_MATERIAL);
         if (lastPageButtonMaterial == null) lastPageButton = createPlayerHead(LAST_PAGE_BUTTON_SKIN_ID);
         else lastPageButton = new ItemStack(lastPageButtonMaterial);
         ItemMeta lastPageButtonMeta = lastPageButton.getItemMeta();
         if (lastPageButtonMeta != null
-                && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT))
-            lastPageButtonMeta.displayName(
-                    UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT));
+                && !StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT))
+            lastPageButtonMeta.displayName(UtilitiesOG.trueogColorize(
+                    QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT));
         int lastPageButtonCMD;
         try {
             if (lastPageButtonMeta != null
-                    && !StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD)) {
+                    && !StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD)) {
                 lastPageButtonCMD =
-                        Integer.parseInt(FindItemAddOn.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD);
+                        Integer.parseInt(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_CMD);
                 lastPageButtonMeta.setCustomModelData(lastPageButtonCMD);
             }
         } catch (NumberFormatException error) {
-            FindItemAddOn.logger("Invalid Custom Model Data for Goto Last Page Button in config.yml");
+            QSFindItemAddOnOG.logger("Invalid Custom Model Data for Goto Last Page Button in config.yml");
         }
         lastPageButton.setItemMeta(lastPageButtonMeta);
     }
 
     private void createGUICloseInvButton() {
         Material closeInvButtonMaterial =
-                Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_MATERIAL);
+                Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_MATERIAL);
         if (closeInvButtonMaterial == null) {
             closeInvButtonMaterial = Material.BARRIER;
         }
         closeInvButton = new ItemStack(closeInvButtonMaterial);
         ItemMeta closeInvMeta = closeInvButton.getItemMeta();
         assert closeInvMeta != null;
-        if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT)) {
+        if (!StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT)) {
             closeInvMeta.displayName(
-                    UtilitiesOG.trueogColorize(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT));
+                    UtilitiesOG.trueogColorize(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT));
         }
         int closeInvButtonCMD;
         try {
-            if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_CMD)) {
-                closeInvButtonCMD = Integer.parseInt(FindItemAddOn.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_CMD);
+            if (!StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_CMD)) {
+                closeInvButtonCMD = Integer.parseInt(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_CMD);
                 closeInvMeta.setCustomModelData(closeInvButtonCMD);
             }
         } catch (NumberFormatException error) {
-            FindItemAddOn.logger("Invalid Custom Model Data for Close Button in config.yml");
+            QSFindItemAddOnOG.logger("Invalid Custom Model Data for Close Button in config.yml");
         }
         closeInvButton.setItemMeta(closeInvMeta);
     }

@@ -18,7 +18,7 @@
  */
 package io.myzticbean.finditemaddon.commands.simpapi;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.handlers.command.CmdExecutorHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public final class BuySubCmd implements TabExecutor {
     private final CmdExecutorHandler executor = new CmdExecutorHandler();
 
     public BuySubCmd() {
-        var cfg = FindItemAddOn.getConfigProvider();
+        var cfg = QSFindItemAddOnOG.getConfigProvider();
         subName = StringUtils.isBlank(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE)
                         || StringUtils.containsAny(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE, ' ')
                 ? "TO_BUY"
@@ -62,8 +62,8 @@ public final class BuySubCmd implements TabExecutor {
 
                 UtilitiesOG.trueogMessage(
                         (Player) sender,
-                        FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
+                        QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                                + QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
 
                 return true;
             }
