@@ -50,6 +50,7 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Reremake
+     *
      * @param shop
      */
     public static void handleShopSearchVisibilityAsync(Shop shop, boolean hideShop) {
@@ -75,6 +76,7 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Hikari
+     *
      * @param shop
      */
     public static void handleShopSearchVisibilityAsync(com.ghostchu.quickshop.api.shop.Shop shop, boolean hideShop) {
@@ -100,6 +102,7 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Reremake
+     *
      * @param shop
      * @return
      */
@@ -120,6 +123,7 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Hikari
+     *
      * @param shop
      * @return
      */

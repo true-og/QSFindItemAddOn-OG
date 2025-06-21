@@ -71,7 +71,8 @@ public final class QSFindItemAddOnOG extends JavaPlugin {
     }
 
     // ONLY FOR SNAPSHOT BUILDS!
-    // Change it to whenever you want your snapshot trial build to expire *****************
+    // Change it to whenever you want your snapshot trial build to expire
+    // *****************
     private static final boolean ENABLE_TRIAL_PERIOD = false;
     private static final int TRIAL_END_YEAR = 2024, TRIAL_END_MONTH = 5, TRIAL_END_DAY = 5;
     // ************************************************************************************

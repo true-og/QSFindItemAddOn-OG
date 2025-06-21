@@ -72,7 +72,8 @@ public class PlayerWarpsUtil {
                 Warp warp = doubleWarpEntry.getValue();
                 QSFindItemAddOnOG.logger(
                         "Warp: " + warp.getWarpName() + " " + warp.isWarpLocked() + " Distance in 3D: " + distance3D);
-                // Is the config set to not tp if player warp is locked, and if so, is the warp locked?
+                // Is the config set to not tp if player warp is locked, and if so, is the warp
+                // locked?
                 // also check distance from shop (should not be too long)
                 if (QSFindItemAddOnOG.getConfigProvider().DO_NOT_TP_IF_PLAYER_WARP_LOCKED
                         && doubleWarpEntry.getValue().isWarpLocked()
@@ -87,6 +88,7 @@ public class PlayerWarpsUtil {
 
     /**
      * Issue #24 Fix: Extracted method from FoundShopsMenu class
+     *
      * @param player
      * @param warpName
      */

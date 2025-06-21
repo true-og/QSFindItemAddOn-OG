@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 
 /**
  * Sub Command Handler for /finditemadmin revealshop
+ *
  * @author myzticbean
  */
 public class RevealShopSubCmd implements CommandExecutor, TabCompleter {

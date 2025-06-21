@@ -68,6 +68,7 @@ public class ShopSearchActivityStorageUtil {
 
     /**
      * Returns true if cooldown is not present
+     *
      * @param player
      * @return
      */
@@ -113,6 +114,7 @@ public class ShopSearchActivityStorageUtil {
 
     /**
      * QuickShop Reremake
+     *
      * @param shop
      */
     public void addShop(org.maxgamer.quickshop.api.shop.Shop shop) {
@@ -141,6 +143,7 @@ public class ShopSearchActivityStorageUtil {
 
     /**
      * QuickShop Hikari
+     *
      * @param shop
      */
     public void addShop(com.ghostchu.quickshop.api.shop.Shop shop) {

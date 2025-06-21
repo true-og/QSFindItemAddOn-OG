@@ -52,6 +52,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * Implementation of QSApi for Reremake
+ *
  * @author myzticbean
  */
 public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
@@ -181,7 +182,7 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
             if (!QSFindItemAddOnOG.getConfigProvider()
                             .getBlacklistedWorlds()
                             .contains(shop_i.getLocation().getWorld())
-                    //                    && (toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true) != 0 :
+                    // && (toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true) != 0 :
                     // getRemainingStockOrSpaceFromShopCache(shop_i, false) != 0)
                     && (toBuy ? shop_i.isSelling() : shop_i.isBuying())) {
                 if (checkIfShopToBeIgnoredForFullOrEmpty(toBuy, shop_i)) continue;
@@ -234,7 +235,8 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
     public List<ShopSearchActivityModel> syncShopsListForStorage(List<ShopSearchActivityModel> globalShopsList) {
 
         // copy all shops from shops list in API to a temp globalShopsList
-        // now check shops from temp globalShopsList in current globalShopsList and pull playerVisit data
+        // now check shops from temp globalShopsList in current globalShopsList and pull
+        // playerVisit data
         List<ShopSearchActivityModel> tempGlobalShopsList = new ArrayList<>();
 
         for (Shop shop_i : getAllShops()) {
@@ -313,9 +315,11 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     /**
-     * If IGNORE_EMPTY_CHESTS is true -> do not add empty stock or space
-     * If to buy -> If shop has no stock -> based on ignore flag, decide to include it or not
-     * If to sell -> If shop has no space -> based on ignore flag, decide to include it or not
+     * If IGNORE_EMPTY_CHESTS is true -> do not add empty stock or space If to buy
+     * -> If shop has no stock -> based on ignore flag, decide to include it or not
+     * If to sell -> If shop has no space -> based on ignore flag, decide to include
+     * it or not
+     *
      * @param toBuy
      * @param shop
      * @return If shop needs to be ignored from list
@@ -336,19 +340,20 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
      * @param shop
      * @return True if shop to be ignored
      */
-    /*private boolean checkIfShopToBeIgnoredIfAdminShop(Shop shop) {
-        boolean ignoreAdminShops = FindItemAddOn.getConfigProvider().IGNORE_ADMIN_SHOPS;
-        if(ignoreAdminShops) {
-            OfflinePlayer shopOwner = Bukkit.getOfflinePlayer(shop.getOwner());
-            return shopOwner.getName() == null;
-        }
-        return false;
-    }*/
+    /*
+     * private boolean checkIfShopToBeIgnoredIfAdminShop(Shop shop) { boolean
+     * ignoreAdminShops = FindItemAddOn.getConfigProvider().IGNORE_ADMIN_SHOPS;
+     * if(ignoreAdminShops) { OfflinePlayer shopOwner =
+     * Bukkit.getOfflinePlayer(shop.getOwner()); return shopOwner.getName() == null;
+     * } return false; }
+     */
 
     /**
      * Fallback to fetching info from ShopCache to avoid lag
-     * @param shop QuickShop Shop instance
-     * @param fetchRemainingStock True if fetching remaning stock, False if fetching remaining space
+     *
+     * @param shop                QuickShop Shop instance
+     * @param fetchRemainingStock True if fetching remaning stock, False if fetching
+     *                            remaining space
      * @return
      */
     private int getRemainingStockOrSpaceFromShopCache(Shop shop, boolean fetchRemainingStock) {
@@ -381,6 +386,7 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
 
     /**
      * Fallback to fetching info from ShopCache to avoid lag
+     *
      * @param shop QuickShop Shop instance
      * @return
      */
@@ -399,7 +405,8 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
 
     @Override
     public int processUnknownStockSpace(Location shopLoc, boolean toBuy) {
-        // This method will not be called from QS-Reremake context, but keeping it here as a placeholder
+        // This method will not be called from QS-Reremake context, but keeping it here
+        // as a placeholder
         return -2;
     }
 }

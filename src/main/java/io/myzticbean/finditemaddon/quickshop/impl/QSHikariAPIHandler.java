@@ -58,6 +58,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Implementation of QSApi for Hikari
+ *
  * @author myzticbean
  */
 public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
@@ -109,6 +110,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
 
     /**
      * Checks if the shop owner has enough balance to buy at least one item
+     *
      * @param shop The shop to check
      * @return true if owner has enough balance, false otherwise
      */
@@ -238,10 +240,11 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
         return com.ghostchu.quickshop.util.Util.getSignMaterial();
     }
 
-    //    public Shop findShopAtLocation(Block block) {
-    //        Location loc = new Location(block.getWorld(), block.getX(), block.getY(), block.getZ());
-    //        return api.getShopManager().getShop(loc);
-    //    }
+    // public Shop findShopAtLocation(Block block) {
+    // Location loc = new Location(block.getWorld(), block.getX(), block.getY(),
+    // block.getZ());
+    // return api.getShopManager().getShop(loc);
+    // }
 
     public Shop findShopAtLocation(Block block) {
         Location loc = block.getLocation(); // Simpler way to get location
@@ -277,7 +280,8 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     public List<ShopSearchActivityModel> syncShopsListForStorage(List<ShopSearchActivityModel> globalShopsList) {
         long start = System.currentTimeMillis();
         // copy all shops from shops list in API to a temp globalShopsList
-        // now check shops from temp globalShopsList in current globalShopsList and pull playerVisit data
+        // now check shops from temp globalShopsList in current globalShopsList and pull
+        // playerVisit data
         List<ShopSearchActivityModel> tempGlobalShopsList = new ArrayList<>();
         for (Shop shop_i : getAllShops()) {
             Location shopLoc = shop_i.getLocation();
@@ -315,8 +319,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     /**
-     * Register finditem sub-command for /qs
-     * Unregister /qs find
+     * Register finditem sub-command for /qs Unregister /qs find
      */
     @Override
     public void registerSubCommand() {
@@ -371,9 +374,11 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     /**
-     * If IGNORE_EMPTY_CHESTS is true -> do not add empty stock or space
-     * If to buy -> If shop has no stock -> based on ignore flag, decide to include it or not
-     * If to sell -> If shop has no space -> based on ignore flag, decide to include it or not
+     * If IGNORE_EMPTY_CHESTS is true -> do not add empty stock or space If to buy
+     * -> If shop has no stock -> based on ignore flag, decide to include it or not
+     * If to sell -> If shop has no space -> based on ignore flag, decide to include
+     * it or not
+     *
      * @param stockOrSpace
      * @return If shop needs to be ignored from list
      */

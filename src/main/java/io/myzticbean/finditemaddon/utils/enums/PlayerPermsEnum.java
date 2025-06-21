@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 
 /**
  * List of all the permissions used by the addon
+ *
  * @author myzticbean
  */
 public enum PlayerPermsEnum {

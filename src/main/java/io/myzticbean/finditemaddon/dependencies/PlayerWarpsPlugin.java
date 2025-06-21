@@ -54,7 +54,9 @@ public class PlayerWarpsPlugin {
     }
 
     /**
-     * Issue #24 Fix: Changing all api get references to callback, making this method deprecated
+     * Issue #24 Fix: Changing all api get references to callback, making this
+     * method deprecated
+     *
      * @return PlayerWarpsAPI api
      */
     @Deprecated

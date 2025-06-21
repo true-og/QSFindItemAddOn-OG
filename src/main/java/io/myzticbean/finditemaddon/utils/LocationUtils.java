@@ -196,7 +196,8 @@ public class LocationUtils {
         return null;
     }
 
-    // Found the below function from this thread: https://bukkit.org/threads/lookat-and-move-functions.26768/
+    // Found the below function from this thread:
+    // https://bukkit.org/threads/lookat-and-move-functions.26768/
     private static Location lookAt(Location loc, Location lookat) {
         // Clone the loc to prevent applied changes to the input loc
         loc = loc.clone();
@@ -225,7 +226,8 @@ public class LocationUtils {
         // Set pitch
         loc.setPitch((float) -Math.atan(dy / dxz));
 
-        // Set values, convert to degrees (invert the yaw since Bukkit uses a different yaw dimension format)
+        // Set values, convert to degrees (invert the yaw since Bukkit uses a different
+        // yaw dimension format)
         loc.setYaw(-loc.getYaw() * 180f / (float) Math.PI);
         loc.setPitch(loc.getPitch() * 180f / (float) Math.PI);
 

@@ -199,7 +199,8 @@ public class ConfigSetup {
                 configFileConfiguration.set(
                         "player-shop-teleportation.nearest-warp-tp-mode.warp-player-to-nearest-warp", null);
 
-                // Update GUI next/previous button to blank if set to default value for the new player-head icons
+                // Update GUI next/previous button to blank if set to default value for the new
+                // player-head icons
                 if (configFileConfiguration
                         .getString("shop-gui-back-button-material")
                         .equalsIgnoreCase("RED_CONCRETE")) {

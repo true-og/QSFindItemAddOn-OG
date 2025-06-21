@@ -20,6 +20,7 @@ package io.myzticbean.finditemaddon.utils.enums;
 
 /**
  * List of all the placeholders used in the Shop lore in GUI
+ *
  * @author myzticbean
  */
 public enum ShopLorePlaceholdersEnum {
@@ -31,6 +32,7 @@ public enum ShopLorePlaceholdersEnum {
     SHOP_WORLD("{SHOP_WORLD}"),
     NEAREST_WARP("{NEAREST_WARP}"),
     SHOP_VISITS("{SHOP_VISITS}");
+
     private final String placeholder;
 
     ShopLorePlaceholdersEnum(String placeholder) {

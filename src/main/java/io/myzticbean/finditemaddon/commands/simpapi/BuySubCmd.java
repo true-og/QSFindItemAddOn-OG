@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 
 /**
  * Sub Command Handler for /finditem TO_BUY
+ *
  * @author myzticbean
  */
 public final class BuySubCmd implements TabExecutor {

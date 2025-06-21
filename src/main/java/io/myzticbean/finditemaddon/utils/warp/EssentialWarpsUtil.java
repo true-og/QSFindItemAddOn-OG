@@ -51,11 +51,11 @@ public class EssentialWarpsUtil {
                         warp.warpLoc.getZ());
                 warpDistanceMap.put(distance, warp.warpName);
             });
-            /*if(FindItemAddOn.getConfigProvider().DEBUG_MODE) {
-                for(Map.Entry<Double, String> entry : warpDistanceMap.entrySet()) {
-                    LoggerUtils.logDebugInfo(entry.getValue() + " : " + entry.getKey());
-                }
-            }*/
+            /*
+             * if(FindItemAddOn.getConfigProvider().DEBUG_MODE) { for(Map.Entry<Double,
+             * String> entry : warpDistanceMap.entrySet()) {
+             * LoggerUtils.logDebugInfo(entry.getValue() + " : " + entry.getKey()); } }
+             */
             return warpDistanceMap.entrySet().iterator().next().getValue();
         } else {
             return null;

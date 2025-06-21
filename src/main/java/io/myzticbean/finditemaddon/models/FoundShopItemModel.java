@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * Model for the Shop Item lore that will be shown in the search GUI
+ *
  * @author myzticbean
  */
 public class FoundShopItemModel {

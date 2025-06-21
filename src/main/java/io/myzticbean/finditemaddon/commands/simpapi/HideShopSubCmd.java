@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 
 /**
  * Sub Command Handler for /finditem hideshop
+ *
  * @author myzticbean
  */
 public class HideShopSubCmd implements CommandExecutor, TabCompleter {

@@ -35,8 +35,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Interface for QS API.
- * Implement it depending on which API is being used (Reremake/Hikari).
+ * Interface for QS API. Implement it depending on which API is being used
+ * (Reremake/Hikari).
+ *
  * @param <QSType>
  * @param <Shop>
  * @author myzticbean
@@ -48,6 +49,7 @@ public interface QSApi<QSType, Shop> {
 
     /**
      * Search based on Item Type from all server shops
+     *
      * @param item
      * @param toBuy
      * @param searchingPlayer
@@ -57,6 +59,7 @@ public interface QSApi<QSType, Shop> {
 
     /**
      * Search based on display name of item from all server shops
+     *
      * @param displayName
      * @param toBuy
      * @param searchingPlayer
@@ -67,6 +70,7 @@ public interface QSApi<QSType, Shop> {
 
     /**
      * Fetch all items from all server shops
+     *
      * @param toBuy
      * @param searchingPlayer
      * @return
@@ -121,7 +125,9 @@ public interface QSApi<QSType, Shop> {
     }
 
     /**
-     * Function to check if the time difference between two dates is greater than or equal to the specified seconds
+     * Function to check if the time difference between two dates is greater than or
+     * equal to the specified seconds
+     *
      * @param date1
      * @param date2
      * @param seconds

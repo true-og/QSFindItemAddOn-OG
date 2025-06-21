@@ -38,6 +38,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * Handler for different parameters of /finditem command
+ *
  * @author myzticbean
  */
 public class CmdExecutorHandler {
@@ -46,9 +47,10 @@ public class CmdExecutorHandler {
 
     /**
      * Handles the main shop search process
+     *
      * @param buySellSubCommand Whether player is buying or selling
-     * @param commandSender Who is the command sender: console or player
-     * @param itemArg Specifies Item ID or Item name
+     * @param commandSender     Who is the command sender: console or player
+     * @param itemArg           Specifies Item ID or Item name
      */
     public void handleShopSearch(String buySellSubCommand, CommandSender commandSender, String itemArg) {
         if (!(commandSender instanceof Player player)) {
@@ -80,7 +82,8 @@ public class CmdExecutorHandler {
 
         if (itemArg.equalsIgnoreCase("*")
                 && !QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_DISABLE_SEARCH_ALL_SHOPS) {
-            // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue
+            // If QS Hikari installed and Shop Cache feature available (>6), then run in
+            // async thread (Fix for Issue
             // #12)
             if (!QSFindItemAddOnOG.isQSReremakeInstalled()
                     && QSFindItemAddOnOG.getQsApiInstance().isQSShopCacheImplemented()) {
@@ -110,7 +113,8 @@ public class CmdExecutorHandler {
             }
             if (mat != null && mat.isItem()) {
                 QSFindItemAddOnOG.logger("Material found: " + mat);
-                // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue
+                // If QS Hikari installed and Shop Cache feature available (>6), then run in
+                // async thread (Fix for Issue
                 // #12)
                 if (!QSFindItemAddOnOG.isQSReremakeInstalled()
                         && QSFindItemAddOnOG.getQsApiInstance().isQSShopCacheImplemented()) {
@@ -133,7 +137,8 @@ public class CmdExecutorHandler {
                 }
             } else {
                 QSFindItemAddOnOG.logger("Material not found! Performing query based search..");
-                // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue
+                // If QS Hikari installed and Shop Cache feature available (>6), then run in
+                // async thread (Fix for Issue
                 // #12)
                 if (!QSFindItemAddOnOG.isQSReremakeInstalled()
                         && QSFindItemAddOnOG.getQsApiInstance().isQSShopCacheImplemented()) {
@@ -188,6 +193,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles the shop hiding feature
+     *
      * @param commandSender Who is the command sender: console or player
      */
     public void handleHideShop(CommandSender commandSender) {
@@ -215,6 +221,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles the shop reveal feature
+     *
      * @param commandSender Who is the command sender: console or player
      */
     public void handleRevealShop(CommandSender commandSender) {
@@ -248,6 +255,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles plugin reload
+     *
      * @param commandSender Who is the command sender: console or player
      */
     public void handlePluginReload(CommandSender commandSender) {
@@ -295,8 +303,7 @@ public class CmdExecutorHandler {
     }
 
     /**
-     * @deprecated
-     * Handles plugin restart
+     * @deprecated Handles plugin restart
      * @param commandSender Who is the command sender: console or player
      */
     @Deprecated(forRemoval = true)
@@ -341,6 +348,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles hide shop for QuickShop Reremake
+     *
      * @param shop
      * @param player
      */
@@ -377,6 +385,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles hide shop for QuickShop Hikari
+     *
      * @param shop
      * @param player
      */
@@ -413,6 +422,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles reveal shop for QuickShop Reremake
+     *
      * @param shop
      * @param player
      */
@@ -449,6 +459,7 @@ public class CmdExecutorHandler {
 
     /**
      * Handles reveal shop for QuickShop Hikari
+     *
      * @param shop
      * @param player
      */
