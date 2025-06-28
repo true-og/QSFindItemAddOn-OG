@@ -1,7 +1,7 @@
 plugins {
     id("java") // Tell gradle this is a java project.
     id("java-library") // Import helper for source-based libraries.
-    id("com.diffplug.spotless") version "7.0.4"
+    id("com.diffplug.spotless") version "7.0.4" // Import auto-formatter.
     id("com.gradleup.shadow") version "8.3.6" // Import shadow API.
     eclipse // Import eclipse plugin for IDE integration.
 }
@@ -13,6 +13,7 @@ version = "2.0.8"
 val apiVersion = "1.19"
 
 java {
+    // Declare java version.
     sourceCompatibility = JavaVersion.VERSION_17
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
@@ -26,7 +27,7 @@ tasks.named<ProcessResources>("processResources") {
     inputs.properties(props) // Indicates to rerun if version changes.
 
     filesMatching("plugin.yml") { expand(props) }
-    from("LICENSE") { into("/") }
+    from("LICENSE") { into("/") } // Bundle license into .jars.
     from("src/main/doc/README.md") { into("/") }
 }
 
