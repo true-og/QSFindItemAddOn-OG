@@ -5,9 +5,6 @@ An unofficial add-on for the QuickShop Hikari and Reremake spigot plugin.
 Adds a `/finditem` command in game for searching through all the shops on the server.
 
 [//]: # (![MC]&#40;https://img.shields.io/badge/Minecraft-Java%20Edition:%201.16.5%20--%201.20.4-brightgreen&#41;)
-![ModrinthAvailableFor](https://img.shields.io/badge/dynamic/json?label=Minecraft%20Java%20Edition:&color=4bab62&query=version&url=https://api.blueish.dev/api/minecraft/version?id=asp13ugE)
-![Ver](https://img.shields.io/spiget/version/95104?label=Latest%20Spigot%20Version)
-![Build Status](https://github.com/myzticbean/QSFindItemAddOn/actions/workflows/maven.yml/badge.svg?branch=master)
 
 ## Features
 - Search items based on buying/selling shops
@@ -50,7 +47,6 @@ command-alias: []
   - If you added a new warp and want it to get updated immediately, run **/finditemadmin reload**
   - Remember, this applies only to Essential Warps.
 - WorldGuard region support for fetching the WorldGuard region the shop is in (if overlapping regions, highest priority will be chosen)
-- Residence support for fetching the residence the shop is in (including subzones)
 
 >Check out the sample config.yml [here](https://github.com/myzticbean/QSFindItemAddOn/wiki/Sample-config.yml).
 

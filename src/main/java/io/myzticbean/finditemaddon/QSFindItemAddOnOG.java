@@ -44,7 +44,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.milkbowl.vault.economy.Economy;
 import net.trueog.utilitiesog.UtilitiesOG;
@@ -105,7 +104,6 @@ public final class QSFindItemAddOnOG extends JavaPlugin {
     private static final int SPIGOT_PLUGIN_ID = 95104;
     private static final int REPEATING_TASK_SCHEDULE_MINS = 15 * 60 * 20;
 
-    @Getter
     private static ConfigProvider configProvider;
 
     private static boolean isPluginOutdated = false;

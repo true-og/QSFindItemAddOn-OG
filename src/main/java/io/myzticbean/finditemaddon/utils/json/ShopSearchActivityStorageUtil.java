@@ -65,7 +65,6 @@ public class ShopSearchActivityStorageUtil {
     @Getter
     private static final Map<String, Long> cooldowns = new HashMap<>();
 
-    @Getter
     private static List<ShopSearchActivityModel> globalShopsList = new ArrayList<>();
 
     /**

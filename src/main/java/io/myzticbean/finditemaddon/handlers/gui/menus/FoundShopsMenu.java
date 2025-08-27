@@ -18,13 +18,11 @@
  */
 package io.myzticbean.finditemaddon.handlers.gui.menus;
 
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.olziedev.playerwarps.api.warp.Warp;
 import io.myzticbean.finditemaddon.QSFindItemAddOnOG;
 import io.myzticbean.finditemaddon.config.ConfigProvider;
 import io.myzticbean.finditemaddon.dependencies.EssentialsXPlugin;
 import io.myzticbean.finditemaddon.dependencies.PlayerWarpsPlugin;
-import io.myzticbean.finditemaddon.dependencies.ResidencePlugin;
 import io.myzticbean.finditemaddon.dependencies.WGPlugin;
 import io.myzticbean.finditemaddon.handlers.gui.PaginatedMenu;
 import io.myzticbean.finditemaddon.handlers.gui.PlayerMenuUtility;
@@ -36,7 +34,6 @@ import io.myzticbean.finditemaddon.utils.enums.ShopLorePlaceholdersEnum;
 import io.myzticbean.finditemaddon.utils.json.ShopSearchActivityStorageUtil;
 import io.myzticbean.finditemaddon.utils.warp.EssentialWarpsUtil;
 import io.myzticbean.finditemaddon.utils.warp.PlayerWarpsUtil;
-import io.myzticbean.finditemaddon.utils.warp.ResidenceUtils;
 import io.myzticbean.finditemaddon.utils.warp.WGRegionUtils;
 import io.papermc.lib.PaperLib;
 import java.util.ArrayList;
@@ -291,9 +288,6 @@ public class FoundShopsMenu extends PaginatedMenu {
                 break;
             case 2:
                 PlayerWarpsUtil.executeWarpPlayer(player, warpName);
-                break;
-            case 4:
-                ResidenceUtils.residenceTp(player, warpName);
                 break;
 
         }
@@ -693,17 +687,6 @@ public class FoundShopsMenu extends PaginatedMenu {
                     String nearestWGRegion = new WGRegionUtils().findNearestWGRegion(foundShop.getShopLocation());
                     return (nearestWGRegion != null && !StringUtils.isEmpty(nearestWGRegion)) ? nearestWGRegion
                             : configProvider.NO_WG_REGION_NEAR_SHOP_ERROR_MSG;
-
-                }
-                break;
-            case 4:
-                // Residence plugin
-                if (ResidencePlugin.isEnabled()) {
-
-                    ClaimedResidence nearestResidence = ResidenceUtils
-                            .findNearestResidence(foundShop.getShopLocation());
-                    return (nearestResidence != null) ? ResidenceUtils.getResidenceName(nearestResidence)
-                            : configProvider.NO_RESIDENCE_NEAR_SHOP_ERROR_MSG;
 
                 }
                 break;
