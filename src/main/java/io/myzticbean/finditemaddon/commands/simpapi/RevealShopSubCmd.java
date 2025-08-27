@@ -40,50 +40,78 @@ public class RevealShopSubCmd implements CommandExecutor, TabCompleter {
     private final CmdExecutorHandler cmdExecutor;
 
     public RevealShopSubCmd() {
-        if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE)
-                || StringUtils.containsIgnoreCase(
-                        QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " ")) {
+
+        if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE) || StringUtils
+                .containsIgnoreCase(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " "))
+        {
+
             revealShopSubCommand = "revealshop";
+
         } else {
+
             revealShopSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE;
+
         }
+
         cmdExecutor = new CmdExecutorHandler();
+
     }
 
     public String getName() {
+
         return revealShopSubCommand;
+
     }
 
     public List<String> getAliases() {
+
         return null;
+
     }
 
     public String getDescription() {
+
         return "Run this command while looking at a hidden shop to make it public again";
+
     }
 
     public String getSyntax() {
+
         return "/finditem " + revealShopSubCommand;
+
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (args.length == 1 && args[0].equalsIgnoreCase(revealShopSubCommand)) {
+
             cmdExecutor.handleRevealShop(sender);
             return true;
+
         }
+
         return false;
+
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
         if (args.length == 1 && revealShopSubCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
+
             return Collections.singletonList(revealShopSubCommand);
+
         }
+
         return Collections.emptyList();
+
     }
 
     public List<String> getSubcommandArguments(Player player, String[] strings) {
+
         return null;
+
     }
+
 }

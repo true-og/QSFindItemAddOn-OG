@@ -40,49 +40,77 @@ public class HideShopSubCmd implements CommandExecutor, TabCompleter {
     private final CmdExecutorHandler cmdExecutor;
 
     public HideShopSubCmd() {
+
         if (StringUtils.isBlank(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_HIDESHOP_AUTOCOMPLETE)) {
+
             hideSubCommand = "hideshop";
+
         } else {
+
             hideSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_HIDESHOP_AUTOCOMPLETE;
+
         }
+
         cmdExecutor = new CmdExecutorHandler();
+
     }
 
     public String getName() {
+
         return hideSubCommand;
+
     }
 
     public List<String> getAliases() {
+
         return null;
+
     }
 
     public String getDescription() {
+
         return "Run this command while looking at the shop (NOT the shop sign) you wish to hide and it will no"
                 + " longer appear in searches";
+
     }
 
     public String getSyntax() {
+
         return "/finditem " + hideSubCommand;
+
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (args.length > 0 && args[0].equalsIgnoreCase(hideSubCommand)) {
+
             cmdExecutor.handleHideShop(sender);
             return true;
+
         }
+
         return false;
+
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
         if (args.length == 1 && hideSubCommand.toLowerCase().startsWith(args[0].toLowerCase())) {
+
             return Collections.singletonList(hideSubCommand);
+
         }
+
         return Collections.emptyList();
+
     }
 
     public List<String> getSubcommandArguments(Player player, String[] strings) {
+
         return null;
+
     }
+
 }

@@ -47,20 +47,27 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack GUI_FILLER_ITEM;
 
     protected Menu(PlayerMenuUtility playerMenuUtility) {
+
         this.playerMenuUtility = playerMenuUtility;
 
         assert QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
         Material fillerMaterial = Material.getMaterial(QSFindItemAddOnOG.getConfigProvider().SHOP_GUI_FILLER_ITEM);
         if (fillerMaterial == null) {
+
             fillerMaterial = Material.GRAY_STAINED_GLASS_PANE;
+
         }
+
         if (!fillerMaterial.isAir()) {
+
             GUI_FILLER_ITEM = new ItemStack(fillerMaterial);
             ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
             assert FILLER_GLASS_meta != null;
             FILLER_GLASS_meta.displayName(UtilitiesOG.trueogColorize(" "));
             this.GUI_FILLER_ITEM.setItemMeta(FILLER_GLASS_meta);
+
         }
+
     }
 
     public abstract TextComponent getMenuName();
@@ -78,14 +85,19 @@ public abstract class Menu implements InventoryHolder {
      */
 
     public void open(List<FoundShopItemModel> foundShops) {
+
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
         this.setMenuItems(foundShops);
         playerMenuUtility.getOwner().openInventory(inventory);
+
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
+
         return inventory;
+
     }
+
 }

@@ -22,18 +22,21 @@ package io.myzticbean.finditemaddon.utils.enums;
  * @author myzticbean
  */
 public enum CustomCmdPlaceholdersEnum {
-    PLAYER_NAME("{PLAYER_NAME}"),
-    SHOP_LOC_X("{SHOP_LOC_X}"),
-    SHOP_LOC_Y("{SHOP_LOC_Y}"),
-    SHOP_LOC_Z("{SHOP_LOC_Z}");
+
+    PLAYER_NAME("{PLAYER_NAME}"), SHOP_LOC_X("{SHOP_LOC_X}"), SHOP_LOC_Y("{SHOP_LOC_Y}"), SHOP_LOC_Z("{SHOP_LOC_Z}");
 
     private final String placeholder;
 
     CustomCmdPlaceholdersEnum(String placeholder) {
+
         this.placeholder = placeholder;
+
     }
 
     public String value() {
+
         return placeholder;
+
     }
+
 }

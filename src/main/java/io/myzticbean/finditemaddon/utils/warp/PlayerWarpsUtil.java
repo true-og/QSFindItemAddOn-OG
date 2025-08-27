@@ -41,33 +41,33 @@ public class PlayerWarpsUtil {
 
     @Nullable
     public static Warp findNearestWarp(Location shopLocation, UUID shopOwner) {
+
         QSFindItemAddOnOG.logger("Find nearest warp for shop location " + shopLocation);
         List<Warp> playersWarps = PlayerWarpsPlugin.getAllWarps().stream()
                 .filter(warp -> warp.getWarpLocation().getWorld() != null)
-                .filter(warp -> warp.getWarpLocation()
-                        .getWorld()
-                        .equals(shopLocation.getWorld().getName()))
-                .toList();
+                .filter(warp -> warp.getWarpLocation().getWorld().equals(shopLocation.getWorld().getName())).toList();
         if (QSFindItemAddOnOG.getConfigProvider().ONLY_SHOW_PLAYER_OWNDED_WARPS) {
-            playersWarps = playersWarps.stream()
-                    .filter(warp -> warp.getWarpPlayer().getUUID().equals(shopOwner))
+
+            playersWarps = playersWarps.stream().filter(warp -> warp.getWarpPlayer().getUUID().equals(shopOwner))
                     .toList();
+
         }
+
         if (!playersWarps.isEmpty()) {
+
             Map<Double, Warp> warpDistanceMap = new TreeMap<>();
             playersWarps.forEach(warp -> {
-                var distance3D = CommonUtils.calculateDistance3D(
-                        shopLocation.getX(),
-                        shopLocation.getY(),
-                        shopLocation.getZ(),
-                        warp.getWarpLocation().getX(),
-                        warp.getWarpLocation().getY(),
+
+                var distance3D = CommonUtils.calculateDistance3D(shopLocation.getX(), shopLocation.getY(),
+                        shopLocation.getZ(), warp.getWarpLocation().getX(), warp.getWarpLocation().getY(),
                         warp.getWarpLocation().getZ());
                 warpDistanceMap.put(distance3D, warp);
                 QSFindItemAddOnOG.logger("Warp Distance: " + distance3D + " Warp Name: " + warp.getWarpName()
                         + ", Warp World: " + warp.getWarpLocation().getWorld());
+
             });
             for (Map.Entry<Double, Warp> doubleWarpEntry : warpDistanceMap.entrySet()) {
+
                 Double distance3D = doubleWarpEntry.getKey();
                 Warp warp = doubleWarpEntry.getValue();
                 QSFindItemAddOnOG.logger(
@@ -76,14 +76,21 @@ public class PlayerWarpsUtil {
                 // locked?
                 // also check distance from shop (should not be too long)
                 if (QSFindItemAddOnOG.getConfigProvider().DO_NOT_TP_IF_PLAYER_WARP_LOCKED
-                        && doubleWarpEntry.getValue().isWarpLocked()
-                        && distance3D > 500) {
+                        && doubleWarpEntry.getValue().isWarpLocked() && distance3D > 500)
+                {
+
                     continue;
+
                 }
+
                 return doubleWarpEntry.getValue();
+
             }
+
         }
+
         return null;
+
     }
 
     /**
@@ -93,14 +100,23 @@ public class PlayerWarpsUtil {
      * @param warpName
      */
     public static void executeWarpPlayer(Player player, String warpName) {
+
         PlayerWarpsAPI.getInstance(api -> {
+
             Warp playerWarp = api.getPlayerWarp(warpName, player);
             if (playerWarp != null) {
+
                 playerWarp.getWarpLocation().teleportWarp(player, PlayerWarpTeleportEvent.Cause.PLAYER_WARP_MENU);
+
             } else {
+
                 QSFindItemAddOnOG.logger(
                         "&e" + player.getName() + " &cis trying to teleport to a PlayerWarp that does not exist!");
+
             }
+
         });
+
     }
+
 }

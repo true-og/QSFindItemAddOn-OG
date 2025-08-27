@@ -43,99 +43,167 @@ public class FindItemCmdReremakeImpl implements CommandHandler<Player> {
     private final List<String> buyOrSellList = new ArrayList<>();
 
     public FindItemCmdReremakeImpl() {
+
         if (StringUtils.isBlank(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_HIDESHOP_AUTOCOMPLETE)) {
+
             this.hideSubCommand = "hideshop";
+
         } else {
+
             this.hideSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_HIDESHOP_AUTOCOMPLETE;
+
         }
 
-        if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE)
-                || StringUtils.containsIgnoreCase(
-                        QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " ")) {
+        if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE) || StringUtils
+                .containsIgnoreCase(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE, " "))
+        {
+
             this.revealShopSubCommand = "revealshop";
+
         } else {
+
             this.revealShopSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE;
+
         }
+
         cmdExecutor = new CmdExecutorHandler();
+
     }
 
     @Override
     public void onCommand(Player commandSender, @NotNull String label, @NotNull String[] args) {
+
         if (args.length == 0) {
-            UtilitiesOG.trueogMessage(
-                    commandSender, QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!");
+
+            UtilitiesOG.trueogMessage(commandSender,
+                    QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!");
+
         } else if (args.length == 1) {
+
             if (commandSender.hasPermission(PlayerPermsEnum.FINDITEM_HIDESHOP.value())
-                    && !QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS) {
+                    && !QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS)
+            {
+
                 if (args[0].equalsIgnoreCase(hideSubCommand)) {
+
                     cmdExecutor.handleHideShop(commandSender);
+
                 } else if (args[0].equalsIgnoreCase(revealShopSubCommand)) {
+
                     cmdExecutor.handleRevealShop(commandSender);
+
                 } else {
-                    UtilitiesOG.trueogMessage(
-                            commandSender,
+
+                    UtilitiesOG.trueogMessage(commandSender,
                             (QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!"));
+
                 }
+
             } else {
-                UtilitiesOG.trueogMessage(
-                        commandSender,
-                        (QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                + "&cYou don't have permission to use that!"));
+
+                UtilitiesOG.trueogMessage(commandSender, (QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                        + "&cYou don't have permission to use that!"));
+
             }
+
         } else {
+
             cmdExecutor.handleShopSearch(args[0], commandSender, args[1]);
+
         }
+
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel,
+            @NotNull String[] args)
+    {
+
         if (itemsList.isEmpty()) {
+
             for (Material mat : Material.values()) {
+
                 itemsList.add(mat.name());
+
             }
+
         }
+
         if (buyOrSellList.isEmpty()) {
+
             // to-buy
-            if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE)
-                    || StringUtils.containsIgnoreCase(
-                            QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE, " ")) {
+            if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE) || StringUtils
+                    .containsIgnoreCase(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE, " "))
+            {
+
                 buyOrSellList.add("TO_BUY");
+
             } else {
+
                 buyOrSellList.add(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE);
+
             }
+
             // to-sell
-            if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)
-                    || StringUtils.containsIgnoreCase(
-                            QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE, " ")) {
+            if (StringUtils.isEmpty(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE) || StringUtils
+                    .containsIgnoreCase(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE, " "))
+            {
+
                 buyOrSellList.add("TO_SELL");
+
             } else {
+
                 buyOrSellList.add(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE);
+
             }
+
             // hide
             if (sender.hasPermission(PlayerPermsEnum.FINDITEM_HIDESHOP.value())
-                    && !QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS) {
+                    && !QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_REMOVE_HIDE_REVEAL_SUBCMDS)
+            {
+
                 buyOrSellList.add(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_HIDESHOP_AUTOCOMPLETE);
                 buyOrSellList.add(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_REVEALSHOP_AUTOCOMPLETE);
+
             }
+
         }
+
         List<String> result = new ArrayList<>();
         if (args.length == 1) {
+
             for (String a : buyOrSellList) {
+
                 if (a.toLowerCase().startsWith(args[0].toLowerCase())) {
+
                     result.add(a);
+
                 }
+
             }
+
             return result;
+
         } else if (args.length == 2) {
+
             for (String a : itemsList) {
+
                 if (a.toLowerCase().startsWith(args[1].toLowerCase())) {
+
                     result.add(a);
+
                 }
+
             }
+
             return result;
+
         } else {
+
             return null;
+
         }
+
     }
+
 }

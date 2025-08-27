@@ -34,18 +34,27 @@ public class PlayerShopVisitModel {
     private String visitDateTime;
 
     public void setPlayerUUID(UUID uuid) {
+
         this.playerUUID = uuid.toString();
+
     }
 
     public UUID getPlayerUUID() {
+
         return UUID.fromString(this.playerUUID);
+
     }
 
     public void setVisitDateTime() {
+
         this.visitDateTime = Instant.now().toString();
+
     }
 
     public Instant getVisitDateTime() {
+
         return Instant.parse(visitDateTime);
+
     }
+
 }

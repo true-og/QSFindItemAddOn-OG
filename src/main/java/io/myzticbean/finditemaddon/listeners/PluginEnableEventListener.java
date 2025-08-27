@@ -27,19 +27,30 @@ import org.bukkit.event.server.PluginEnableEvent;
  * @author myzticbean
  */
 public class PluginEnableEventListener implements Listener {
+
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
+
         if (!QSFindItemAddOnOG.isQSReremakeInstalled() && !QSFindItemAddOnOG.isQSHikariInstalled()) {
+
             // if(!event.getPlugin().getName().equalsIgnoreCase("QuickShop")
             // && !event.getPlugin().getName().equalsIgnoreCase("QuickShop-Hikari")) {
             // // do nothing
             // }
             if (event.getPlugin().getName().equalsIgnoreCase("QuickShop") && !QSFindItemAddOnOG.isQSHikariInstalled()) {
+
                 QSFindItemAddOnOG.setQSReremakeInstalled(true);
+
             } else if (event.getPlugin().getName().equalsIgnoreCase("QuickShop-Hikari")
-                    && !QSFindItemAddOnOG.isQSReremakeInstalled()) {
+                    && !QSFindItemAddOnOG.isQSReremakeInstalled())
+            {
+
                 QSFindItemAddOnOG.setQSHikariInstalled(true);
+
             }
+
         }
+
     }
+
 }

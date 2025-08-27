@@ -65,8 +65,8 @@ public interface QSApi<QSType, Shop> {
      * @param searchingPlayer
      * @return
      */
-    List<FoundShopItemModel> findItemBasedOnDisplayNameFromAllShops(
-            String displayName, boolean toBuy, Player searchingPlayer);
+    List<FoundShopItemModel> findItemBasedOnDisplayNameFromAllShops(String displayName, boolean toBuy,
+            Player searchingPlayer);
 
     /**
      * Fetch all items from all server shops
@@ -95,33 +95,46 @@ public interface QSApi<QSType, Shop> {
 
     int processUnknownStockSpace(Location shopLoc, boolean toBuy);
 
-    static List<FoundShopItemModel> sortShops(
-            int sortingMethod, List<FoundShopItemModel> shopsFoundList, boolean toBuy) {
+    static List<FoundShopItemModel> sortShops(int sortingMethod, List<FoundShopItemModel> shopsFoundList,
+            boolean toBuy)
+    {
+
         switch (sortingMethod) {
-                // Random
+
+            // Random
             case 1 -> Collections.shuffle(shopsFoundList);
-                // Based on prices (lower to higher)
+            // Based on prices (lower to higher)
             case 2 -> shopsFoundList.sort(Comparator.comparing(FoundShopItemModel::getShopPrice));
-                // Based on stocks (higher to lower)
+            // Based on stocks (higher to lower)
             case 3 -> {
+
                 shopsFoundList.sort(Comparator.comparing(FoundShopItemModel::getRemainingStockOrSpace));
                 Collections.reverse(shopsFoundList);
+
             }
             default -> {
+
                 QSFindItemAddOnOG.logger("Invalid value in config.yml : 'shop-sorting-method'");
                 QSFindItemAddOnOG.logger("Defaulting to sorting by prices method");
                 shopsFoundList.sort(Comparator.comparing(FoundShopItemModel::getShopPrice));
+
             }
+
         }
+
         if (QSFindItemAddOnOG.getConfigProvider().DEBUG_MODE)
-            shopsFoundList.forEach(foundShopItem ->
-                    QSFindItemAddOnOG.logger(QS_REMAINING_STOCK_OR_SPACE + foundShopItem.getRemainingStockOrSpace()));
+            shopsFoundList.forEach(foundShopItem -> QSFindItemAddOnOG
+                    .logger(QS_REMAINING_STOCK_OR_SPACE + foundShopItem.getRemainingStockOrSpace()));
         return shopsFoundList;
+
     }
 
     static int processStockOrSpace(int stockOrSpace) {
-        if (stockOrSpace == -1) return Integer.MAX_VALUE;
+
+        if (stockOrSpace == -1)
+            return Integer.MAX_VALUE;
         return stockOrSpace;
+
     }
 
     /**
@@ -134,6 +147,7 @@ public interface QSApi<QSType, Shop> {
      * @return
      */
     static boolean isTimeDifferenceGreaterThanSeconds(Date date1, Date date2, int seconds) {
+
         Instant instant1 = date1.toInstant();
         Instant instant2 = date2.toInstant();
 
@@ -143,10 +157,13 @@ public interface QSApi<QSType, Shop> {
         QSFindItemAddOnOG.logger("Difference: " + secondsDifference);
 
         return secondsDifference >= seconds;
+
     }
 
     static void logTimeTookMsg(Instant timeStart) {
-        QSFindItemAddOnOG.logger(
-                "Shop search took " + Duration.between(timeStart, Instant.now()).toMillis() + "ms");
+
+        QSFindItemAddOnOG.logger("Shop search took " + Duration.between(timeStart, Instant.now()).toMillis() + "ms");
+
     }
+
 }

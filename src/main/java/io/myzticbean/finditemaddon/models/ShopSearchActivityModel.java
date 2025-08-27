@@ -25,16 +25,10 @@ import java.util.List;
  */
 public class ShopSearchActivityModel {
 
-    public ShopSearchActivityModel(
-            String worldName,
-            double x,
-            double y,
-            double z,
-            float pitch,
-            float yaw,
-            String shopOwnerUUID,
-            List<PlayerShopVisitModel> playerVisitList,
-            boolean isHiddenFromSearch) {
+    public ShopSearchActivityModel(String worldName, double x, double y, double z, float pitch, float yaw,
+            String shopOwnerUUID, List<PlayerShopVisitModel> playerVisitList, boolean isHiddenFromSearch)
+    {
+
         super();
         this.worldName = worldName;
         this.x = x;
@@ -45,6 +39,7 @@ public class ShopSearchActivityModel {
         this.shopOwnerUUID = shopOwnerUUID;
         this.playerVisitList = playerVisitList;
         this.isHiddenFromSearch = isHiddenFromSearch;
+
     }
 
     private String worldName;
@@ -52,75 +47,111 @@ public class ShopSearchActivityModel {
     private double y;
 
     public String getWorldName() {
+
         return worldName;
+
     }
 
     public void setWorldName(String worldName) {
+
         this.worldName = worldName;
+
     }
 
     public double getX() {
+
         return x;
+
     }
 
     public void setX(double x) {
+
         this.x = x;
+
     }
 
     public double getY() {
+
         return y;
+
     }
 
     public void setY(double y) {
+
         this.y = y;
+
     }
 
     public double getZ() {
+
         return z;
+
     }
 
     public void setZ(double z) {
+
         this.z = z;
+
     }
 
     public float getPitch() {
+
         return pitch;
+
     }
 
     public void setPitch(float pitch) {
+
         this.pitch = pitch;
+
     }
 
     public float getYaw() {
+
         return yaw;
+
     }
 
     public void setYaw(float yaw) {
+
         this.yaw = yaw;
+
     }
 
     public String getShopOwnerUUID() {
+
         return shopOwnerUUID;
+
     }
 
     public void setShopOwnerUUID(String shopOwnerUUID) {
+
         this.shopOwnerUUID = shopOwnerUUID;
+
     }
 
     public List<PlayerShopVisitModel> getPlayerVisitList() {
+
         return playerVisitList;
+
     }
 
     public void setPlayerVisitList(List<PlayerShopVisitModel> playerVisitList) {
+
         this.playerVisitList = playerVisitList;
+
     }
 
     public boolean isHiddenFromSearch() {
+
         return isHiddenFromSearch;
+
     }
 
     public void setHiddenFromSearch(boolean isHiddenFromSearch) {
+
         this.isHiddenFromSearch = isHiddenFromSearch;
+
     }
 
     private double z;
@@ -130,19 +161,20 @@ public class ShopSearchActivityModel {
     private List<PlayerShopVisitModel> playerVisitList;
     private boolean isHiddenFromSearch;
 
-    public boolean compareWith(
-            String targetWorldName, double targetX, double targetY, double targetZ, String targetShopOwnerUUID) {
-        return this.getWorldName().equalsIgnoreCase(targetWorldName)
-                && this.getX() == targetX
-                && this.getY() == targetY
-                && this.getZ() == targetZ
-                && this.getShopOwnerUUID().equalsIgnoreCase(targetShopOwnerUUID);
+    public boolean compareWith(String targetWorldName, double targetX, double targetY, double targetZ,
+            String targetShopOwnerUUID)
+    {
+
+        return this.getWorldName().equalsIgnoreCase(targetWorldName) && this.getX() == targetX && this.getY() == targetY
+                && this.getZ() == targetZ && this.getShopOwnerUUID().equalsIgnoreCase(targetShopOwnerUUID);
+
     }
 
     public boolean compareWith(String targetWorldName, double targetX, double targetY, double targetZ) {
-        return this.getWorldName().equalsIgnoreCase(targetWorldName)
-                && this.getX() == targetX
-                && this.getY() == targetY
+
+        return this.getWorldName().equalsIgnoreCase(targetWorldName) && this.getX() == targetX && this.getY() == targetY
                 && this.getZ() == targetZ;
+
     }
+
 }

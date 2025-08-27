@@ -40,72 +40,110 @@ public class SellSubCmd implements CommandExecutor, TabCompleter {
     private final CmdExecutorHandler cmdExecutor;
 
     public SellSubCmd() {
+
         if (StringUtils.isBlank(QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)) {
+
             sellSubCommand = "TO_SELL";
+
         } else {
+
             sellSubCommand = QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE;
+
         }
+
         if (itemsList.isEmpty()) {
+
             itemsList.addAll(Arrays.stream(Material.values())
-                    .filter(mat -> !QSFindItemAddOnOG.getConfigProvider()
-                            .getBlacklistedMaterials()
-                            .contains(mat))
-                    .map(Material::name)
-                    .toList());
+                    .filter(mat -> !QSFindItemAddOnOG.getConfigProvider().getBlacklistedMaterials().contains(mat))
+                    .map(Material::name).toList());
+
         }
+
         cmdExecutor = new CmdExecutorHandler();
+
     }
 
     public String getName() {
+
         return sellSubCommand;
+
     }
 
     public List<String> getAliases() {
+
         return null;
+
     }
 
     public String getDescription() {
+
         return "Find shops that sell a specific item";
+
     }
 
     public String getSyntax() {
+
         return "/finditem " + sellSubCommand + " {item type | item name}";
+
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0 || !args[0].equalsIgnoreCase(sellSubCommand)) return false;
+
+        if (args.length == 0 || !args[0].equalsIgnoreCase(sellSubCommand))
+            return false;
         if (!(sender instanceof Player player)) {
+
             UtilitiesOG.logToConsole("[FindItem]", "This command can only be used by players.");
             return true;
+
         }
+
         if (args.length != 2) {
-            UtilitiesOG.trueogMessage(
-                    player,
-                    QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                            + QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
+
+            UtilitiesOG.trueogMessage(player, QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                    + QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
+
         } else {
+
             cmdExecutor.handleShopSearch(sellSubCommand, player, args[1]);
+
         }
+
         return true;
+
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
         if (args.length == 1) {
+
             if (sellSubCommand.toLowerCase().startsWith(args[0].toLowerCase()))
                 return Collections.singletonList(sellSubCommand);
+
         } else if (args.length == 2 && args[0].equalsIgnoreCase(sellSubCommand)) {
+
             List<String> result = new ArrayList<>();
             for (String a : itemsList) {
-                if (a.toLowerCase().startsWith(args[1].toLowerCase())) result.add(a);
+
+                if (a.toLowerCase().startsWith(args[1].toLowerCase()))
+                    result.add(a);
+
             }
+
             return result;
+
         }
+
         return Collections.emptyList();
+
     }
 
     public List<String> getSubcommandArguments(Player player, String[] args) {
+
         return null;
+
     }
+
 }

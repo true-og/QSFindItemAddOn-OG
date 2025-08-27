@@ -40,29 +40,44 @@ public class EssentialsXPlugin {
     private static List<EssentialWarpModel> allWarpsList = null;
 
     public static void setup() {
+
         if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+
             essAPI = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
             if (essAPI != null) {
+
                 QSFindItemAddOnOG.logger("Found Essentials");
+
             }
+
         }
+
     }
 
     public static boolean isEnabled() {
+
         return essAPI != null;
+
     }
 
     public static Essentials getAPI() {
+
         return essAPI;
+
     }
 
     public static List<EssentialWarpModel> getAllWarps() {
+
         return allWarpsList;
+
     }
 
     public static void updateAllWarps() {
+
         if (!essAPI.isEnabled()) {
+
             return;
+
         }
 
         long start = System.currentTimeMillis();
@@ -70,33 +85,49 @@ public class EssentialsXPlugin {
         allWarpsList = new ArrayList<>();
 
         for (String warp : allWarps) {
+
             addWarpToList(warp);
+
         }
 
         logUpdateCompletion(start);
+
     }
 
     private static void addWarpToList(String warp) {
+
         try {
+
             EssentialWarpModel essWarp = new EssentialWarpModel();
             essWarp.warpName = warp;
             essWarp.warpLoc = essAPI.getWarps().getWarp(warp);
             allWarpsList.add(essWarp);
+
         } catch (Exception ignored) {
+
             QSFindItemAddOnOG.logger("Error adding warp to list: " + warp);
+
         }
+
     }
 
     private static void logUpdateCompletion(long startTime) {
+
         long duration = System.currentTimeMillis() - startTime;
-        QSFindItemAddOnOG.logger(String.format(
-                "Update complete for Essentials warps list! Found %d warps. Time took: %dms.",
-                getAllWarps().size(), duration));
+        QSFindItemAddOnOG
+                .logger(String.format("Update complete for Essentials warps list! Found %d warps. Time took: %dms.",
+                        getAllWarps().size(), duration));
+
     }
 
     public static void setLastLocation(Player player) {
+
         if (essAPI.isEnabled()) {
+
             getAPI().getUser(player).setLastLocation();
+
         }
+
     }
+
 }

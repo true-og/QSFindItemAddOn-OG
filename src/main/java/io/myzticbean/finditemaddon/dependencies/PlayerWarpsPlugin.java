@@ -40,17 +40,25 @@ public class PlayerWarpsPlugin {
     private static final String ALL_WARPS_LIST_CLASSPATH = PlayerWarpsPlugin.class.getCanonicalName() + ".allWarpsList";
 
     public static void setup() {
+
         if (Bukkit.getPluginManager().isPluginEnabled("PlayerWarps")) {
+
             QSFindItemAddOnOG.logger("Found PlayerWarps");
             PlayerWarpsAPI.getInstance(api -> {
+
                 playerWarpsAPI = api;
                 isEnabled = true;
+
             });
+
         }
+
     }
 
     public static boolean getIsEnabled() {
+
         return isEnabled;
+
     }
 
     /**
@@ -61,79 +69,120 @@ public class PlayerWarpsPlugin {
      */
     @Deprecated
     public static PlayerWarpsAPI getAPI() {
+
         return playerWarpsAPI;
+
     }
 
     public static List<Warp> getAllWarps() {
+
         if (!isEnabled) {
+
             return Collections.emptyList();
+
         }
+
         PlayerWarpsAPI.getInstance(api -> allWarpsList = api.getPlayerWarps(false));
         return allWarpsList;
+
     }
 
     public static void updateAllWarpsFromAPI() {
+
         if (isEnabled) {
+
             long start = System.currentTimeMillis();
             // Issue #24 Fix: Changing api instance to callback
             PlayerWarpsAPI.getInstance(api -> {
+
                 allWarpsList = api.getPlayerWarps(false);
-                QSFindItemAddOnOG.logger("Update complete for PlayerWarps list! Found "
-                        + getAllWarps().size() + " warps. Time took: " + (System.currentTimeMillis() - start) + "ms.");
+                QSFindItemAddOnOG.logger("Update complete for PlayerWarps list! Found " + getAllWarps().size()
+                        + " warps. Time took: " + (System.currentTimeMillis() - start) + "ms.");
+
             });
+
         }
+
     }
 
     public static void updateWarpsOnEventCall(Warp warp, boolean isRemoved) {
+
         QSFindItemAddOnOG.logger("Got a PlayerWarps event call... checking nearest-warp-mode");
         if (QSFindItemAddOnOG.getConfigProvider().NEAREST_WARP_MODE == NearestWarpModeEnum.PLAYER_WARPS.value()) {
+
             QSFindItemAddOnOG.logger("'nearest-warp-mode' found set to 2");
             if (getIsEnabled()) {
+
                 QSFindItemAddOnOG.logger("PlayerWarps plugin is enabled");
                 tryUpdateWarps(warp, isRemoved, 1);
+
             }
+
         } else {
+
             QSFindItemAddOnOG.logger(
                     "No update required to '" + ALL_WARPS_LIST_CLASSPATH + "' as PlayerWarps integration is disabled.");
+
         }
+
     }
 
     private static void tryUpdateWarps(Warp warp, boolean isRemoved, int updateTrialSequence) {
+
         // Issue #21 Fix: Adding a NPE check
         if (allWarpsList != null) {
+
             if (isRemoved) {
+
                 if (allWarpsList.contains(warp)) {
+
                     allWarpsList.remove(warp);
                     QSFindItemAddOnOG.logger("Warp removed from allWarpsList: " + warp.getWarpName());
+
                 } else {
+
                     QSFindItemAddOnOG.logger("Error occurred while updating '" + ALL_WARPS_LIST_CLASSPATH
                             + "'. Warp name: '" + warp.getWarpName() + "' does not exist!");
+
                 }
+
             } else {
+
                 allWarpsList.add(warp);
                 QSFindItemAddOnOG.logger("New warp added to allWarpsList: " + warp.getWarpName());
+
             }
+
         } else {
+
             // Issue #21 Fix: forcing update of allWarpsList
             if (updateTrialSequence == 1) {
+
                 updateAllWarpsFromAPI();
                 tryUpdateWarps(warp, isRemoved, 2);
+
             } else {
+
                 StringBuilder errorMsg = new StringBuilder();
-                errorMsg.append("Error occurred while updating '")
-                        .append(ALL_WARPS_LIST_CLASSPATH)
+                errorMsg.append("Error occurred while updating '").append(ALL_WARPS_LIST_CLASSPATH)
                         .append("' as it is null! ")
-                        .append(
-                                "Please install PlayerWarps by Olzie-12 if you would like to use 'nearest-warp-mode' as 2. ")
+                        .append("Please install PlayerWarps by Olzie-12 if you would like to use 'nearest-warp-mode' as 2. ")
                         .append("If PlayerWarps plugin is installed and issue persists, please contact the developer!");
                 QSFindItemAddOnOG.logger(errorMsg.toString());
+
             }
+
         }
+
     }
 
     public static boolean isWarpLocked(Player player, String warpName) {
+
         Warp warp = playerWarpsAPI.getPlayerWarp(warpName, player);
-        if (warp == null) return false;
+        if (warp == null)
+            return false;
         return warp.isWarpLocked();
+
     }
+
 }

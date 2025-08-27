@@ -43,15 +43,14 @@ public final class BuySubCmd implements TabExecutor {
     private final CmdExecutorHandler executor = new CmdExecutorHandler();
 
     public BuySubCmd() {
+
         var cfg = QSFindItemAddOnOG.getConfigProvider();
         subName = StringUtils.isBlank(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE)
-                        || StringUtils.containsAny(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE, ' ')
-                ? "TO_BUY"
-                : cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE;
-        materials.addAll(Arrays.stream(Material.values())
-                .filter(mat -> !cfg.getBlacklistedMaterials().contains(mat))
-                .map(Material::name)
-                .toList());
+                || StringUtils.containsAny(cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE, ' ') ? "TO_BUY"
+                        : cfg.FIND_ITEM_TO_BUY_AUTOCOMPLETE;
+        materials.addAll(Arrays.stream(Material.values()).filter(mat -> !cfg.getBlacklistedMaterials().contains(mat))
+                .map(Material::name).toList());
+
     }
 
     @Override
@@ -61,12 +60,11 @@ public final class BuySubCmd implements TabExecutor {
 
             if (args.length != 2 || !args[0].equalsIgnoreCase(subName)) {
 
-                UtilitiesOG.trueogMessage(
-                        (Player) sender,
-                        QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                + QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
+                UtilitiesOG.trueogMessage((Player) sender, QSFindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                        + QSFindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG);
 
                 return true;
+
             }
 
             executor.handleShopSearch(subName, sender, args[1]);
@@ -75,31 +73,49 @@ public final class BuySubCmd implements TabExecutor {
 
         } else {
 
-            UtilitiesOG.logToConsole(
-                    "QSFindItemAddOn-OG", "&4ERROR: That command can only be run by a player in-game.");
+            UtilitiesOG.logToConsole("QSFindItemAddOn-OG",
+                    "&4ERROR: That command can only be run by a player in-game.");
 
             return true;
+
         }
+
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (!(sender instanceof Player)) return List.of();
+
+        if (!(sender instanceof Player))
+            return List.of();
         if (args.length == 1) {
+
             return subName.toLowerCase().startsWith(args[0].toLowerCase()) ? List.of(subName) : List.of();
+
         }
+
         if (args.length == 2 && args[0].equalsIgnoreCase(subName)) {
+
             String partial = args[1].toLowerCase();
             List<String> out = new ArrayList<>();
             for (String m : materials) {
-                if (m.toLowerCase().startsWith(partial)) out.add(m);
+
+                if (m.toLowerCase().startsWith(partial))
+                    out.add(m);
+
             }
+
             return out;
+
         }
+
         return List.of();
+
     }
 
     public String getSubName() {
+
         return subName;
+
     }
+
 }

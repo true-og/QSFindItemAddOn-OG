@@ -17,17 +17,27 @@ public class ResidenceUtils {
 
     @Nullable
     public static ClaimedResidence findNearestResidence(Location shopLocation) {
+
         return ResidencePlugin.getResidenceManager().getByLoc(shopLocation);
+
     }
 
     public static String getResidenceName(ClaimedResidence residence) {
+
         if (!QSFindItemAddOnOG.getConfigProvider().USE_RESIDENCE_SUBZONES) {
+
             return residence.getParent() == null ? residence.getResidenceName() : residence.getTopParentName();
+
         }
+
         return residence.getName();
+
     }
 
     public static void residenceTp(Player player, String warpName) {
+
         Bukkit.dispatchCommand(player, "residence tp " + warpName);
+
     }
+
 }

@@ -29,36 +29,52 @@ import org.jetbrains.annotations.Nullable;
  * @author myzticbean
  */
 public class PlayerMenuUtility {
+
     private UUID owner;
 
     public List<FoundShopItemModel> getPlayerShopSearchResult() {
+
         return playerShopSearchResult;
+
     }
 
     public void setPlayerShopSearchResult(List<FoundShopItemModel> playerShopSearchResult) {
+
         this.playerShopSearchResult = playerShopSearchResult;
+
     }
 
     private List<FoundShopItemModel> playerShopSearchResult;
 
     public PlayerMenuUtility(Player owner) {
+
         this.owner = owner.getUniqueId();
+
     }
 
     public PlayerMenuUtility(UUID owner) {
+
         this.owner = owner;
+
     }
 
     @Nullable
     public Player getOwner() {
+
         return Bukkit.getPlayer(owner);
+
     }
 
     public void setOwner(Player owner) {
+
         this.owner = owner.getUniqueId();
+
     }
 
     public void setOwner(UUID owner) {
+
         this.owner = owner;
+
     }
+
 }

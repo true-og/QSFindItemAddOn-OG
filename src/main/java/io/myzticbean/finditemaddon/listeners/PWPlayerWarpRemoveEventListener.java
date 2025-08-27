@@ -29,12 +29,14 @@ import org.bukkit.event.Listener;
  * @author myzticbean
  */
 public class PWPlayerWarpRemoveEventListener implements Listener {
+
     @EventHandler
     public void onPlayerWarpRemove(PlayerWarpRemoveEvent event) {
+
         // Issue #24 Fix: Converted updateWarpsOnEventCall() call to async
-        Bukkit.getScheduler()
-                .runTaskAsynchronously(
-                        QSFindItemAddOnOG.getInstance(),
-                        () -> PlayerWarpsPlugin.updateWarpsOnEventCall(event.getPlayerWarp(), true));
+        Bukkit.getScheduler().runTaskAsynchronously(QSFindItemAddOnOG.getInstance(),
+                () -> PlayerWarpsPlugin.updateWarpsOnEventCall(event.getPlayerWarp(), true));
+
     }
+
 }

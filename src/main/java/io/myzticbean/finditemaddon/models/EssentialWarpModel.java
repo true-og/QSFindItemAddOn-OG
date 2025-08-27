@@ -24,6 +24,8 @@ import org.bukkit.Location;
  * @author myzticbean
  */
 public class EssentialWarpModel {
+
     public String warpName;
     public Location warpLoc;
+
 }

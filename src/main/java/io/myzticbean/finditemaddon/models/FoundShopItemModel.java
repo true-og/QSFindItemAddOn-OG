@@ -28,13 +28,11 @@ import org.bukkit.inventory.ItemStack;
  * @author myzticbean
  */
 public class FoundShopItemModel {
-    public FoundShopItemModel(
-            double shopPrice,
-            int remainingStockOrSpace,
-            UUID shopOwner,
-            Location shopLocation,
-            ItemStack item,
-            boolean toBuy) {
+
+    public FoundShopItemModel(double shopPrice, int remainingStockOrSpace, UUID shopOwner, Location shopLocation,
+            ItemStack item, boolean toBuy)
+    {
+
         super();
         this.shopPrice = shopPrice;
         this.remainingStockOrSpace = remainingStockOrSpace;
@@ -42,30 +40,43 @@ public class FoundShopItemModel {
         this.shopLocation = shopLocation;
         this.item = item;
         this.toBuy = toBuy;
+
     }
 
     public double getShopPrice() {
+
         return shopPrice;
+
     }
 
     public int getRemainingStockOrSpace() {
+
         return remainingStockOrSpace;
+
     }
 
     public UUID getShopOwner() {
+
         return shopOwner;
+
     }
 
     public Location getShopLocation() {
+
         return shopLocation;
+
     }
 
     public ItemStack getItem() {
+
         return item;
+
     }
 
     public boolean isToBuy() {
+
         return toBuy;
+
     }
 
     private double shopPrice;
@@ -74,4 +85,5 @@ public class FoundShopItemModel {
     private Location shopLocation;
     private ItemStack item;
     private boolean toBuy;
+
 }

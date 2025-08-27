@@ -64,172 +64,224 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
     private final String QS_REREMAKE_PLUGIN_NAME = "QuickShop";
 
     public QSReremakeAPIHandler() {
+
         api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin(QS_REREMAKE_PLUGIN_NAME);
         quickShop = (QuickShop) Bukkit.getPluginManager().getPlugin(QS_REREMAKE_PLUGIN_NAME);
         QSFindItemAddOnOG.logger("Initializing Shop caching");
         shopCache = new ConcurrentHashMap<>();
+
     }
 
     @Override
-    public List<FoundShopItemModel> findItemBasedOnTypeFromAllShops(
-            ItemStack item, boolean toBuy, Player searchingPlayer) {
+    public List<FoundShopItemModel> findItemBasedOnTypeFromAllShops(ItemStack item, boolean toBuy,
+            Player searchingPlayer)
+    {
+
         var begin = Instant.now();
         List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
         List<Shop> allShops;
         if (QSFindItemAddOnOG.getConfigProvider().SEARCH_LOADED_SHOPS_ONLY) {
+
             allShops = new ArrayList<>(api.getShopManager().getLoadedShops());
+
         } else {
+
             allShops = api.getShopManager().getAllShops();
+
         }
+
         logTotalShopsOnServer(allShops.size());
         for (Shop shop_i : allShops) {
+
             // check for blacklisted worlds
-            if (!QSFindItemAddOnOG.getConfigProvider()
-                            .getBlacklistedWorlds()
-                            .contains(shop_i.getLocation().getWorld())
+            if (!QSFindItemAddOnOG.getConfigProvider().getBlacklistedWorlds().contains(shop_i.getLocation().getWorld())
                     && shop_i.getItem().getType().equals(item.getType())
-                    && (toBuy ? shop_i.isSelling() : shop_i.isBuying())) {
+                    && (toBuy ? shop_i.isSelling() : shop_i.isBuying()))
+            {
+
                 if (checkIfShopToBeIgnoredForFullOrEmpty(toBuy, shop_i)) {
+
                     continue;
+
                 }
+
                 // check for shop if hidden
                 if (!HiddenShopStorageUtil.isShopHidden(shop_i)) {
-                    shopsFoundList.add(new FoundShopItemModel(
-                            shop_i.getPrice(),
-                            QSApi.processStockOrSpace(
-                                    (toBuy
-                                            ? getRemainingStockOrSpaceFromShopCache(shop_i, true)
-                                            : getRemainingStockOrSpaceFromShopCache(shop_i, false))),
-                            shop_i.getOwner(),
-                            shop_i.getLocation(),
-                            shop_i.getItem(),
-                            toBuy));
+
+                    shopsFoundList.add(new FoundShopItemModel(shop_i.getPrice(),
+                            QSApi.processStockOrSpace((toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true)
+                                    : getRemainingStockOrSpaceFromShopCache(shop_i, false))),
+                            shop_i.getOwner(), shop_i.getLocation(), shop_i.getItem(), toBuy));
+
                 }
+
             }
+
         }
+
         List<FoundShopItemModel> sortedShops = handleShopSorting(toBuy, shopsFoundList);
         QSApi.logTimeTookMsg(begin);
         return sortedShops;
+
     }
 
     @Override
-    public List<FoundShopItemModel> findItemBasedOnDisplayNameFromAllShops(
-            String displayName, boolean toBuy, Player searchingPlayer) {
+    public List<FoundShopItemModel> findItemBasedOnDisplayNameFromAllShops(String displayName, boolean toBuy,
+            Player searchingPlayer)
+    {
+
         var begin = Instant.now();
         List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
         List<Shop> allShops;
         if (QSFindItemAddOnOG.getConfigProvider().SEARCH_LOADED_SHOPS_ONLY) {
+
             allShops = new ArrayList<>(api.getShopManager().getLoadedShops());
+
         } else {
+
             allShops = api.getShopManager().getAllShops();
+
         }
+
         logTotalShopsOnServer(allShops.size());
         for (Shop shop_i : allShops) {
-            if (!QSFindItemAddOnOG.getConfigProvider()
-                    .getBlacklistedWorlds()
-                    .contains(shop_i.getLocation().getWorld())) {
+
+            if (!QSFindItemAddOnOG.getConfigProvider().getBlacklistedWorlds()
+                    .contains(shop_i.getLocation().getWorld()))
+            {
+
                 if (shop_i.getItem().hasItemMeta()) {
+
                     if (Objects.requireNonNull(shop_i.getItem().getItemMeta()).hasDisplayName()) {
+
                         ItemStack item = shop_i.getItem();
                         ItemMeta meta = item.getItemMeta();
                         if (meta != null && meta.hasDisplayName()) {
+
                             Component displayNameComponent = meta.displayName();
-                            String plainText =
-                                    LegacyComponentSerializer.legacySection().serialize(displayNameComponent);
+                            String plainText = LegacyComponentSerializer.legacySection()
+                                    .serialize(displayNameComponent);
                             String lowerCaseName = plainText.toLowerCase();
                             if (lowerCaseName.contains(displayName.toLowerCase())
                                     // && (toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true) != 0 :
                                     // getRemainingStockOrSpaceFromShopCache(shop_i, false) != 0)
-                                    && (toBuy ? shop_i.isSelling() : shop_i.isBuying())) {
-                                if (checkIfShopToBeIgnoredForFullOrEmpty(toBuy, shop_i)) continue;
+                                    && (toBuy ? shop_i.isSelling() : shop_i.isBuying()))
+                            {
+
+                                if (checkIfShopToBeIgnoredForFullOrEmpty(toBuy, shop_i))
+                                    continue;
                                 // check for shop if hidden
                                 if (!HiddenShopStorageUtil.isShopHidden(shop_i)) {
-                                    shopsFoundList.add(new FoundShopItemModel(
-                                            shop_i.getPrice(),
+
+                                    shopsFoundList.add(new FoundShopItemModel(shop_i.getPrice(),
                                             QSApi.processStockOrSpace(
-                                                    (toBuy
-                                                            ? getRemainingStockOrSpaceFromShopCache(shop_i, true)
+                                                    (toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true)
                                                             : getRemainingStockOrSpaceFromShopCache(shop_i, false))),
-                                            shop_i.getOwner(),
-                                            shop_i.getLocation(),
-                                            shop_i.getItem(),
-                                            toBuy));
+                                            shop_i.getOwner(), shop_i.getLocation(), shop_i.getItem(), toBuy));
+
                                 }
+
                             }
+
                         }
+
                     }
+
                 }
+
             }
+
         }
+
         List<FoundShopItemModel> sortedShops = handleShopSorting(toBuy, shopsFoundList);
         QSApi.logTimeTookMsg(begin);
         return sortedShops;
+
     }
 
     @Override
     public List<FoundShopItemModel> fetchAllItemsFromAllShops(boolean toBuy, Player searchingPlayer) {
+
         var begin = Instant.now();
         List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
         List<Shop> allShops;
         if (QSFindItemAddOnOG.getConfigProvider().SEARCH_LOADED_SHOPS_ONLY) {
+
             allShops = new ArrayList<>(api.getShopManager().getLoadedShops());
+
         } else {
+
             allShops = api.getShopManager().getAllShops();
+
         }
+
         logTotalShopsOnServer(allShops.size());
         for (Shop shop_i : allShops) {
+
             // check for blacklisted worlds
-            if (!QSFindItemAddOnOG.getConfigProvider()
-                            .getBlacklistedWorlds()
-                            .contains(shop_i.getLocation().getWorld())
+            if (!QSFindItemAddOnOG.getConfigProvider().getBlacklistedWorlds().contains(shop_i.getLocation().getWorld())
                     // && (toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true) != 0 :
                     // getRemainingStockOrSpaceFromShopCache(shop_i, false) != 0)
-                    && (toBuy ? shop_i.isSelling() : shop_i.isBuying())) {
-                if (checkIfShopToBeIgnoredForFullOrEmpty(toBuy, shop_i)) continue;
+                    && (toBuy ? shop_i.isSelling() : shop_i.isBuying()))
+            {
+
+                if (checkIfShopToBeIgnoredForFullOrEmpty(toBuy, shop_i))
+                    continue;
                 // check for shop if hidden
                 if (!HiddenShopStorageUtil.isShopHidden(shop_i)) {
-                    shopsFoundList.add(new FoundShopItemModel(
-                            shop_i.getPrice(),
-                            QSApi.processStockOrSpace(
-                                    (toBuy
-                                            ? getRemainingStockOrSpaceFromShopCache(shop_i, true)
-                                            : getRemainingStockOrSpaceFromShopCache(shop_i, false))),
-                            shop_i.getOwner(),
-                            shop_i.getLocation(),
-                            shop_i.getItem(),
-                            toBuy));
+
+                    shopsFoundList.add(new FoundShopItemModel(shop_i.getPrice(),
+                            QSApi.processStockOrSpace((toBuy ? getRemainingStockOrSpaceFromShopCache(shop_i, true)
+                                    : getRemainingStockOrSpaceFromShopCache(shop_i, false))),
+                            shop_i.getOwner(), shop_i.getLocation(), shop_i.getItem(), toBuy));
+
                 }
+
             }
+
         }
+
         List<FoundShopItemModel> sortedShops = new ArrayList<>(shopsFoundList);
         if (!shopsFoundList.isEmpty()) {
+
             int sortingMethod = 1;
             sortedShops = QSApi.sortShops(sortingMethod, shopsFoundList, toBuy);
+
         }
+
         QSApi.logTimeTookMsg(begin);
         return sortedShops;
+
     }
 
     @Override
     public Material getShopSignMaterial() {
+
         return org.maxgamer.quickshop.util.Util.getSignMaterial();
+
     }
 
     @Override
     public Shop findShopAtLocation(Block block) {
+
         Location loc = new Location(block.getWorld(), block.getX(), block.getY(), block.getZ());
         return api.getShopManager().getShop(loc);
+
     }
 
     @Override
     public boolean isShopOwnerCommandRunner(Player player, Shop shop) {
+
         QSFindItemAddOnOG.logger("Shop owner: " + shop.getOwner() + " | Player: " + player.getUniqueId());
         return shop.getOwner().toString().equalsIgnoreCase(player.getUniqueId().toString());
+
     }
 
     @Override
     public List<Shop> getAllShops() {
+
         return api.getShopManager().getAllShops();
+
     }
 
     public List<ShopSearchActivityModel> syncShopsListForStorage(List<ShopSearchActivityModel> globalShopsList) {
@@ -240,35 +292,41 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
         List<ShopSearchActivityModel> tempGlobalShopsList = new ArrayList<>();
 
         for (Shop shop_i : getAllShops()) {
+
             Location shopLoc = shop_i.getLocation();
-            tempGlobalShopsList.add(new ShopSearchActivityModel(
-                    shopLoc.getWorld().getName(),
-                    shopLoc.getX(),
-                    shopLoc.getY(),
-                    shopLoc.getZ(),
-                    shopLoc.getPitch(),
-                    shopLoc.getYaw(),
-                    shop_i.getOwner().toString(),
-                    new ArrayList<>(),
-                    false));
+            tempGlobalShopsList.add(new ShopSearchActivityModel(shopLoc.getWorld().getName(), shopLoc.getX(),
+                    shopLoc.getY(), shopLoc.getZ(), shopLoc.getPitch(), shopLoc.getYaw(), shop_i.getOwner().toString(),
+                    new ArrayList<>(), false));
+
         }
+
         for (ShopSearchActivityModel shop_temp : tempGlobalShopsList) {
+
             ShopSearchActivityModel tempShopToRemove = null;
             for (ShopSearchActivityModel shop_global : globalShopsList) {
+
                 if (shop_temp.getWorldName().equalsIgnoreCase(shop_global.getWorldName())
-                        && shop_temp.getX() == shop_global.getX()
-                        && shop_temp.getY() == shop_global.getY()
+                        && shop_temp.getX() == shop_global.getX() && shop_temp.getY() == shop_global.getY()
                         && shop_temp.getZ() == shop_global.getZ()
-                        && shop_temp.getShopOwnerUUID().equalsIgnoreCase(shop_global.getShopOwnerUUID())) {
+                        && shop_temp.getShopOwnerUUID().equalsIgnoreCase(shop_global.getShopOwnerUUID()))
+                {
+
                     shop_temp.setPlayerVisitList(shop_global.getPlayerVisitList());
                     shop_temp.setHiddenFromSearch(shop_global.isHiddenFromSearch());
                     tempShopToRemove = shop_global;
                     break;
+
                 }
+
             }
-            if (tempShopToRemove != null) globalShopsList.remove(tempShopToRemove);
+
+            if (tempShopToRemove != null)
+                globalShopsList.remove(tempShopToRemove);
+
         }
+
         return tempGlobalShopsList;
+
     }
 
     /**
@@ -276,42 +334,57 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
      */
     @Override
     public void registerSubCommand() {
+
         QSFindItemAddOnOG.logger("Unregistered find sub-command for /qs");
         for (CommandContainer cmdContainer : api.getCommandManager().getRegisteredCommands()) {
+
             if (cmdContainer.getPrefix().equalsIgnoreCase("find")) {
+
                 api.getCommandManager().unregisterCmd(cmdContainer);
                 break;
+
             }
+
         }
+
         QSFindItemAddOnOG.logger("Registered finditem sub-command for /qs");
-        api.getCommandManager()
-                .registerCmd(CommandContainer.builder()
-                        .prefix("finditem")
-                        .permission(PlayerPermsEnum.FINDITEM_USE.value())
-                        .hidden(false)
-                        .description("Search for items from all shops using an interactive GUI")
-                        .executor(new FindItemCmdReremakeImpl())
-                        .build());
+        api.getCommandManager().registerCmd(
+                CommandContainer.builder().prefix("finditem").permission(PlayerPermsEnum.FINDITEM_USE.value())
+                        .hidden(false).description("Search for items from all shops using an interactive GUI")
+                        .executor(new FindItemCmdReremakeImpl()).build());
+
     }
 
     @Override
     public UUID convertNameToUuid(String playerName) {
+
         return null;
+
     }
 
     @NotNull
     static List<FoundShopItemModel> handleShopSorting(boolean toBuy, List<FoundShopItemModel> shopsFoundList) {
+
         if (!shopsFoundList.isEmpty()) {
+
             int sortingMethod = 2;
             try {
+
                 sortingMethod = QSFindItemAddOnOG.getConfigProvider().SHOP_SORTING_METHOD;
+
             } catch (Exception error) {
+
                 QSFindItemAddOnOG.logger("Invalid value in config.yml : 'shop-sorting-method'");
                 QSFindItemAddOnOG.logger("Defaulting to sorting by prices method");
+
             }
+
             return QSApi.sortShops(sortingMethod, shopsFoundList, toBuy);
+
         }
+
         return shopsFoundList;
+
     }
 
     /**
@@ -325,14 +398,21 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
      * @return If shop needs to be ignored from list
      */
     private boolean checkIfShopToBeIgnoredForFullOrEmpty(boolean toBuy, Shop shop) {
+
         boolean ignoreEmptyChests = QSFindItemAddOnOG.getConfigProvider().IGNORE_EMPTY_CHESTS;
         if (ignoreEmptyChests) {
+
             if (toBuy) {
+
                 return getRemainingStockOrSpaceFromShopCache(shop, true) == 0;
 
-            } else return getRemainingStockOrSpaceFromShopCache(shop, false) == 0;
+            } else
+                return getRemainingStockOrSpaceFromShopCache(shop, false) == 0;
+
         }
+
         return false;
+
     }
 
     /**
@@ -357,31 +437,38 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
      * @return
      */
     private int getRemainingStockOrSpaceFromShopCache(Shop shop, boolean fetchRemainingStock) {
+
         QSFindItemAddOnOG.logger("Shop Location: " + shop.getLocation());
         CachedShop cachedShop = shopCache.get(shop.getLocation());
-        if (cachedShop == null
-                || QSApi.isTimeDifferenceGreaterThanSeconds(
-                        cachedShop.getLastFetched(), new Date(), SHOP_CACHE_TIMEOUT_SECONDS)) {
+        if (cachedShop == null || QSApi.isTimeDifferenceGreaterThanSeconds(cachedShop.getLastFetched(), new Date(),
+                SHOP_CACHE_TIMEOUT_SECONDS))
+        {
+
             Shop possibleCachedShop = getRemainingStockOrSpaceFromQSCache(shop);
             if (possibleCachedShop != null) {
+
                 QSFindItemAddOnOG.logger("Shop found from QS cache: " + shop.getLocation());
-                cachedShop = CachedShop.builder()
-                        .shopLocation(possibleCachedShop.getLocation())
+                cachedShop = CachedShop.builder().shopLocation(possibleCachedShop.getLocation())
                         .remainingStock(possibleCachedShop.getRemainingStock())
-                        .remainingSpace(possibleCachedShop.getRemainingSpace())
-                        .lastFetched(new Date())
-                        .build();
+                        .remainingSpace(possibleCachedShop.getRemainingSpace()).lastFetched(new Date()).build();
                 shopCache.put(cachedShop.getShopLocation(), cachedShop);
                 QSFindItemAddOnOG.logger("Added to ShopCache: " + shop.getLocation());
+
             } else {
+
                 QSFindItemAddOnOG.logger("No shop found from QS cache for location: " + shop.getLocation());
+
             }
+
         } else {
+
             QSFindItemAddOnOG.logger("Shop found from cache: " + shop.getLocation());
+
         }
-        return (fetchRemainingStock
-                ? (cachedShop != null ? cachedShop.getRemainingStock() : -1)
+
+        return (fetchRemainingStock ? (cachedShop != null ? cachedShop.getRemainingStock() : -1)
                 : (cachedShop != null ? cachedShop.getRemainingSpace() : -1));
+
     }
 
     /**
@@ -391,22 +478,31 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
      * @return
      */
     private @Nullable Shop getRemainingStockOrSpaceFromQSCache(Shop shop) {
+
         return quickShop.getShopCache().find(shop.getLocation(), false);
+
     }
 
     private static void logTotalShopsOnServer(int allShopsCount) {
+
         QSFindItemAddOnOG.logger("Total shops on server: " + allShopsCount);
+
     }
 
     @Override
     public boolean isQSShopCacheImplemented() {
+
         return false;
+
     }
 
     @Override
     public int processUnknownStockSpace(Location shopLoc, boolean toBuy) {
+
         // This method will not be called from QS-Reremake context, but keeping it here
         // as a placeholder
         return -2;
+
     }
+
 }

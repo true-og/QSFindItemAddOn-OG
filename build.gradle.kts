@@ -1,54 +1,64 @@
+/* ------------------------------ Plugins ------------------------------ */
 plugins {
-    id("java") // Tell gradle this is a java project.
-    id("java-library") // Import helper for source-based libraries.
-    id("com.diffplug.spotless") version "7.0.4" // Import auto-formatter.
-    id("com.gradleup.shadow") version "8.3.6" // Import shadow API.
-    eclipse // Import eclipse plugin for IDE integration.
+    id("java") // Import Java plugin.
+    id("java-library") // Import Java Library plugin.
+    id("com.diffplug.spotless") version "7.0.4" // Import Spotless plugin.
+    id("com.gradleup.shadow") version "8.3.6" // Import Shadow plugin.
+    id("checkstyle") // Import Checkstyle plugin.
+    eclipse // Import Eclipse plugin.
+    kotlin("jvm") version "2.1.21" // Import Kotlin JVM plugin.
 }
 
-group = "io.myzticbean.finditemaddon"
+extra["kotlinAttribute"] = Attribute.of("kotlin-tag", Boolean::class.javaObjectType)
+
+val kotlinAttribute: Attribute<Boolean> by rootProject.extra
+
+/* --------------------------- JDK / Kotlin ---------------------------- */
+java {
+    sourceCompatibility = JavaVersion.VERSION_17 // Compile with JDK 17 compatibility.
+    toolchain { // Select Java toolchain.
+        languageVersion.set(JavaLanguageVersion.of(17)) // Use JDK 17.
+        vendor.set(JvmVendorSpec.GRAAL_VM) // Use GraalVM CE.
+    }
+}
+
+kotlin { jvmToolchain(17) }
+
+/* ----------------------------- Metadata ------------------------------ */
+group = "net.trueog.qsfinditemaddon-og"
 
 version = "2.0.8"
 
 val apiVersion = "1.19"
 
-java {
-    // Declare java version.
-    sourceCompatibility = JavaVersion.VERSION_17
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-        vendor.set(JvmVendorSpec.GRAAL_VM)
-    }
-}
-
+/* ----------------------------- Resources ----------------------------- */
 tasks.named<ProcessResources>("processResources") {
     val props = mapOf("version" to version, "apiVersion" to apiVersion)
-
     inputs.properties(props) // Indicates to rerun if version changes.
-
     filesMatching("plugin.yml") { expand(props) }
-    from("LICENSE") { into("/") } // Bundle license into .jars.
-    from("src/main/doc/README.md") { into("/") }
+    from("LICENSE") { into("/") } // Bundle licenses into jarfiles.
 }
 
+/* ---------------------------- Repos ---------------------------------- */
 repositories {
-    mavenCentral()
-    gradlePluginPortal()
-    maven { url = uri("https://repo.purpurmc.org/snapshots") }
-    maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
-    maven { url = uri("https://jitpack.io") }
-    maven("https://oss.sonatype.org/content/groups/public/")
-    maven("https://repo.essentialsx.net/releases/")
-    maven("https://repo.essentialsx.net/snapshots/")
-    maven("https://repo.olziedev.com/")
-    maven("https://maven.enginehub.org/repo/")
-    maven("https://repo.codemc.io/repository/maven-public/") {
+    mavenCentral() // Import the Maven Central Maven Repository.
+    gradlePluginPortal() // Import the Gradle Plugin Portal Maven Repository.
+    maven { url = uri("https://repo.purpurmc.org/snapshots") } // Import the PurpurMC Maven Repository.
+    maven {
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    } // Import the SpigotMC Maven Repository.
+    maven { url = uri("https://jitpack.io") } // Import the Jitpack Maven Repository.
+    maven("https://oss.sonatype.org/content/groups/public/") // Import the OSS Sonatype Maven Repository.
+    maven("https://repo.essentialsx.net/releases/") // Import the EssentialsX Maven Repository.
+    maven("https://repo.olziedev.com/") // Import the Olziedev Maven Repository.
+    maven("https://maven.enginehub.org/repo/") // Import the EngineHub Maven Repository.
+    maven("https://repo.codemc.io/repository/maven-public/") { // Import the CodeMC Maven Repository.
         metadataSources {
             mavenPom()
             artifact()
         }
     }
-    maven("https://repo.codemc.io/repository/bentoboxworld/") {
+    maven("https://repo.codemc.io/repository/bentoboxworld/") { // Import the BentoBox Maven Repository.
         metadataSources {
             mavenPom()
             artifact()
@@ -56,11 +66,12 @@ repositories {
     }
 }
 
+/* ---------------------- Java project deps ---------------------------- */
 val playerwarpsApiOld = "6.30.0"
 val playerwarpsApiNew = "7.7.1"
 
 dependencies {
-    compileOnly("org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT") // Declare purpur API version to be packaged.
+    compileOnly("org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT") // Declare Purpur API version to be packaged.
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("com.ghostchu:quickshop-api:5.2.0.7")
     compileOnly("com.ghostchu:quickshop-bukkit:5.2.0.7:shaded") {
@@ -89,8 +100,8 @@ dependencies {
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.4")
     compileOnly("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-    compileOnly(files("lib/Residence5.1.5.1.jar"))
-    compileOnly(files("lib/GPFlags-5.13.4.jar"))
+    compileOnly(files("libs/Residence5.1.5.1.jar"))
+    compileOnly(files("libs/GPFlags-5.13.4.jar"))
     compileOnlyApi(project(":libs:Utilities-OG"))
     implementation("io.papermc:paperlib:1.0.7")
     implementation("com.google.code.gson:gson:2.10")
@@ -98,45 +109,67 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
 }
 
+apply(from = "eclipse.gradle.kts") // Import eclipse classpath support script.
+
+/* ---------------------- Reproducible jars ---------------------------- */
 tasks.withType<AbstractArchiveTask>().configureEach { // Ensure reproducible .jars
     isPreserveFileTimestamps = false
     isReproducibleFileOrder = true
 }
 
+/* ----------------------------- Shadow -------------------------------- */
 tasks.shadowJar {
     exclude("io.github.miniplaceholders.*") // Exclude the MiniPlaceholders package from being shadowed.
     archiveClassifier.set("") // Use empty string instead of null.
     minimize()
 }
 
-tasks.build {
-    dependsOn(tasks.spotlessApply)
-    dependsOn(tasks.shadowJar)
-}
+tasks.jar { archiveClassifier.set("part") } // Applies to root jarfile only.
 
-tasks.jar { archiveClassifier.set("part") }
+tasks.build { dependsOn(tasks.spotlessApply, tasks.shadowJar) } // Build depends on spotless and shadow.
 
+/* --------------------------- Javac opts ------------------------------- */
 tasks.withType<JavaCompile>().configureEach {
-    options.compilerArgs.add("-parameters")
-    options.compilerArgs.add("-Xlint:deprecation") // Triggers deprecation warning messages.
-    options.encoding = "UTF-8"
-    options.isFork = true
+    options.compilerArgs.add("-parameters") // Enable reflection for java code.
+    options.isFork = true // Run javac in its own process.
+    options.compilerArgs.add("-Xlint:deprecation") // Trigger deprecation warning messages.
+    options.encoding = "UTF-8" // Use UTF-8 file encoding.
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.GRAAL_VM
-    }
-}
-
+/* ----------------------------- Auto Formatting ------------------------ */
 spotless {
     java {
-        removeUnusedImports()
-        palantirJavaFormat()
+        eclipse().configFile("config/formatter/eclipse-java-formatter.xml") // Eclipse java formatting.
+        leadingTabsToSpaces() // Convert leftover leading tabs to spaces.
+        removeUnusedImports() // Remove imports that aren't being called.
     }
     kotlinGradle {
-        ktfmt().kotlinlangStyle().configure { it.setMaxWidth(120) }
-        target("build.gradle.kts", "settings.gradle.kts")
+        ktfmt().kotlinlangStyle().configure { it.setMaxWidth(120) } // JetBrains Kotlin formatting.
+        target("build.gradle.kts", "settings.gradle.kts") // Gradle files to format.
     }
+}
+
+checkstyle {
+    toolVersion = "10.18.1" // Declare checkstyle version to use.
+    configFile = file("config/checkstyle/checkstyle.xml") // Point checkstyle to config file.
+    isIgnoreFailures = true // Don't fail the build if checkstyle does not pass.
+    isShowViolations = true // Show the violations in any IDE with the checkstyle plugin.
+}
+
+tasks.named("compileJava") {
+    dependsOn("spotlessApply") // Run spotless before compiling with the JDK.
+}
+
+tasks.named("spotlessCheck") {
+    dependsOn("spotlessApply") // Run spotless before checking if spotless ran.
+}
+
+/* ------------------------------ Eclipse SHIM ------------------------- */
+
+// This can't be put in eclipse.gradle.kts because Gradle is weird.
+subprojects {
+    apply(plugin = "java-library")
+    apply(plugin = "eclipse")
+    eclipse.project.name = "${project.name}-${rootProject.name}"
+    tasks.withType<Jar>().configureEach { archiveBaseName.set("${project.name}-${rootProject.name}") }
 }

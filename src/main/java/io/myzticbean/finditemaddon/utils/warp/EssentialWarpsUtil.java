@@ -38,18 +38,17 @@ public class EssentialWarpsUtil {
 
     @Nullable
     public static String findNearestWarp(Location shopLocation) {
+
         List<EssentialWarpModel> allWarps = EssentialsXPlugin.getAllWarps();
         if (allWarps != null && !allWarps.isEmpty()) {
+
             Map<Double, String> warpDistanceMap = new TreeMap<>();
             allWarps.forEach(warp -> {
-                Double distance = CommonUtils.calculateDistance3D(
-                        shopLocation.getX(),
-                        shopLocation.getY(),
-                        shopLocation.getZ(),
-                        warp.warpLoc.getX(),
-                        warp.warpLoc.getY(),
-                        warp.warpLoc.getZ());
+
+                Double distance = CommonUtils.calculateDistance3D(shopLocation.getX(), shopLocation.getY(),
+                        shopLocation.getZ(), warp.warpLoc.getX(), warp.warpLoc.getY(), warp.warpLoc.getZ());
                 warpDistanceMap.put(distance, warp.warpName);
+
             });
             /*
              * if(FindItemAddOn.getConfigProvider().DEBUG_MODE) { for(Map.Entry<Double,
@@ -57,12 +56,19 @@ public class EssentialWarpsUtil {
              * LoggerUtils.logDebugInfo(entry.getValue() + " : " + entry.getKey()); } }
              */
             return warpDistanceMap.entrySet().iterator().next().getValue();
+
         } else {
+
             return null;
+
         }
+
     }
 
     public static void warpPlayer(Player player, String warpName) {
+
         Bukkit.dispatchCommand(player, "essentials:warp " + warpName);
+
     }
+
 }

@@ -37,43 +37,66 @@ public class ReloadSubCmd implements CommandExecutor, TabCompleter {
     private final CmdExecutorHandler cmdExecutor;
 
     public ReloadSubCmd() {
+
         cmdExecutor = new CmdExecutorHandler();
+
     }
 
     public String getName() {
+
         return "reload";
+
     }
 
     public List<String> getAliases() {
+
         return null;
+
     }
 
     public String getDescription() {
+
         return "Reloads config.yml";
+
     }
 
     public String getSyntax() {
+
         return "/finditemadmin reload";
+
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+
             cmdExecutor.handlePluginReload(sender);
             return true;
+
         }
+
         return false;
+
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
         if (args.length == 1 && "reload".startsWith(args[0].toLowerCase())) {
+
             return Collections.singletonList("reload");
+
         }
+
         return Collections.emptyList();
+
     }
 
     public List<String> getSubcommandArguments(Player player, String[] strings) {
+
         return null;
+
     }
+
 }
