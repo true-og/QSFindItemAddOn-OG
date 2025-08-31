@@ -100,7 +100,6 @@ dependencies {
     compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.4")
     compileOnly("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-    compileOnly(files("libs/Residence5.1.5.1.jar"))
     compileOnly(files("libs/GPFlags-5.13.4.jar"))
     compileOnlyApi(project(":libs:Utilities-OG"))
     implementation("io.papermc:paperlib:1.0.7")
