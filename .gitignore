@@ -5,13 +5,17 @@
 *.ipr
 *.iws
 
-# IntelliJ
+# Gradle
 out/
+libs/build/
 
 # Eclipse
 .classpath
 .project
 .settings/
+libs/.classpath
+libs/.project
+libs/.settings/
 
 # Compiled class file
 *.class
