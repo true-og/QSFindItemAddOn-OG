@@ -27,6 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -35,15 +36,16 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Interface for QS API.
  * Implement it depending on which API is being used (Reremake/Hikari).
- * @param <QSType>
+ * @param <QSInstance>
  * @param <Shop>
  * @author myzticbean
  */
-public interface QSApi<QSType, Shop> {
+public interface QSApi<QSInstance, Shop> {
 
     String QS_TOTAL_SHOPS_ON_SERVER = "Total shops on server: ";
     String QS_REMAINING_STOCK_OR_SPACE = "Remaining Stock/Space: ";
@@ -55,7 +57,7 @@ public interface QSApi<QSType, Shop> {
      * @param searchingPlayer
      * @return
      */
-    List<FoundShopItemModel> findItemBasedOnTypeFromAllShops(ItemStack item, boolean toBuy, Player searchingPlayer);
+    CompletableFuture<List<FoundShopItemModel>> findItemBasedOnTypeFromAllShops(ItemStack item, boolean toBuy, Player searchingPlayer);
 
     /**
      * Search based on display name of item from all server shops
@@ -64,7 +66,7 @@ public interface QSApi<QSType, Shop> {
      * @param searchingPlayer
      * @return
      */
-    List<FoundShopItemModel> findItemBasedOnDisplayNameFromAllShops(String displayName, boolean toBuy, Player searchingPlayer);
+    CompletableFuture<List<FoundShopItemModel>> findItemBasedOnDisplayNameFromAllShops(String displayName, boolean toBuy, Player searchingPlayer);
 
     /**
      * Fetch all items from all server shops
@@ -72,7 +74,7 @@ public interface QSApi<QSType, Shop> {
      * @param searchingPlayer
      * @return
      */
-    List<FoundShopItemModel> fetchAllItemsFromAllShops(boolean toBuy, Player searchingPlayer);
+    CompletableFuture<List<FoundShopItemModel>> fetchAllItemsFromAllShops(boolean toBuy, Player searchingPlayer);
 
     Material getShopSignMaterial();
 
@@ -85,6 +87,7 @@ public interface QSApi<QSType, Shop> {
     List<ShopSearchActivityModel> syncShopsListForStorage(List<ShopSearchActivityModel> globalShopsList);
 
     void registerSubCommand();
+
     UUID convertNameToUuid(String playerName);
 
     boolean isQSShopCacheImplemented();
@@ -127,7 +130,7 @@ public interface QSApi<QSType, Shop> {
      * @param seconds
      * @return
      */
-    static boolean isTimeDifferenceGreaterThanSeconds(Date date1, Date date2, int seconds) {
+    static boolean isTimeDifferenceGreaterThanSeconds(@NotNull Date date1, @NotNull Date date2, int seconds) {
         Instant instant1 = date1.toInstant();
         Instant instant2 = date2.toInstant();
 

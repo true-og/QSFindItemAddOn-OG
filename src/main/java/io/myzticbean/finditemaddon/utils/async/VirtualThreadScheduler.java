@@ -2,18 +2,18 @@ package io.myzticbean.finditemaddon.utils.async;
 
 import io.myzticbean.finditemaddon.utils.log.Logger;
 
+import lombok.experimental.UtilityClass;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Supplier;
 
+@UtilityClass
 public class VirtualThreadScheduler {
     // Use a shared executor for all virtual-thread tasks
-    private static final ExecutorService VIRTUAL_EXECUTOR =
-            Executors.newVirtualThreadPerTaskExecutor();
-
-    private VirtualThreadScheduler() {
-        // prevent instantiation
-    }
+    private static final ExecutorService VIRTUAL_EXECUTOR = Executors.newVirtualThreadPerTaskExecutor();
 
     /**
      * Run a task asynchronously on a Java Virtual Thread.
@@ -36,7 +36,11 @@ public class VirtualThreadScheduler {
         return VIRTUAL_EXECUTOR.submit(task);
     }
 
-    /**
+    public static <U> CompletableFuture<U> supplyAsync(Supplier<U> supplier) {
+        return CompletableFuture.supplyAsync(supplier, VIRTUAL_EXECUTOR);
+    }
+
+                                                       /**
      * Shut down the virtual thread executor gracefully.
      */
     public static void shutdown() {

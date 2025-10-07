@@ -100,7 +100,7 @@ public final class FindItemAddOn extends JavaPlugin {
     private static boolean qSReremakeInstalled = false;
     @Getter
     private static boolean qSHikariInstalled = false;
-    private static QSApi qsApi;
+    private static QSApi<?, ?> qsApi;
     @Getter
     private static BentoBoxPlugin bentoboxPlugin;
 
@@ -230,20 +230,6 @@ public final class FindItemAddOn extends JavaPlugin {
     }
 
     private void checkForPluginUpdates() {
-//        updateChecker.getLatestVersion(version -> {
-//            if(this.getDescription().getVersion().equalsIgnoreCase(version)) {
-//                Logger.logInfo("Plugin is up to date!");
-//            } else {
-//                isPluginOutdated = true;
-//                if(version.toLowerCase().contains("snapshot")) {
-//                    Logger.logWarning("Plugin has a new snapshot version available! (Version: " + version + ")");
-//                }
-//                else {
-//                    Logger.logWarning("Plugin has a new update available! (Version: " + version + ")");
-//                }
-//                Logger.logWarning("Download here: https://www.spigotmc.org/resources/" + SPIGOT_PLUGIN_ID + "/");
-//            }
-//        });
         updateChecker.isUpdateAvailable(isUpdateAvailable -> {
             if(Boolean.TRUE.equals(isUpdateAvailable)) {
                 isPluginOutdated = true;
@@ -392,7 +378,7 @@ public final class FindItemAddOn extends JavaPlugin {
         FindItemAddOn.qSHikariInstalled = qSHikariInstalled;
     }
 
-    public static QSApi getQsApiInstance() {
+    public static QSApi<?, ?> getQsApiInstance() {
         return qsApi;
     }
 

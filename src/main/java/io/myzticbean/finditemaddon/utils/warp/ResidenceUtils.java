@@ -1,8 +1,8 @@
 package io.myzticbean.finditemaddon.utils.warp;
 
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import io.myzticbean.finditemaddon.dependencies.ResidencePlugin;
 import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.dependencies.ResidencePlugin;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

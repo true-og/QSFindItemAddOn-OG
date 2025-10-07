@@ -23,11 +23,13 @@ import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.handlers.gui.menus.FoundShopsMenu;
 import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 import io.myzticbean.finditemaddon.models.enums.PlayerPermsEnum;
+import io.myzticbean.finditemaddon.quickshop.impl.QSHikariAPIHandler;
+import io.myzticbean.finditemaddon.quickshop.impl.QSReremakeAPIHandler;
+import io.myzticbean.finditemaddon.utils.PlayerUtil;
 import io.myzticbean.finditemaddon.utils.async.VirtualThreadScheduler;
 import io.myzticbean.finditemaddon.utils.json.HiddenShopStorageUtil;
 import io.myzticbean.finditemaddon.utils.log.Logger;
 import io.myzticbean.finditemaddon.utils.warp.WarpUtils;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,98 +57,76 @@ public class CmdExecutorHandler {
      * @param itemArg Specifies Item ID or Item name
      */
     public void handleShopSearch(String buySellSubCommand, CommandSender commandSender, String itemArg) {
-        if (!(commandSender instanceof Player player)) {
-            Logger.logInfo(THIS_COMMAND_CAN_ONLY_BE_RUN_FROM_IN_GAME);
-            return;
-        }
-        if (!player.hasPermission(PlayerPermsEnum.FINDITEM_USE.value())) {
-            player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + NO_PERMISSION));
-            return;
-        }
-
-        // Show searching... message
-        if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_SEARCH_LOADING_MSG)) {
-            player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + FindItemAddOn.getConfigProvider().SHOP_SEARCH_LOADING_MSG));
-        }
-
-        boolean isBuying;
-        if(StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE)
-                || StringUtils.containsIgnoreCase(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE, " ")) {
-            isBuying = buySellSubCommand.equalsIgnoreCase("to_buy");
-        }
-        else {
-            isBuying = buySellSubCommand.equalsIgnoreCase(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE);
-        }
-
-        if(itemArg.equalsIgnoreCase("*") && !FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_DISABLE_SEARCH_ALL_SHOPS) {
-            // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue #12)
-            if(!FindItemAddOn.isQSReremakeInstalled() && FindItemAddOn.getQsApiInstance().isQSShopCacheImplemented()) {
-                Logger.logDebugInfo("Should run in async thread...");
-                Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
-                    List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().fetchAllItemsFromAllShops(isBuying, player);
-                    this.openShopMenu(player, searchResultList, true, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
-                });
-            } else {
-                // Else run in MAIN thread
-                List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().fetchAllItemsFromAllShops(isBuying, player);
-                this.openShopMenu(player, searchResultList, false, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
-            }
-        } else {
-            Material mat = Material.getMaterial(itemArg.toUpperCase());
-            if(this.checkMaterialBlacklist(mat)) {
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&cThis material is not allowed."));
+        VirtualThreadScheduler.runTaskAsync(() -> {
+            if (!(commandSender instanceof Player player)) {
+                Logger.logInfo(THIS_COMMAND_CAN_ONLY_BE_RUN_FROM_IN_GAME);
                 return;
             }
-            if (mat != null && mat.isItem()) {
-                Logger.logDebugInfo("Material found: " + mat);
-                // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue #12)
-                if(!FindItemAddOn.isQSReremakeInstalled() && FindItemAddOn.getQsApiInstance().isQSShopCacheImplemented()) {
-                    VirtualThreadScheduler.runTaskAsync(() -> {
-                        List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player);
-                        this.openShopMenu(player, searchResultList, true, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
-                    });
-//                    Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
-//                        List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player);
-//                        this.openShopMenu(player, searchResultList, true, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
-//                    });
-                } else {
-                    List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player);
-                    this.openShopMenu(player, searchResultList, false, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
-                }
+            if (!player.hasPermission(PlayerPermsEnum.FINDITEM_USE.value())) {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + NO_PERMISSION);
+                return;
+            }
+
+            // Show searching... message
+            if (!StringUtils.isEmpty(FindItemAddOn.getConfigProvider().SHOP_SEARCH_LOADING_MSG)) {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().SHOP_SEARCH_LOADING_MSG);
+            }
+
+            boolean isBuying;
+            if(StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE)
+                    || StringUtils.containsIgnoreCase(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE, " ")) {
+                isBuying = buySellSubCommand.equalsIgnoreCase("to_buy");
             } else {
-                Logger.logDebugInfo("Material not found! Performing query based search..");
+                isBuying = buySellSubCommand.equalsIgnoreCase(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_BUY_AUTOCOMPLETE);
+            }
+
+            if(itemArg.equalsIgnoreCase("*") && !FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_DISABLE_SEARCH_ALL_SHOPS) {
                 // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue #12)
-                if(!FindItemAddOn.isQSReremakeInstalled() && FindItemAddOn.getQsApiInstance().isQSShopCacheImplemented()) {
-                    VirtualThreadScheduler.runTaskAsync(() -> {
-                        List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player);
-                        this.openShopMenu(player, searchResultList, true, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG);
-                    });
-//                    Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
-//                        List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player);
-//                        this.openShopMenu(player, searchResultList, true, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG);
-//                    });
+                // UPDATE: No need to run in async thread as it is already running in async thread (Assume everyone has QS-Hikari v6.* installed)
+                FindItemAddOn
+                        .getQsApiInstance()
+                        .fetchAllItemsFromAllShops(isBuying, player)
+                        .thenAccept(searchResultList -> this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG));
+//                var searchResultList = FindItemAddOn.getQsApiInstance().fetchAllItemsFromAllShops(isBuying, player);
+//                this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
+            } else {
+                Material mat = Material.getMaterial(itemArg.toUpperCase());
+                if(this.checkMaterialBlacklist(mat)) {
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + "&cThis material is not allowed.");
+                    return;
+                }
+                if (mat != null && mat.isItem()) {
+                    Logger.logDebugInfo("Material found: " + mat);
+                    // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue #12)
+                    // UPDATE: No need to run in async thread as it is already running in async thread (Assume everyone has QS-Hikari v6.* installed)
+                    FindItemAddOn
+                            .getQsApiInstance()
+                            .findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player)
+                            .thenAccept(searchResultList -> this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG));
+//                    var searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player);
+//                    this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
                 } else {
-                    List<FoundShopItemModel> searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player);
-                    this.openShopMenu(player, searchResultList, false, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG);
+                    Logger.logDebugInfo("Material not found! Performing query based search..");
+                    // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue #12)
+                    // UPDATE: No need to run in async thread as it is already running in async thread (Assume everyone has QS-Hikari v6.* installed)
+                    FindItemAddOn
+                            .getQsApiInstance()
+                            .findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player)
+                            .thenAccept(searchResultList -> this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG));
+//                    var searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player);
+//                    this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG);
                 }
             }
-        }
+        });
     }
 
-    private void openShopMenu(Player player, List<FoundShopItemModel> searchResultList, boolean synchronize, String errorMsg) {
+    private void openShopMenu(Player player, List<FoundShopItemModel> searchResultList, String errorMsg) {
         if (!searchResultList.isEmpty()) {
-            if (synchronize) {
-                Bukkit.getScheduler().runTask(FindItemAddOn.getInstance(), () -> {
-                    FoundShopsMenu menu = new FoundShopsMenu(FindItemAddOn.getPlayerMenuUtility(player), searchResultList);
-                    menu.open(searchResultList);
-                });
-            } else {
-                FoundShopsMenu menu = new FoundShopsMenu(FindItemAddOn.getPlayerMenuUtility(player), searchResultList);
-                menu.open(searchResultList);
-            }
+            FoundShopsMenu menu = new FoundShopsMenu(FindItemAddOn.getPlayerMenuUtility(player), searchResultList);
+            menu.open(searchResultList);
         } else {
             if (!StringUtils.isEmpty(errorMsg)) {
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + errorMsg));
+                PlayerUtil.sendMessage(player, getPluginPrefix() + errorMsg);
             }
         }
     }
@@ -172,7 +152,7 @@ public class CmdExecutorHandler {
                 }
             }
             else {
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + NO_PERMISSION));
+                PlayerUtil.sendMessage(player, getPluginPrefix() + NO_PERMISSION);
             }
         } else {
             Logger.logInfo(THIS_COMMAND_CAN_ONLY_BE_RUN_FROM_IN_GAME);
@@ -184,11 +164,7 @@ public class CmdExecutorHandler {
      * @param commandSender Who is the command sender: console or player
      */
     public void handleRevealShop(CommandSender commandSender) {
-        if (!(commandSender instanceof Player)) {
-            Logger.logInfo(THIS_COMMAND_CAN_ONLY_BE_RUN_FROM_IN_GAME);
-        }
-        else {
-            Player player = (Player) commandSender;
+        if (commandSender instanceof Player player) {
             if(player.hasPermission(PlayerPermsEnum.FINDITEM_HIDESHOP.value())) {
                 Block playerLookAtBlock = player.getTargetBlock(null, 5);
                 if(playerLookAtBlock != null) {
@@ -204,8 +180,10 @@ public class CmdExecutorHandler {
                 }
             }
             else {
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + NO_PERMISSION));
+                PlayerUtil.sendMessage(player, getPluginPrefix() + NO_PERMISSION);
             }
+        } else {
+            Logger.logInfo(THIS_COMMAND_CAN_ONLY_BE_RUN_FROM_IN_GAME);
         }
     }
 
@@ -214,43 +192,38 @@ public class CmdExecutorHandler {
      * @param commandSender Who is the command sender: console or player
      */
     public void handlePluginReload(CommandSender commandSender) {
-        if (!(commandSender instanceof Player player)) {
-            ConfigSetup.reloadConfig();
-            ConfigSetup.checkForMissingProperties();
-            ConfigSetup.saveConfig();
-            FindItemAddOn.initConfigProvider();
-            List<Shop> allServerShops = FindItemAddOn.getQsApiInstance().getAllShops();
-            if(allServerShops.isEmpty()) {
-                Logger.logWarning("&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!");
-            }
-            else {
-                Logger.logInfo("&aFound &e" + allServerShops.size() + " &ashops on the server.");
-            }
-            WarpUtils.updateWarps();
-        }
-        else {
-            if(player.hasPermission(PlayerPermsEnum.FINDITEM_RELOAD.value()) || player.hasPermission(PlayerPermsEnum.FINDITEM_ADMIN.value())) {
+        VirtualThreadScheduler.runTaskAsync(() -> {
+            if (commandSender instanceof Player player) {
+                if(player.hasPermission(PlayerPermsEnum.FINDITEM_RELOAD.value()) || player.hasPermission(PlayerPermsEnum.FINDITEM_ADMIN.value())) {
+                    ConfigSetup.reloadConfig();
+                    ConfigSetup.checkForMissingProperties();
+                    ConfigSetup.saveConfig();
+                    FindItemAddOn.initConfigProvider();
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + "&aConfig reloaded!");
+                    var allServerShops = FindItemAddOn.getQsApiInstance().getAllShops();
+                    if(allServerShops.isEmpty()) {
+                        PlayerUtil.sendMessage(player, getPluginPrefix() + "&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!");
+                    } else {
+                        PlayerUtil.sendMessage(player, getPluginPrefix() + "&aFound &e" + allServerShops.size() + " &ashops on the server.");
+                    }
+                    WarpUtils.updateWarps();
+                } else {
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + NO_PERMISSION);
+                }
+            } else {    // commandSender is console
                 ConfigSetup.reloadConfig();
                 ConfigSetup.checkForMissingProperties();
                 ConfigSetup.saveConfig();
                 FindItemAddOn.initConfigProvider();
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&aConfig reloaded!"));
-                List allServerShops = FindItemAddOn.getQsApiInstance().getAllShops();
+                var allServerShops = FindItemAddOn.getQsApiInstance().getAllShops();
                 if(allServerShops.isEmpty()) {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + "&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!"));
-                }
-                else {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&aFound &e" + allServerShops.size() + " &ashops on the server."));
+                    Logger.logWarning("&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!");
+                } else {
+                    Logger.logInfo("&aFound &e" + allServerShops.size() + " &ashops on the server.");
                 }
                 WarpUtils.updateWarps();
             }
-            else {
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + NO_PERMISSION));
-            }
-        }
+        });
     }
 
     /**
@@ -267,30 +240,23 @@ public class CmdExecutorHandler {
             List allServerShops = FindItemAddOn.getQsApiInstance().getAllShops();
             if(allServerShops.size() == 0) {
                 Logger.logWarning("&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!");
-            }
-            else {
+            } else {
                 Logger.logInfo("&aFound &e" + allServerShops.size() + " &ashops on the server.");
             }
-        }
-        else {
+        } else {
             Player player = (Player) commandSender;
             if(player.hasPermission(PlayerPermsEnum.FINDITEM_RESTART.value()) || player.hasPermission(PlayerPermsEnum.FINDITEM_ADMIN.value())) {
                 Bukkit.getPluginManager().disablePlugin(FindItemAddOn.getInstance());
                 Bukkit.getPluginManager().enablePlugin(FindItemAddOn.getPlugin(FindItemAddOn.class));
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&aPlugin restarted!"));
+                PlayerUtil.sendMessage(player, getPluginPrefix() + "&aPlugin restarted!");
                 List allServerShops = FindItemAddOn.getQsApiInstance().getAllShops();
                 if(allServerShops.size() == 0) {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + "&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!"));
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + "&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!");
+                } else {
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + "&aFound &e" + allServerShops.size() + " &ashops on the server.");
                 }
-                else {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&aFound &e" + allServerShops.size() + " &ashops on the server."));
-                }
-            }
-            else {
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + NO_PERMISSION));
+            } else {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + NO_PERMISSION);
             }
         }
     }
@@ -302,30 +268,20 @@ public class CmdExecutorHandler {
      */
     private void hideReremakeShop(org.maxgamer.quickshop.api.shop.Shop shop, Player player) {
         if(shop != null) {
+            QSReremakeAPIHandler qsReremakeAPIHandler = (QSReremakeAPIHandler) FindItemAddOn.getQsApiInstance();
             // check if command runner same as shop owner
-            if(FindItemAddOn.getQsApiInstance().isShopOwnerCommandRunner(player, shop)) {
+            if(qsReremakeAPIHandler.isShopOwnerCommandRunner(player, shop)) {
                 if(!HiddenShopStorageUtil.isShopHidden(shop)) {
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, true);
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG));
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG);
+                } else {
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG);
                 }
-                else {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG));
-                }
+            } else {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG);
             }
-            else {
-                player.sendMessage(ColorTranslator.translateColorCodes(
-                        FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
-            }
-        }
-        else {
-            player.sendMessage(ColorTranslator.translateColorCodes(
-                    FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
+        } else {
+            PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG);
         }
     }
 
@@ -336,30 +292,20 @@ public class CmdExecutorHandler {
      */
     private void hideHikariShop(com.ghostchu.quickshop.api.shop.Shop shop, Player player) {
         if(shop != null) {
+            QSHikariAPIHandler qsHikariAPIHandler = (QSHikariAPIHandler) FindItemAddOn.getQsApiInstance();
             // check if command runner same as shop owner
-            if(FindItemAddOn.getQsApiInstance().isShopOwnerCommandRunner(player, shop)) {
+            if(qsHikariAPIHandler.isShopOwnerCommandRunner(player, shop)) {
                 if(!HiddenShopStorageUtil.isShopHidden(shop)) {
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, true);
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG));
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG);
+                } else {
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG);
                 }
-                else {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG));
-                }
+            } else {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG);
             }
-            else {
-                player.sendMessage(ColorTranslator.translateColorCodes(
-                        FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
-            }
-        }
-        else {
-            player.sendMessage(ColorTranslator.translateColorCodes(
-                    FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
+        } else {
+            PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG);
         }
     }
 
@@ -368,32 +314,22 @@ public class CmdExecutorHandler {
      * @param shop
      * @param player
      */
-    private void revealShop(Shop shop, Player player) {
+    private void revealShop(org.maxgamer.quickshop.api.shop.Shop shop, Player player) {
         if(shop != null) {
+            QSReremakeAPIHandler qsReremakeAPIHandler = (QSReremakeAPIHandler) FindItemAddOn.getQsApiInstance();
             // check if command runner same as shop owner
-            if(FindItemAddOn.getQsApiInstance().isShopOwnerCommandRunner(player, shop)) {
+            if(qsReremakeAPIHandler.isShopOwnerCommandRunner(player, shop)) {
                 if(HiddenShopStorageUtil.isShopHidden(shop)) {
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, false);
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG));
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG);
+                } else {
+                    PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG);
                 }
-                else {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG));
-                }
+            } else {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG);
             }
-            else {
-                player.sendMessage(ColorTranslator.translateColorCodes(
-                        FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
-            }
-        }
-        else {
-            player.sendMessage(ColorTranslator.translateColorCodes(
-                    FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
+        } else {
+            PlayerUtil.sendMessage(player, getPluginPrefix() + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG);
         }
     }
 
@@ -404,31 +340,32 @@ public class CmdExecutorHandler {
      */
     private void revealShop(com.ghostchu.quickshop.api.shop.Shop shop, Player player) {
         if(shop != null) {
+            QSHikariAPIHandler qsHikariAPIHandler = (QSHikariAPIHandler) FindItemAddOn.getQsApiInstance();
             // check if command runner same as shop owner
-            if(FindItemAddOn.getQsApiInstance().isShopOwnerCommandRunner(player, shop)) {
+            if(qsHikariAPIHandler.isShopOwnerCommandRunner(player, shop)) {
                 if(HiddenShopStorageUtil.isShopHidden(shop)) {
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, false);
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG));
+                    PlayerUtil.sendMessage(player,
+                            getPluginPrefix()
+                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG);
+                } else {
+                    PlayerUtil.sendMessage(player,
+                            getPluginPrefix()
+                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG);
                 }
-                else {
-                    player.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG));
-                }
+            } else {
+                PlayerUtil.sendMessage(player,
+                        getPluginPrefix()
+                                + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG);
             }
-            else {
-                player.sendMessage(ColorTranslator.translateColorCodes(
-                        FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                                + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
-            }
-        }
-        else {
-            player.sendMessage(ColorTranslator.translateColorCodes(
-                    FindItemAddOn.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
+        } else {
+            PlayerUtil.sendMessage(player,
+                    getPluginPrefix()
+                            + FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG);
         }
     }
-}
 
+    private String getPluginPrefix() {
+        return FindItemAddOn.getConfigProvider().PLUGIN_PREFIX;
+    }
+}
