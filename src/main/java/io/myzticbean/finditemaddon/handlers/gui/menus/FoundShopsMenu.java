@@ -32,6 +32,8 @@ import io.myzticbean.finditemaddon.models.FoundShopItemModel;
 import io.myzticbean.finditemaddon.models.enums.CustomCmdPlaceholdersEnum;
 import io.myzticbean.finditemaddon.models.enums.PlayerPermsEnum;
 import io.myzticbean.finditemaddon.models.enums.ShopLorePlaceholdersEnum;
+import io.myzticbean.finditemaddon.utils.PlayerUtil;
+import io.myzticbean.finditemaddon.utils.async.VirtualThreadScheduler;
 import io.myzticbean.finditemaddon.utils.json.ShopSearchActivityStorageUtil;
 import io.myzticbean.finditemaddon.utils.LocationUtils;
 import io.myzticbean.finditemaddon.utils.log.Logger;
@@ -39,7 +41,6 @@ import io.myzticbean.finditemaddon.utils.warp.EssentialWarpsUtil;
 import io.myzticbean.finditemaddon.utils.warp.PlayerWarpsUtil;
 import io.myzticbean.finditemaddon.utils.warp.ResidenceUtils;
 import io.myzticbean.finditemaddon.utils.warp.WGRegionUtils;
-import io.papermc.lib.PaperLib;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -50,7 +51,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -191,42 +191,43 @@ public class FoundShopsMenu extends PaginatedMenu {
      * @param locDataList List containing location data
      */
     private void handleDirectShopTeleport(@NotNull Player player, List<String> locDataList) {
-        // Check if player has permission to teleport
-        if (!player.hasPermission(PlayerPermsEnum.FINDITEM_SHOPTP.value())) {
-            sendNoPermissionMessage(player);
-            return;
-        }
+        VirtualThreadScheduler.runTaskAsync(() -> {
+            // Check if player has permission to teleport
+            if (!PlayerUtil.hasPermission(player, PlayerPermsEnum.FINDITEM_SHOPTP.value())) {
+                sendNoPermissionMessage(player);
+                return;
+            }
 
-        Location shopLocation = parseShopLocation(locDataList);
-        if (shopLocation == null)
-            return;
+            Location shopLocation = parseShopLocation(locDataList);
+            if (shopLocation == null)
+                return;
 
-        // Check if player is teleporting to their own shop
-        UUID shopOwner = ShopSearchActivityStorageUtil.getShopOwnerUUID(shopLocation);
-        if (player.getUniqueId().equals(shopOwner) && !PlayerPermsEnum.canPlayerTpToOwnShop(player)) {
-            player.sendMessage(ColorTranslator.translateColorCodes(
-                    configProvider.PLUGIN_PREFIX + configProvider.SHOP_TP_NO_PERMISSION_MSG));
-            return;
-        }
+            // Check if player is teleporting to their own shop
+            UUID shopOwner = ShopSearchActivityStorageUtil.getShopOwnerUUID(shopLocation);
+            if (player.getUniqueId().equals(shopOwner) && !PlayerPermsEnum.canPlayerTpToOwnShop(player)) {
+                PlayerUtil.sendMessage(player, configProvider.PLUGIN_PREFIX + configProvider.SHOP_TP_NO_PERMISSION_MSG);
+                return;
+            }
 
-        // Find a safe location around the shop
-        Location locToTeleport = LocationUtils.findSafeLocationAroundShop(shopLocation, player);
-        if (locToTeleport == null) {
-            sendUnsafeAreaMessage(player);
-            return;
-        }
+            // Find a safe location around the shop
+            Location locToTeleport = LocationUtils.findSafeLocationAroundShop(shopLocation, player);
+            if (locToTeleport == null) {
+                sendUnsafeAreaMessage(player);
+                return;
+            }
 
-        // Record the visit and set last location for Essentials
-        ShopSearchActivityStorageUtil.addPlayerVisitEntryAsync(shopLocation, player);
-        if (EssentialsXPlugin.isEnabled())
-            EssentialsXPlugin.setLastLocation(player);
+            // Record the visit and set last location for Essentials
+            ShopSearchActivityStorageUtil.addPlayerVisitEntryAsync(shopLocation, player);
+            if (EssentialsXPlugin.isEnabled())
+                EssentialsXPlugin.setLastLocation(player);
 
-        // Apply teleport delay if necessary, otherwise teleport immediately
-        if (shouldApplyTeleportDelay(player)) {
-            applyTeleportDelay(player, locToTeleport);
-        } else {
-            PaperLib.teleportAsync(player, locToTeleport, PlayerTeleportEvent.TeleportCause.PLUGIN);
-        }
+            // Apply teleport delay if necessary, otherwise teleport immediately
+            if (shouldApplyTeleportDelay(player)) {
+                applyTeleportDelay(player, locToTeleport);
+            } else {
+                PlayerUtil.teleport(player, locToTeleport);
+            }
+        });
     }
 
     /**
@@ -263,8 +264,7 @@ public class FoundShopsMenu extends PaginatedMenu {
                 return;
 
             for (String cmd : configProvider.CUSTOM_CMDS_LIST) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                        replaceCustomCmdPlaceholders(cmd, player, shopLocation));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), replaceCustomCmdPlaceholders(cmd, player, shopLocation));
             }
         }
     }
@@ -292,8 +292,7 @@ public class FoundShopsMenu extends PaginatedMenu {
      */
     private void sendNoPermissionMessage(Player player) {
         if (!StringUtils.isEmpty(configProvider.SHOP_TP_NO_PERMISSION_MSG)) {
-            player.sendMessage(ColorTranslator.translateColorCodes(configProvider.PLUGIN_PREFIX
-                    + configProvider.SHOP_TP_NO_PERMISSION_MSG));
+            PlayerUtil.sendMessage(player, configProvider.PLUGIN_PREFIX + configProvider.SHOP_TP_NO_PERMISSION_MSG);
         }
     }
 
@@ -304,8 +303,7 @@ public class FoundShopsMenu extends PaginatedMenu {
      */
     private void sendUnsafeAreaMessage(Player player) {
         if (!StringUtils.isEmpty(configProvider.UNSAFE_SHOP_AREA_MSG)) {
-            player.sendMessage(ColorTranslator.translateColorCodes(configProvider.PLUGIN_PREFIX
-                    + configProvider.UNSAFE_SHOP_AREA_MSG));
+            PlayerUtil.sendMessage(player, configProvider.PLUGIN_PREFIX + configProvider.UNSAFE_SHOP_AREA_MSG);
         }
     }
 
@@ -332,12 +330,11 @@ public class FoundShopsMenu extends PaginatedMenu {
         Logger.logDebugInfo("Teleporting delay is set to: " + delay);
         String tpDelayMsg = configProvider.TP_DELAY_MESSAGE;
         if (!StringUtils.isEmpty(tpDelayMsg)) {
-            player.sendMessage(ColorTranslator.translateColorCodes(
-                    configProvider.PLUGIN_PREFIX + replaceDelayPlaceholder(tpDelayMsg, delay)));
+            PlayerUtil.sendMessage(player, configProvider.PLUGIN_PREFIX + replaceDelayPlaceholder(tpDelayMsg, delay));
         }
         Bukkit.getScheduler().scheduleSyncDelayedTask(
                 FindItemAddOn.getInstance(),
-                () -> PaperLib.teleportAsync(player, locToTeleport, PlayerTeleportEvent.TeleportCause.PLUGIN),
+                () -> PlayerUtil.teleport(player, locToTeleport),
                 delay * 20);
     }
 
@@ -352,9 +349,7 @@ public class FoundShopsMenu extends PaginatedMenu {
             super.open(super.playerMenuUtility.getPlayerShopSearchResult());
         } else {
             if (!StringUtils.isEmpty(configProvider.SHOP_NAV_LAST_PAGE_ALERT_MSG)) {
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(
-                                configProvider.PLUGIN_PREFIX + configProvider.SHOP_NAV_LAST_PAGE_ALERT_MSG));
+                PlayerUtil.sendMessage(event.getWhoClicked(), configProvider.PLUGIN_PREFIX + configProvider.SHOP_NAV_LAST_PAGE_ALERT_MSG);
             }
         }
     }
@@ -367,9 +362,7 @@ public class FoundShopsMenu extends PaginatedMenu {
     private void handleMenuClickForNavToPrevPage(InventoryClickEvent event) {
         if (page == 0) {
             if (!StringUtils.isEmpty(configProvider.SHOP_NAV_FIRST_PAGE_ALERT_MSG)) {
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(configProvider.PLUGIN_PREFIX
-                                + configProvider.SHOP_NAV_FIRST_PAGE_ALERT_MSG));
+                PlayerUtil.sendMessage(event.getWhoClicked(), configProvider.PLUGIN_PREFIX + configProvider.SHOP_NAV_FIRST_PAGE_ALERT_MSG);
             }
         } else {
             page = page - 1;
@@ -385,10 +378,7 @@ public class FoundShopsMenu extends PaginatedMenu {
     private void handleFirstPageClick(InventoryClickEvent event) {
         if (page == 0) {
             if (!StringUtils.isEmpty(configProvider.SHOP_NAV_FIRST_PAGE_ALERT_MSG)) {
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(
-                                configProvider.PLUGIN_PREFIX
-                                        + configProvider.SHOP_NAV_FIRST_PAGE_ALERT_MSG));
+                PlayerUtil.sendMessage(event.getWhoClicked(), configProvider.PLUGIN_PREFIX + configProvider.SHOP_NAV_FIRST_PAGE_ALERT_MSG);
             }
         } else {
             page = 0;
@@ -415,10 +405,7 @@ public class FoundShopsMenu extends PaginatedMenu {
             super.open(super.playerMenuUtility.getPlayerShopSearchResult());
         } else {
             if (!StringUtils.isEmpty(configProvider.SHOP_NAV_LAST_PAGE_ALERT_MSG)) {
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(
-                                configProvider.PLUGIN_PREFIX
-                                        + configProvider.SHOP_NAV_LAST_PAGE_ALERT_MSG));
+                PlayerUtil.sendMessage(event.getWhoClicked(), configProvider.PLUGIN_PREFIX + configProvider.SHOP_NAV_LAST_PAGE_ALERT_MSG);
             }
         }
     }

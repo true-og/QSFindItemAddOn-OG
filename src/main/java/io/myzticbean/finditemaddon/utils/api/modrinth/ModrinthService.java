@@ -34,7 +34,7 @@ public class ModrinthService {
         try {
             Logger.logDebugInfo("Outbound Request: " + url);
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            Logger.logDebugInfo("Inbound Response: " + response.body());
+//            Logger.logDebugInfo("Inbound Response: " + response.body());
             if (response.statusCode() == 200) {
                 return objectMapper.readValue(response.body(), new TypeReference<List<ProjectDetailsResponse>>() {});
             } else {

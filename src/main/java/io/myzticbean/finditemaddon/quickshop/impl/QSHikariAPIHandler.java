@@ -18,7 +18,6 @@
  */
 package io.myzticbean.finditemaddon.quickshop.impl;
 
-import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.QuickShopBukkit;
 import com.ghostchu.quickshop.api.QuickShopAPI;
@@ -26,7 +25,6 @@ import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.util.Util;
 import io.myzticbean.finditemaddon.quickshop.QSApi;
 import io.myzticbean.finditemaddon.commands.quickshop.subcommands.FindItemCmdHikariImpl;
@@ -47,9 +45,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +81,6 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
     }
 
     public CompletableFuture<List<FoundShopItemModel>> findItemBasedOnTypeFromAllShops(ItemStack item, boolean toBuy, Player searchingPlayer) {
-        Logger.logDebugInfo(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
         var begin = Instant.now();
         return VirtualThreadScheduler.supplyAsync(() -> {
             List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
@@ -138,7 +134,8 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
         double itemAmount = shop.getItem().getAmount();
         double pricePerTransaction = price * itemAmount;
 
-        var economy = getQuickShop().getEconomy();
+//        var economy = getQuickShop().getEconomy();
+        var economy = getQuickShop().getEconomyManager().provider();
         var qUser = shop.getOwner();
         var uuid = qUser.getUniqueIdIfRealPlayer().orElse(null);
         // return true if not a real player
@@ -154,7 +151,9 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
         var currency = shop.getCurrency();
 
         // Get owner's balance through QuickShop API
-        return economy.getBalance(qUser, world, currency) >= pricePerTransaction;
+//        return economy.getBalance(qUser, world, currency) >= pricePerTransaction;
+        BigDecimal balance = economy.balance(qUser, world.getName(), currency);
+        return balance.compareTo(BigDecimal.valueOf(pricePerTransaction)) >= 0;
     }
 
     private static QuickShop getQuickShop() {
@@ -163,6 +162,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
 
     @NotNull
     static List<FoundShopItemModel> handleShopSorting(boolean toBuy, @NotNull List<FoundShopItemModel> shopsFoundList) {
+        Logger.logDebugInfo("Matching shops found: " + shopsFoundList.size());
         if(!shopsFoundList.isEmpty()) {
             int sortingMethod = 2;
             try {
@@ -178,7 +178,6 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
     }
 
     public CompletableFuture<List<FoundShopItemModel>> findItemBasedOnDisplayNameFromAllShops(String displayName, boolean toBuy, Player searchingPlayer) {
-        Logger.logDebugInfo(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
         var begin = Instant.now();
         return VirtualThreadScheduler.supplyAsync(() -> {
             List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
@@ -224,7 +223,6 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
     }
 
     public CompletableFuture<List<FoundShopItemModel>> fetchAllItemsFromAllShops(boolean toBuy, Player searchingPlayer) {
-        Logger.logDebugInfo(IS_MAIN_THREAD + Bukkit.isPrimaryThread());
         var begin = Instant.now();
         return VirtualThreadScheduler.supplyAsync(() -> {
             List<FoundShopItemModel> shopsFoundList = new ArrayList<>();
@@ -484,29 +482,29 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
     // Normally when space is -1, stock is not, and vice versa.
     // In special cases, neither value may be -1.
     // If Stock 0 -> Shop is admin or no stock
-    private void testQuickShopHikariExternalCache(Shop shop) throws RuntimeException {
-        boolean fetchRemainingStock = false;
-        long shopId = shop.getShopId();
-        try (SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
-                .addCondition("shop", shopId)
-                .selectColumns("space", "stock")
-                .setLimit(1)
-                .build()
-                .execute(); ResultSet resultSet = query.getResultSet()) {
-            if(resultSet.next()){
-                long stock = resultSet.getLong("stock");
-                long space = resultSet.getLong("space");
-                // stock or space can be `-1`
-                Logger.logWarning("1: Location: " + shop.getLocation() + " | Stock: " + stock + " | Space: " + space);
-            }else{
-                // no cached data
-                Logger.logWarning("No cached data found!");
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private void testQuickShopHikariExternalCache(Shop shop) throws RuntimeException {
+//        boolean fetchRemainingStock = false;
+//        long shopId = shop.getShopId();
+//        try (SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
+//                .addCondition("shop", shopId)
+//                .selectColumns("space", "stock")
+//                .setLimit(1)
+//                .build()
+//                .execute(); ResultSet resultSet = query.getResultSet()) {
+//            if(resultSet.next()){
+//                long stock = resultSet.getLong("stock");
+//                long space = resultSet.getLong("space");
+//                // stock or space can be `-1`
+//                Logger.logWarning("1: Location: " + shop.getLocation() + " | Stock: " + stock + " | Space: " + space);
+//            }else{
+//                // no cached data
+//                Logger.logWarning("No cached data found!");
+//            }
+//        }
+//        catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     private boolean checkIfQSHikariShopCacheImplemented() {
         String mainVersionStr = pluginVersion.split("\\.")[0];
