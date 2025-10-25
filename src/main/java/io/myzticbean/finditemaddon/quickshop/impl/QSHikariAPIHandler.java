@@ -458,11 +458,12 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     private void processPotentialShopMatchAndAddToFoundList(boolean toBuy, Shop shopIterator, List<FoundShopItemModel> shopsFoundList, Player searchingPlayer) {
         Logger.logDebugInfo("Shop match found: " + shopIterator.getLocation());
         // Check if shop is in a locked BentoBox island
-        if (FindItemAddOn.getConfigProvider().BENTOBOX_IGNORE_LOCKED_ISLAND_SHOPS && 
-            FindItemAddOn.getBentoboxPlugin().isIslandLocked(shopIterator.getLocation(), searchingPlayer)) {
-            Logger.logDebugInfo("Shop is in locked BentoBox island - ignoring");
+        if (FindItemAddOn.getConfigProvider().BENTOBOX_IGNORE_LOCKED_ISLAND_SHOPS &&
+                 FindItemAddOn.getBentoboxPlugin() != null &&
+                 FindItemAddOn.getBentoboxPlugin().isIslandLocked(shopIterator.getLocation(), searchingPlayer)) {
+                 Logger.logDebugInfo("Shop is in locked BentoBox island - ignoring");
             return;
-        }
+            }
         // check for stock / space
         int stockOrSpace = (toBuy ? getRemainingStockOrSpaceFromShopCache(shopIterator, true)
                 : getRemainingStockOrSpaceFromShopCache(shopIterator, false));
