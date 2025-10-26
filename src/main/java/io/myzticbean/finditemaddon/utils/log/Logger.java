@@ -22,6 +22,7 @@ import io.myzticbean.finditemaddon.FindItemAddOn;
 import lombok.experimental.UtilityClass;
 import me.kodysimpson.simpapi.colors.ColorTranslator;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author myzticbean
@@ -33,16 +34,19 @@ public class Logger {
     public static final String QS_FIND_ITEM_ADD_ON_DEBUG_LOG = "[QuickShop-FindItemAddOn-DEBUG] ";
 
     public static void logDebugInfo(String text) {
-        if(FindItemAddOn.getConfigProvider().DEBUG_MODE) {
+        if(FindItemAddOn.getConfigProvider().isDebugModeEnabled()) {
             Bukkit.getLogger().warning(ColorTranslator.translateColorCodes(QS_FIND_ITEM_ADD_ON_DEBUG_LOG + getMainOrAsyncThreadLogText() + text));
         }
     }
+
     public static void logInfo(String text) {
         Bukkit.getLogger().info(ColorTranslator.translateColorCodes(QS_FIND_ITEM_ADD_ON + getMainOrAsyncThreadLogText() + text));
     }
+
     public static void logError(String text) {
         Bukkit.getLogger().severe(ColorTranslator.translateColorCodes(QS_FIND_ITEM_ADD_ON + text));
     }
+
     public static void logError(Exception e) {
         Bukkit.getLogger().severe(ColorTranslator.translateColorCodes(QS_FIND_ITEM_ADD_ON + e.getMessage()));
         e.printStackTrace();
@@ -52,11 +56,18 @@ public class Logger {
         Bukkit.getLogger().severe(ColorTranslator.translateColorCodes(QS_FIND_ITEM_ADD_ON + errorMessage + ": " + e.getMessage()));
         e.printStackTrace();
     }
+
     public static void logWarning(String text) {
         Bukkit.getLogger().warning(ColorTranslator.translateColorCodes(QS_FIND_ITEM_ADD_ON + text));
     }
 
     private static String getMainOrAsyncThreadLogText() {
-        return Bukkit.isPrimaryThread() ? "[MAIN] " : "[ASYNC] ";
+        return Bukkit.isPrimaryThread() ?
+                "[main] "
+                : "[" + isThreadVirtual() + Thread.currentThread().threadId() + "] ";
+    }
+
+    private static @NotNull String isThreadVirtual() {
+        return Thread.currentThread().isVirtual() ? "vt-" : "t-";
     }
 }

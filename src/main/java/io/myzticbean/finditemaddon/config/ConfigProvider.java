@@ -106,10 +106,10 @@ public class ConfigProvider {
     private final List<String> BLACKLISTED_WORLDS = (List<String>) ConfigSetup.get().getList("blacklisted-worlds");
     private final List<String> BLACKLISTED_MATERIALS = (List<String>) ConfigSetup.get().getList("blacklisted-materials");
     public final boolean SUPPRESS_UPDATE_NOTIFICATIONS = ConfigSetup.get().getBoolean("suppress-update-notifications");
-    public final boolean DEBUG_MODE = ConfigSetup.get().getBoolean("debug-mode");
     public final int CONFIG_VERSION = ConfigSetup.get().getInt("config-version");
     public final boolean BENTOBOX_IGNORE_LOCKED_ISLAND_SHOPS = ConfigSetup.get().getBoolean(BENTOBOX + "ignore-locked-island-shops");
 
+    private boolean debugMode = ConfigSetup.get().getBoolean("debug-mode");
     private final List<World> blacklistedWorldsList = new ArrayList<>();
     private final List<Material> blacklistedMaterialsList = new ArrayList<>();
 
@@ -117,6 +117,18 @@ public class ConfigProvider {
         loadBlacklistedWorlds();
         loadBlacklistedMaterials();
         Logger.logInfo("Config loaded!");
+    }
+
+    public boolean isDebugModeEnabled() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+        // Also update the config file
+        ConfigSetup.get().set("debug-mode", debugMode);
+        ConfigSetup.get().set("config-version", ConfigSetup.getCURRENT_CONFIG_VERSION());
+        ConfigSetup.saveConfig();
     }
 
     public List<World> getBlacklistedWorlds() {

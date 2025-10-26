@@ -19,6 +19,7 @@
 package io.myzticbean.finditemaddon;
 
 import io.myzticbean.finditemaddon.commands.simpapi.BuySubCmd;
+import io.myzticbean.finditemaddon.commands.simpapi.DebugSubCmd;
 import io.myzticbean.finditemaddon.commands.simpapi.HideShopSubCmd;
 import io.myzticbean.finditemaddon.commands.simpapi.ReloadSubCmd;
 import io.myzticbean.finditemaddon.commands.simpapi.RevealShopSubCmd;
@@ -178,16 +179,15 @@ public final class FindItemAddOn extends JavaPlugin {
     }
 
     private void runPluginStartupTasks() {
-
         serverVersion = Bukkit.getServer().getVersion();
         Logger.logInfo("Server version found: " + serverVersion);
 
         if(!isQSReremakeInstalled() && !isQSHikariInstalled()) {
-            Logger.logError("QuickShop is required to use this addon. Please install QuickShop and try again!");
-            Logger.logError("Both QuickShop-Hikari and QuickShop-Reremake are supported by this addon.");
-            Logger.logError("Download links:");
+            Logger.logError("QuickShop-Hikari is required to use this addon. Please install QuickShop and try again!");
+//            Logger.logError("Both QuickShop-Hikari and QuickShop-Reremake are supported by this addon.");
+            Logger.logError("Download link:");
             Logger.logError("» QuickShop-Hikari: https://www.spigotmc.org/resources/100125");
-            Logger.logError("» QuickShop-Reremake (Support ending soon): https://www.spigotmc.org/resources/62575");
+//            Logger.logError("» QuickShop-Reremake (No official support): https://www.spigotmc.org/resources/62575");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -225,11 +225,11 @@ public final class FindItemAddOn extends JavaPlugin {
         new Metrics(this, BS_PLUGIN_METRIC_ID);
 
         // Check for plugin updates
-        updateChecker = new UpdateChecker();
         checkForPluginUpdates();
     }
 
     private void checkForPluginUpdates() {
+        updateChecker = new UpdateChecker();
         updateChecker.isUpdateAvailable(isUpdateAvailable -> {
             if(Boolean.TRUE.equals(isUpdateAvailable)) {
                 isPluginOutdated = true;
@@ -287,13 +287,13 @@ public final class FindItemAddOn extends JavaPlugin {
     }
 
     private void initFindItemCmd() {
-        List<String> alias;
+        List<String> aliases;
         if(StringUtils.isEmpty(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE)
                 || StringUtils.containsIgnoreCase(FindItemAddOn.getConfigProvider().FIND_ITEM_TO_SELL_AUTOCOMPLETE, " ")) {
-            alias = Arrays.asList("shopsearch", "searchshop", "searchitem");
+            aliases = Arrays.asList("shopsearch", "searchshop", "searchitem");
         }
         else {
-            alias = FindItemAddOn.getConfigProvider().FIND_ITEM_COMMAND_ALIAS;
+            aliases = FindItemAddOn.getConfigProvider().FIND_ITEM_COMMAND_ALIAS;
         }
 
         Class<? extends SubCommand>[] subCommands;
@@ -322,11 +322,11 @@ public final class FindItemAddOn extends JavaPlugin {
                             commandSender.sendMessage(ColorTranslator.translateColorCodes("&#ff9933" + subCommand.getSyntax() + " &#a3a3c2" + subCommand.getDescription()));
                         }
                         commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&#b3b300Command alias:"));
-                        alias.forEach(alias_i -> commandSender.sendMessage(ColorTranslator.translateColorCodes("&8&l» &#2db300/" + alias_i)));
+                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&#b3b300Command aliases:"));
+                        aliases.forEach(alias -> commandSender.sendMessage(ColorTranslator.translateColorCodes("&8&l» &#2db300/" + alias)));
                         commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
                     },
-                    alias,
+                    aliases,
                     subCommands);
             Logger.logInfo("Registered /finditem command");
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -363,7 +363,7 @@ public final class FindItemAddOn extends JavaPlugin {
                         }
                     },
                     alias,
-                    ReloadSubCmd.class);
+                    ReloadSubCmd.class, DebugSubCmd.class);
             Logger.logInfo("Registered /finditemadmin command");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             Logger.logError(e);

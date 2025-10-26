@@ -1,3 +1,11 @@
+## Release 2.0.8.0
+### Changes
+- QS-Reremake support has been dropped completely
+- GUI click is now async
+- Changed logger statements to show Main/Async thread state
+- Changed materials list in `LocationUtils` from `ArrayList` to `HashSet` to improve performance
+- Added debug mode control via command: `/finditemadmin debug-mode {enable | disable}`
+
 ## Release 2.0.7.7
 ### Changes
 - Changed comma delimiter to triple pipe (PR #83 by @MattDeWeerd)

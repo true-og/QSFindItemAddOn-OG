@@ -87,8 +87,6 @@ public class CmdExecutorHandler {
                         .getQsApiInstance()
                         .fetchAllItemsFromAllShops(isBuying, player)
                         .thenAccept(searchResultList -> this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG));
-//                var searchResultList = FindItemAddOn.getQsApiInstance().fetchAllItemsFromAllShops(isBuying, player);
-//                this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
             } else {
                 Material mat = Material.getMaterial(itemArg.toUpperCase());
                 if(this.checkMaterialBlacklist(mat)) {
@@ -103,8 +101,6 @@ public class CmdExecutorHandler {
                             .getQsApiInstance()
                             .findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player)
                             .thenAccept(searchResultList -> this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG));
-//                    var searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player);
-//                    this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().NO_SHOP_FOUND_MSG);
                 } else {
                     Logger.logDebugInfo("Material not found! Performing query based search..");
                     // If QS Hikari installed and Shop Cache feature available (>6), then run in async thread (Fix for Issue #12)
@@ -113,8 +109,6 @@ public class CmdExecutorHandler {
                             .getQsApiInstance()
                             .findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player)
                             .thenAccept(searchResultList -> this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG));
-//                    var searchResultList = FindItemAddOn.getQsApiInstance().findItemBasedOnDisplayNameFromAllShops(itemArg, isBuying, player);
-//                    this.openShopMenu(player, searchResultList, FindItemAddOn.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG);
                 }
             }
         });
@@ -365,7 +359,44 @@ public class CmdExecutorHandler {
         }
     }
 
-    private String getPluginPrefix() {
+    /**
+     * Handles enabling/disabling debug mode
+     * @param commandSender Who is the command sender: console or player
+     * @param args Command arguments
+     */
+    public void handleDebugMode(CommandSender commandSender, String[] args) {
+        VirtualThreadScheduler.runTaskAsync(() -> {
+            if(args.length == 1) {
+                if (commandSender instanceof  Player player) {
+                    PlayerUtil.sendMessage(player, getPluginPrefix()
+                            + "&7Debug is currently " + (FindItemAddOn.getConfigProvider().isDebugModeEnabled() ? "enabled." : "disabled.")
+                            + "\nYou can change it by typing &e/finditemadmin debug-mode {enable | disable}\n");
+                } else {
+                    Logger.logInfo("\n\nDebug is currently " + (FindItemAddOn.getConfigProvider().isDebugModeEnabled() ? "enabled." : "disabled.")
+                            + "\nYou can change it by typing /finditemadmin debug-mode {enable | disable}\n");
+                }
+                return;
+            }
+            String mode = args[1];
+            boolean enable = mode.equalsIgnoreCase("enable");
+            String message;
+            // !player.hasPermission(PlayerPermsEnum.FINDITEM_ADMIN.value())
+            if (commandSender instanceof Player player && !PlayerUtil.hasPermission(player, PlayerPermsEnum.FINDITEM_ADMIN.value())) {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + NO_PERMISSION);
+                return;
+            }
+            // Update debug mode using ConfigProvider's setter
+            FindItemAddOn.getConfigProvider().setDebugMode(enable);
+            message = "Debug mode " + (enable ? "enabled" : "disabled") + " successfully.";
+            if (commandSender instanceof Player player) {
+                PlayerUtil.sendMessage(player, getPluginPrefix() + message);
+            } else {
+                Logger.logInfo(message);
+            }
+        });
+    }
+    
+    public String getPluginPrefix() {
         return FindItemAddOn.getConfigProvider().PLUGIN_PREFIX;
     }
 }

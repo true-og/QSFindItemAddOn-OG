@@ -20,6 +20,7 @@ package io.myzticbean.finditemaddon.config;
 
 import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.utils.log.Logger;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,6 +41,7 @@ public class ConfigSetup {
     private static File configFile;
     private static File sampleConfigFile;
     private static FileConfiguration configFileConfiguration;
+    @Getter
     private static final int CURRENT_CONFIG_VERSION = 21;
 
     public static void setupConfig() {

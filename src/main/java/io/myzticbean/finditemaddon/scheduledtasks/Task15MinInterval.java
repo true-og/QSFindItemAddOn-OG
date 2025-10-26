@@ -18,11 +18,9 @@
  */
 package io.myzticbean.finditemaddon.scheduledtasks;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
 import io.myzticbean.finditemaddon.utils.async.VirtualThreadScheduler;
 import io.myzticbean.finditemaddon.utils.json.ShopSearchActivityStorageUtil;
 import io.myzticbean.finditemaddon.utils.warp.WarpUtils;
-import org.bukkit.Bukkit;
 
 /**
  * @author myzticbean
