@@ -18,7 +18,7 @@
         <spigot.version>1.21.8-R0.1-SNAPSHOT</spigot.version>
         <paper-api.version>1.21.10-R0.1-SNAPSHOT</paper-api.version>
 <!--        <qs-hikari.version>6.2.0.10</qs-hikari.version>-->
-        <qs-hikari.version>6.2.0.11-SNAPSHOT-6</qs-hikari.version>
+        <qs-hikari.version>6.2.0.11-SNAPSHOT-11</qs-hikari.version>
         <playerwarps-api-old>6.30.0</playerwarps-api-old>
         <playerwarps-api-new>7.7.1</playerwarps-api-new>
         <essentialsx.version>2.21.1</essentialsx.version>
@@ -90,8 +90,7 @@
                     <!-- Below path is where your plugin jar will be copied automatically upon build, comment out if on a Mac -->
                     <!-- <outputDirectory>D:\Github_myzticbean\MCServer_1.21\plugins</outputDirectory> -->
                     <!-- Comment out if on a PC -->
-<!--                    <outputDirectory>/Users/${user.name}/IdeaProjects/MCServer_1.21/plugins</outputDirectory>-->
-                    <outputDirectory>/Users/${user.name}/IdeaProjects/MCServer_1.21_QS_SNAPSHOT/plugins</outputDirectory>
+                    <!-- <outputDirectory>/Users/${user.name}/IdeaProjects/MCServer_1.21/plugins</outputDirectory> -->
                 </configuration>
             </plugin>
             <plugin>

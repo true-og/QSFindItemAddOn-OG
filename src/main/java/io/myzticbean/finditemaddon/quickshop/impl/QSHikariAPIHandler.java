@@ -280,11 +280,6 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
         return com.ghostchu.quickshop.util.Util.getSignMaterial();
     }
 
-//    public Shop findShopAtLocation(Block block) {
-//        Location loc = new Location(block.getWorld(), block.getX(), block.getY(), block.getZ());
-//        return api.getShopManager().getShop(loc);
-//    }
-
     public Shop findShopAtLocation(Block block) {
         Location loc = block.getLocation(); // Simpler way to get location
 
@@ -415,7 +410,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
      * If IGNORE_EMPTY_CHESTS is true -> do not add empty stock or space
      * If to buy -> If shop has no stock -> based on ignore flag, decide to include it or not
      * If to sell -> If shop has no space -> based on ignore flag, decide to include it or not
-     * @param stockOrSpace
+     * @param stockOrSpace Stock or space
      * @return If shop needs to be ignored from list
      */
     private boolean isShopToBeIgnoredForFullOrEmpty(int stockOrSpace) {
@@ -426,30 +421,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
         return false;
     }
 
-    /**
-     * Fallback to fetching info from ShopCache to avoid lag
-     * @param shop QuickShop Shop instance
-     * @param fetchRemainingStock True if fetching remaining stock, False if fetching remaining space
-     * @return
-     */
-    private int getRemainingStockOrSpaceFromShopCache___test(Shop shop, boolean fetchRemainingStock) {
-        Logger.logDebugInfo("Shop ID: " + shop.getShopId());
-        CachedShop cachedShop = shopCache.get(shop.getShopId());
-        if (cachedShop == null || QSApi.isTimeDifferenceGreaterThanSeconds(cachedShop.getLastFetched(), new Date(), SHOP_CACHE_TIMEOUT_SECONDS)) {
-            cachedShop = CachedShop.builder()
-                    .shopId(shop.getShopId())
-                    .remainingStock(shop.getRemainingStock())
-                    .remainingSpace(shop.getRemainingSpace())
-                    .lastFetched(new Date())
-                    .build();
-            shopCache.put(cachedShop.getShopId(), cachedShop);
-            Logger.logDebugInfo("Adding to ShopCache: " + shop.getShopId());
-        }
-        return (fetchRemainingStock ? cachedShop.getRemainingStock() : cachedShop.getRemainingSpace());
-    }
-
     private int getRemainingStockOrSpaceFromShopCache(Shop shop, boolean fetchRemainingStock) {
-//        LoggerUtils.logDebugInfo("Shop ID: " + shop.getShopId());
         String mainVersionStr = pluginVersion.split("\\.")[0];
         int mainVersion = Integer.parseInt(mainVersionStr);
         if (mainVersion >= 6) {
@@ -477,34 +449,6 @@ public class QSHikariAPIHandler implements QSApi<QuickShopAPI, Shop> {
             return (fetchRemainingStock ? cachedShop.getRemainingStock() : cachedShop.getRemainingSpace());
         }
     }
-
-    // An empty ResultSet or a value that returns -1 means that the value is not cached.
-    // Normally when space is -1, stock is not, and vice versa.
-    // In special cases, neither value may be -1.
-    // If Stock 0 -> Shop is admin or no stock
-//    private void testQuickShopHikariExternalCache(Shop shop) throws RuntimeException {
-//        boolean fetchRemainingStock = false;
-//        long shopId = shop.getShopId();
-//        try (SQLQuery query = DataTables.EXTERNAL_CACHE.createQuery()
-//                .addCondition("shop", shopId)
-//                .selectColumns("space", "stock")
-//                .setLimit(1)
-//                .build()
-//                .execute(); ResultSet resultSet = query.getResultSet()) {
-//            if(resultSet.next()){
-//                long stock = resultSet.getLong("stock");
-//                long space = resultSet.getLong("space");
-//                // stock or space can be `-1`
-//                Logger.logWarning("1: Location: " + shop.getLocation() + " | Stock: " + stock + " | Space: " + space);
-//            }else{
-//                // no cached data
-//                Logger.logWarning("No cached data found!");
-//            }
-//        }
-//        catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 
     private boolean checkIfQSHikariShopCacheImplemented() {
         String mainVersionStr = pluginVersion.split("\\.")[0];
