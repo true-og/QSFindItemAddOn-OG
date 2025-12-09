@@ -154,7 +154,7 @@ public final class QSFindItemAddOnOG extends JavaPlugin {
         }
 
         if (!Bukkit.getPluginManager().isPluginEnabled("QuickShop")
-                && !Bukkit.getPluginManager().isPluginEnabled("QuickShop-Hikari"))
+                && !Bukkit.getPluginManager().isPluginEnabled("QuickShop-OG"))
         {
 
             logger("Delaying QuickShop hook as they are not enabled yet");
