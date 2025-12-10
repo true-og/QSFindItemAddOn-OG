@@ -27,7 +27,7 @@ kotlin { jvmToolchain(17) }
 /* ----------------------------- Metadata ------------------------------ */
 group = "net.trueog.qsfinditemaddon-og"
 
-version = "2.0.8"
+version = "2.0.9"
 
 val apiVersion = "1.19"
 

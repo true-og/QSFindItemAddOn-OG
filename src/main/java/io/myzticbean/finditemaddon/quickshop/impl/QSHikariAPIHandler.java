@@ -74,7 +74,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     public QSHikariAPIHandler() {
 
         api = QuickShopAPI.getInstance();
-        pluginVersion = Bukkit.getPluginManager().getPlugin("QuickShop-Hikari").getPluginMeta().getVersion();
+        pluginVersion = Bukkit.getPluginManager().getPlugin("QuickShop-OG").getPluginMeta().getVersion();
         QSFindItemAddOnOG.logger("Initializing Shop caching");
         shopCache = new ConcurrentHashMap<>();
         isQSHikariShopCacheImplemented = checkIfQSHikariShopCacheImplemented();
