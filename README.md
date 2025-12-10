@@ -22,8 +22,8 @@ Adds a `/finditem` command in game for searching through all the shops on the se
 - Support for material blacklisting that prevents players for searching for specific items
 
 
-**QuickShop-Hikari Support**
-- It supports both [QuickShop-Hikari](https://www.spigotmc.org/resources/100125/) and [QuickShop-Reremake](https://www.spigotmc.org/resources/62575/).
+**QuickShop Support**
+This fork only supports the GPLv3 Hikari-based [QuickShop-OG](https://github.com/true-og/QuickShop-OG).
 
 **Hexcode color support**
 - All messages in the config.yml support hexcodes.
