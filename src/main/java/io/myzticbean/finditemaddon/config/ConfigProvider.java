@@ -30,6 +30,7 @@ import java.util.List;
 /**
  * @author myzticbean
  */
+@SuppressWarnings("java:S116")
 public class ConfigProvider {
 
     private static final String FIND_ITEM_COMMAND = "find-item-command.";
