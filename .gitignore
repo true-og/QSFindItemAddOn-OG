@@ -8,6 +8,16 @@
 # IntelliJ
 out/
 
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Gradle
+bin/
+build/
+.gradle/
+
 # Compiled class file
 *.class
 

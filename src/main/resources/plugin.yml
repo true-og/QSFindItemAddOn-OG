@@ -1,12 +1,10 @@
-name: QSFindItemAddOn
-version: ${project.version}
-main: io.myzticbean.finditemaddon.FindItemAddOn
-api-version: 1.16
-authors: [ myzticbean ]
+name: QSFindItemAddOn-OG
+version: ${version}
+main: io.myzticbean.finditemaddon.FindItemAddOnOG
+api-version: 1.19
+authors: [ myzticbean, NotAlexNoyle ]
 softdepend:
-  - QuickShop
-  - QuickShop-Hikari
-  - PlayerWarps
+  - QuickShop-OG
   - WorldGuard
   - Essentials
 

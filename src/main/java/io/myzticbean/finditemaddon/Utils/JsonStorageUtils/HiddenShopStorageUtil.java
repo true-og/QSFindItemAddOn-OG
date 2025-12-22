@@ -2,7 +2,7 @@ package io.myzticbean.finditemaddon.Utils.JsonStorageUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
 import io.myzticbean.finditemaddon.Models.HiddenShopModel;
 import io.myzticbean.finditemaddon.Models.ShopSearchActivityModel;
 import io.myzticbean.finditemaddon.Utils.LoggerUtils;
@@ -23,27 +23,35 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Reremake
+     * 
      * @param shop
      */
     public static void handleShopSearchVisibilityAsync(Shop shop, boolean hideShop) {
-        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
-            Iterator<ShopSearchActivityModel> shopSearchActivityIterator = ShopSearchActivityStorageUtil.getGlobalShopsList().iterator();
+
+        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOnOG.getInstance(), () -> {
+
+            Iterator<ShopSearchActivityModel> shopSearchActivityIterator = ShopSearchActivityStorageUtil
+                    .getGlobalShopsList().iterator();
             int i = 0;
-            while(shopSearchActivityIterator.hasNext()) {
+            while (shopSearchActivityIterator.hasNext()) {
+
                 ShopSearchActivityModel shopSearchActivity = shopSearchActivityIterator.next();
                 Location shopLocation = shop.getLocation();
-                if(shopSearchActivity.compareWith(
-                        shopLocation.getWorld().getName(),
-                        shopLocation.getX(),
-                        shopLocation.getY(),
-                        shopLocation.getZ()
-                )) {
+                if (shopSearchActivity.compareWith(shopLocation.getWorld().getName(), shopLocation.getX(),
+                        shopLocation.getY(), shopLocation.getZ()))
+                {
+
                     ShopSearchActivityStorageUtil.getGlobalShopsList().get(i).setHiddenFromSearch(hideShop);
                     break;
+
                 }
+
                 i++;
+
             }
+
         });
+
 //        HiddenShopModel hiddenShop = new HiddenShopModel(
 //                shop.getLocation().getWorld().getName(),
 //                shop.getLocation().getX(),
@@ -57,27 +65,35 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Hikari
+     * 
      * @param shop
      */
     public static void handleShopSearchVisibilityAsync(com.ghostchu.quickshop.api.shop.Shop shop, boolean hideShop) {
-        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOn.getInstance(), () -> {
-            Iterator<ShopSearchActivityModel> shopSearchActivityIterator = ShopSearchActivityStorageUtil.getGlobalShopsList().iterator();
+
+        Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOnOG.getInstance(), () -> {
+
+            Iterator<ShopSearchActivityModel> shopSearchActivityIterator = ShopSearchActivityStorageUtil
+                    .getGlobalShopsList().iterator();
             int i = 0;
-            while(shopSearchActivityIterator.hasNext()) {
+            while (shopSearchActivityIterator.hasNext()) {
+
                 ShopSearchActivityModel shopSearchActivity = shopSearchActivityIterator.next();
                 Location shopLocation = shop.getLocation();
-                if(shopSearchActivity.compareWith(
-                        shopLocation.getWorld().getName(),
-                        shopLocation.getX(),
-                        shopLocation.getY(),
-                        shopLocation.getZ()
-                )) {
+                if (shopSearchActivity.compareWith(shopLocation.getWorld().getName(), shopLocation.getX(),
+                        shopLocation.getY(), shopLocation.getZ()))
+                {
+
                     ShopSearchActivityStorageUtil.getGlobalShopsList().get(i).setHiddenFromSearch(hideShop);
                     break;
+
                 }
+
                 i++;
+
             }
+
         });
+
 //        HiddenShopModel hiddenShop = new HiddenShopModel(
 //                shop.getLocation().getWorld().getName(),
 //                shop.getLocation().getX(),
@@ -91,6 +107,7 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Reremake
+     * 
      * @param shop
      */
 //    public static void deleteShop(Shop shop) {
@@ -110,6 +127,7 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Hikari
+     * 
      * @param shop
      */
 //    public static void deleteShop(com.ghostchu.quickshop.api.shop.Shop shop) {
@@ -129,27 +147,35 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Reremake
+     * 
      * @param shop
      * @return
      */
     public static boolean isShopHidden(Shop shop) {
-        for(ShopSearchActivityModel shopSearchActivity : ShopSearchActivityStorageUtil.getGlobalShopsList()) {
+
+        for (ShopSearchActivityModel shopSearchActivity : ShopSearchActivityStorageUtil.getGlobalShopsList()) {
+
             Location shopLocation = shop.getLocation();
-            if(shopSearchActivity.compareWith(
-                    shopLocation.getWorld().getName(),
-                    shopLocation.getX(),
-                    shopLocation.getY(),
-                    shopLocation.getZ()
-            )) {
-                if(shopSearchActivity.isHiddenFromSearch()) {
+            if (shopSearchActivity.compareWith(shopLocation.getWorld().getName(), shopLocation.getX(),
+                    shopLocation.getY(), shopLocation.getZ()))
+            {
+
+                if (shopSearchActivity.isHiddenFromSearch()) {
+
                     return true;
-                }
-                else {
+
+                } else {
+
                     return false;
+
                 }
+
             }
+
         }
+
         return false;
+
 //        for(HiddenShopModel hiddenShop : hiddenShopsList) {
 //            if(hiddenShop.getWorldName().equalsIgnoreCase(shop.getLocation().getWorld().getName())
 //                    && hiddenShop.getX() == shop.getLocation().getX()
@@ -166,27 +192,35 @@ public class HiddenShopStorageUtil {
 
     /**
      * QuickShop Hikari
+     * 
      * @param shop
      * @return
      */
     public static boolean isShopHidden(com.ghostchu.quickshop.api.shop.Shop shop) {
-        for(ShopSearchActivityModel shopSearchActivity : ShopSearchActivityStorageUtil.getGlobalShopsList()) {
+
+        for (ShopSearchActivityModel shopSearchActivity : ShopSearchActivityStorageUtil.getGlobalShopsList()) {
+
             Location shopLocation = shop.getLocation();
-            if(shopSearchActivity.compareWith(
-                    shopLocation.getWorld().getName(),
-                    shopLocation.getX(),
-                    shopLocation.getY(),
-                    shopLocation.getZ()
-            )) {
-                if(shopSearchActivity.isHiddenFromSearch()) {
+            if (shopSearchActivity.compareWith(shopLocation.getWorld().getName(), shopLocation.getX(),
+                    shopLocation.getY(), shopLocation.getZ()))
+            {
+
+                if (shopSearchActivity.isHiddenFromSearch()) {
+
                     return true;
-                }
-                else {
+
+                } else {
+
                     return false;
+
                 }
+
             }
+
         }
+
         return false;
+
 //        for(HiddenShopModel hiddenShop : hiddenShopsList) {
 //            if(hiddenShop.getWorldName().equalsIgnoreCase(shop.getLocation().getWorld().getName())
 //                    && hiddenShop.getX() == shop.getLocation().getX()
@@ -202,40 +236,60 @@ public class HiddenShopStorageUtil {
     }
 
     public static void loadHiddenShopsFromFile() {
+
         Gson gson = new Gson();
-        File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/" + HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
-        if(file.exists()) {
+        File file = new File(FindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
+                + HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
+        if (file.exists()) {
+
             try {
+
                 Reader reader = new FileReader(file);
 //                Type listType = new TypeToken<List<HiddenShopModel>>() {}.getType();
                 HiddenShopModel[] h = gson.fromJson(reader, HiddenShopModel[].class);
-                if(h != null) {
+                if (h != null) {
+
                     hiddenShopsList = new ArrayList<>(Arrays.asList(h));
-                }
-                else {
+
+                } else {
+
                     hiddenShopsList = new ArrayList<>();
+
                 }
+
                 LoggerUtils.logInfo("Loaded hidden shops from file");
+
             } catch (FileNotFoundException e) {
+
                 e.printStackTrace();
+
             }
+
         }
+
     }
 
     public static void saveHiddenShopsToFile() {
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(FindItemAddOn.getInstance().getDataFolder().getAbsolutePath() + "/" + HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
+        File file = new File(FindItemAddOnOG.getInstance().getDataFolder().getAbsolutePath() + "/"
+                + HIDDEN_SHOP_STORAGE_JSON_FILE_NAME);
         file.getParentFile().mkdir();
         try {
+
             file.createNewFile();
             Writer writer = new FileWriter(file, false);
             gson.toJson(hiddenShopsList, writer);
             writer.flush();
             writer.close();
             LoggerUtils.logInfo("Saved hidden shops to file");
+
         } catch (IOException e) {
+
             e.printStackTrace();
+
         }
+
     }
 
 }

@@ -1,6 +1,6 @@
 package io.myzticbean.finditemaddon.Handlers.GUIHandler;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
 import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,18 +26,23 @@ public abstract class Menu implements InventoryHolder {
     protected ItemStack GUI_FILLER_ITEM;
 
     protected Menu(PlayerMenuUtility playerMenuUtility) {
+
         this.playerMenuUtility = playerMenuUtility;
 
-        assert FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
-        Material fillerMaterial = Material.getMaterial(FindItemAddOn.getConfigProvider().SHOP_GUI_FILLER_ITEM);
-        if(fillerMaterial == null) {
+        assert FindItemAddOnOG.getConfigProvider().SHOP_GUI_FILLER_ITEM != null;
+        Material fillerMaterial = Material.getMaterial(FindItemAddOnOG.getConfigProvider().SHOP_GUI_FILLER_ITEM);
+        if (fillerMaterial == null) {
+
             fillerMaterial = Material.GRAY_STAINED_GLASS_PANE;
+
         }
+
         GUI_FILLER_ITEM = new ItemStack(fillerMaterial);
         ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
         assert FILLER_GLASS_meta != null;
         FILLER_GLASS_meta.setDisplayName(" ");
         this.GUI_FILLER_ITEM.setItemMeta(FILLER_GLASS_meta);
+
     }
 
     public abstract String getMenuName();
@@ -51,20 +56,27 @@ public abstract class Menu implements InventoryHolder {
     public abstract void setMenuItems(List<FoundShopItemModel> foundShops);
 
     public void open() {
+
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
         this.setMenuItems();
         playerMenuUtility.getOwner().openInventory(inventory);
+
     }
 
     public void open(List<FoundShopItemModel> foundShops) {
+
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
         this.setMenuItems(foundShops);
         playerMenuUtility.getOwner().openInventory(inventory);
+
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
+
         return inventory;
+
     }
+
 }

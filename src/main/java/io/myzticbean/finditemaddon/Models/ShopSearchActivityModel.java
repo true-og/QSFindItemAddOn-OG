@@ -23,19 +23,20 @@ public class ShopSearchActivityModel {
     private List<PlayerShopVisitModel> playerVisitList;
     private boolean isHiddenFromSearch;
 
-    public boolean compareWith(String targetWorldName, double targetX, double targetY, double targetZ, String targetShopOwnerUUID) {
-        return this.getWorldName().equalsIgnoreCase(targetWorldName)
-                && this.getX() == targetX
-                && this.getY() == targetY
-                && this.getZ() == targetZ
-                && this.getShopOwnerUUID().equalsIgnoreCase(targetShopOwnerUUID);
+    public boolean compareWith(String targetWorldName, double targetX, double targetY, double targetZ,
+            String targetShopOwnerUUID)
+    {
+
+        return this.getWorldName().equalsIgnoreCase(targetWorldName) && this.getX() == targetX && this.getY() == targetY
+                && this.getZ() == targetZ && this.getShopOwnerUUID().equalsIgnoreCase(targetShopOwnerUUID);
+
     }
 
     public boolean compareWith(String targetWorldName, double targetX, double targetY, double targetZ) {
-        return this.getWorldName().equalsIgnoreCase(targetWorldName)
-                && this.getX() == targetX
-                && this.getY() == targetY
+
+        return this.getWorldName().equalsIgnoreCase(targetWorldName) && this.getX() == targetX && this.getY() == targetY
                 && this.getZ() == targetZ;
+
     }
 
 }

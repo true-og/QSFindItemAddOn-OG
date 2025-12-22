@@ -1,6 +1,6 @@
 package io.myzticbean.finditemaddon.Listeners;
 
-import io.myzticbean.finditemaddon.FindItemAddOn;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
 import io.myzticbean.finditemaddon.Utils.UpdateChecker;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +10,9 @@ public class PlayerJoinEventListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        new UpdateChecker(FindItemAddOn.getPluginID()).notifyPlayerAboutUpdateOnJoin(event);
+
+        new UpdateChecker(FindItemAddOnOG.getPluginID()).notifyPlayerAboutUpdateOnJoin(event);
+
     }
+
 }

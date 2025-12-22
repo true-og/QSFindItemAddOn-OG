@@ -13,9 +13,11 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class FoundShopItemModel {
+
     private final double shopPrice;
     private final int remainingStockOrSpace;
     private final UUID shopOwner;
     private final Location shopLocation;
     private final ItemStack item;
+
 }
