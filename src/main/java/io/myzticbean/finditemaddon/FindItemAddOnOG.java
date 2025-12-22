@@ -312,9 +312,8 @@ public final class FindItemAddOnOG extends JavaPlugin {
         // Register the subcommands under a core command
         try {
 
-            CommandManager.createCoreCommand(this, "find",
-                    "Search for items from all shops using an interactive GUI", "/find",
-                    (commandSender, subCommandList) ->
+            CommandManager.createCoreCommand(this, "find", "Search for items from all shops using an interactive GUI",
+                    "/find", (commandSender, subCommandList) ->
                     {
 
                         commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
