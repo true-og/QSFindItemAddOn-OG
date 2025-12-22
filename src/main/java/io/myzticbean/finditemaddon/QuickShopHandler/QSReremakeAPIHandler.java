@@ -306,7 +306,7 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     /**
-     * Register finditem sub-command for /qs
+     * Register find sub-command for /qs
      */
     @Override
     public void registerSubCommand() {
@@ -323,9 +323,9 @@ public class QSReremakeAPIHandler implements QSApi<QuickShop, Shop> {
 
         }
 
-        LoggerUtils.logInfo("Registered finditem sub-command for /qs");
+        LoggerUtils.logInfo("Registered find sub-command for /qs");
         api.getCommandManager()
-                .registerCmd(CommandContainer.builder().prefix("finditem").permission(PlayerPerms.FINDITEM_USE.value())
+                .registerCmd(CommandContainer.builder().prefix("find").permission(PlayerPerms.FINDITEM_USE.value())
                         .hidden(false).description("Search for items from all shops using an interactive GUI")
                         .executor(new FindItemCmdReremakeImpl()).build());
 

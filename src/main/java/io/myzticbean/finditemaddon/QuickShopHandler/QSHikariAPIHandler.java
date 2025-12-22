@@ -314,7 +314,7 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
     }
 
     /**
-     * Register finditem sub-command for /qs Unregister /qs find
+     * Register find sub-command for /qs Unregister /qs find
      */
     @Override
     public void registerSubCommand() {
@@ -331,14 +331,14 @@ public class QSHikariAPIHandler implements QSApi<QuickShop, Shop> {
 
         }
 
-        LoggerUtils.logInfo("Registered finditem sub-command for /qs");
+        LoggerUtils.logInfo("Registered find sub-command for /qs");
         /*
          * final TextComponent textComponent =
          * Component.text("Search for items from all shops using an interactive GUI");
          * final Function<String, Component> func = x ->
          * Component.text("Search for items from all shops using an interactive GUI");
          */
-        api.getCommandManager().registerCmd(CommandContainer.builder().prefix("finditem")
+        api.getCommandManager().registerCmd(CommandContainer.builder().prefix("find")
                 .permission(PlayerPerms.FINDITEM_USE.value()).hidden(false)
                 .description(locale -> Component.text("Search for items from all shops using an interactive GUI"))
                 .executor(new FindItemCmdHikariImpl()).build());

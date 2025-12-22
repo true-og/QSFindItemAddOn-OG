@@ -7,7 +7,7 @@
 ########################################
 
 # Requires finditem.use permission node for players
-# Requires finditem.hideshop permission node for running /finditem hideshop or /finditem revealshop
+# Requires finditem.hideshop permission node for running /find hideshop or /find revealshop
 # Requires finditem.admin permission node for admin commands (/finditemadmin reload)
 # Do '/finditemadmin reload' to reload this config and update your changes
 # Color codes and Hexcodes are supported below
@@ -21,13 +21,13 @@ plugin-prefix: "&8[&a&lShop Search&8] &r"
 
 # Below messages will be prefixed with the above specified prefix
 find-item-command:
-  # Specify a list of command aliases for /finditem
+  # Specify a list of command aliases for /find
   # If you don't wish to use aliases, make the field as 'command-alias: []'
   command-alias:
     - "searchshop"
     - "shopsearch"
     - "searchitem"
-  incorrect-usage-message: "&cIncorrect usage! Try &e/finditem &a{TO-BUY | TO-SELL} &6{item type | item name}"
+  incorrect-usage-message: "&cIncorrect usage! Try &e/find &a{TO-BUY | TO-SELL} &6{item type | item name}"
   invalid-material-message: "&cEither no shops were found or you provided an invalid item! &fTry selecting from autofill."
   shop-search-loading-message: "&7Searching..."
   no-shop-found-message: "&7No shops found!"
@@ -42,7 +42,7 @@ find-item-command:
   # NEEDS A SERVER RESTART IF CHANGED
   hideshop-autocomplete: "hideshop"
   revealshop-autocomplete: "revealshop"
-  # Messages shown when running /finditem hideshop and /finditem revealshop
+  # Messages shown when running /find hideshop and /find revealshop
   shop-hide-success-message: "&aShop is now hidden from search list!"
   shop-reveal-success-message: "&aShop is no longer hidden from search list!"
   shop-already-hidden-message: "&cThis shop is already hidden!"

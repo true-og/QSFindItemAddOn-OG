@@ -10,10 +10,10 @@ softdepend:
 
 permissions:
   finditem.use:
-    description: Enables players to use the /finditem command
+    description: Enables players to use the /find command
     default: true
   finditem.hideshop:
-    description: Enables players to use the /finditem hideshop & /finditem revealshop
+    description: Enables players to use the /find hideshop & /find revealshop
     default: true
   finditem.reload:
     description: For OP. Enables use of '/finditemadmin reload' to reload the config

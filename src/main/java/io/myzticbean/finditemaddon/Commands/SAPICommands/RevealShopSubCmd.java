@@ -61,7 +61,7 @@ public class RevealShopSubCmd extends SubCommand {
     @Override
     public String getSyntax() {
 
-        return "/finditem " + revealShopSubCommand;
+        return "/find " + revealShopSubCommand;
 
     }
 

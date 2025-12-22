@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * Sub Command Handler for /finditem hideshop
+ * Sub Command Handler for /find hideshop
  * 
  * @author myzticbean
  */
@@ -60,7 +60,7 @@ public class HideShopSubCmd extends SubCommand {
     @Override
     public String getSyntax() {
 
-        return "/finditem " + hideSubCommand;
+        return "/find " + hideSubCommand;
 
     }
 
