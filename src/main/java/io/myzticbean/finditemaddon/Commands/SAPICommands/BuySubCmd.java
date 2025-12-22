@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sub Command Handler for /finditem TO_BUY
+ * Sub Command Handler for /find TO_BUY
  * 
  * @author myzticbean
  */
@@ -76,7 +76,7 @@ public class BuySubCmd extends SubCommand {
     @Override
     public String getSyntax() {
 
-        return "/finditem " + buySubCommand + " {item type | item name}";
+        return "/find " + buySubCommand + " {item type | item name}";
 
     }
 

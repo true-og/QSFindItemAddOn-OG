@@ -21,7 +21,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import java.util.List;
 
 /**
- * Handler for different parameters of /finditem command
+ * Handler for different parameters of /find command
  * 
  * @author myzticbean
  */

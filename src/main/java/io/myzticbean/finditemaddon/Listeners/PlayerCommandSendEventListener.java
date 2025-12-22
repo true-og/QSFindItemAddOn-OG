@@ -16,11 +16,11 @@ public class PlayerCommandSendEventListener implements Listener {
         if (!event.getPlayer().isOp()) {
 
             List<String> blockedCommands = new ArrayList<>();
-            blockedCommands.add("finditem:finditem");
+            blockedCommands.add("find:find");
             assert FindItemAddOnOG.getConfigProvider().FIND_ITEM_COMMAND_ALIAS != null;
             for (String cmd : FindItemAddOnOG.getConfigProvider().FIND_ITEM_COMMAND_ALIAS) {
 
-                blockedCommands.add("finditem:" + cmd);
+                blockedCommands.add("find:" + cmd);
 
             }
 

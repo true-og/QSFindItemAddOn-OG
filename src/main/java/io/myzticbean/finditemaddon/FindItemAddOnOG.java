@@ -312,8 +312,8 @@ public final class FindItemAddOnOG extends JavaPlugin {
         // Register the subcommands under a core command
         try {
 
-            CommandManager.createCoreCommand(this, "finditem",
-                    "Search for items from all shops using an interactive GUI", "/finditem",
+            CommandManager.createCoreCommand(this, "find",
+                    "Search for items from all shops using an interactive GUI", "/find",
                     (commandSender, subCommandList) ->
                     {
 
@@ -332,7 +332,7 @@ public final class FindItemAddOnOG extends JavaPlugin {
                         commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
 
                     }, alias, SellSubCmd.class, BuySubCmd.class, HideShopSubCmd.class, RevealShopSubCmd.class);
-            LoggerUtils.logInfo("Registered /finditem command");
+            LoggerUtils.logInfo("Registered /find command");
 
         } catch (NoSuchFieldException | IllegalAccessException error) {
 

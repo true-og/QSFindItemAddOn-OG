@@ -2,7 +2,7 @@
 ### Version: ${project.version}
 
 An unofficial add-on for the QuickShop Hikari and Reremake spigot plugin.
-Adds a `/finditem` command in game for searching through all the shops on the server.
+Adds a `/find` command in game for searching through all the shops on the server.
 
 ![MC](https://img.shields.io/badge/Minecraft-Java%20Edition:%201.16.5%20--%201.20.1-brightgreen)
 ![Ver](https://img.shields.io/spiget/version/95104?label=Current%20Spigot%20Version)
@@ -29,13 +29,13 @@ Adds a `/finditem` command in game for searching through all the shops on the se
 - All messages in the config.yml support hexcodes.
 
 **View all shops on server**
-- You can do `/finditem TO_BUY *` or `/finditem TO_SELL *` to view all shops on the server. As of this version, the sequence is always randomized. Sorting options are a work in progress.
+- You can do `/find TO_BUY *` or `/find TO_SELL *` to view all shops on the server. As of this version, the sequence is always randomized. Sorting options are a work in progress.
 
 **Shop visit count**
 - You can choose to display shop visits count in the shop lore in Search GUI. Just add the placeholder `{SHOP_VISITS}` in the `shop-gui-item-lore` in config.yml. To prevent visit spamming, a new config property `shop-player-visit-cooldown-in-minutes` has been added. Please don't use decimals here. 😁
 
 **Customizable command aliases**
-- You can find a property in config.yml called `command-alias` where you can specify your own list of command aliases for /finditem command. If you don't wish to add any, just make it as:
+- You can find a property in config.yml called `command-alias` where you can specify your own list of command aliases for /find command. If you don't wish to add any, just make it as:
 ```yaml
 command-alias: []
 ```

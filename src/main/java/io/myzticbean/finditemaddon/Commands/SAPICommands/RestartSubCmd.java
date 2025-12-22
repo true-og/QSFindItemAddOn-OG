@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 /**
- * Sub Command Handler for /finditem restart
+ * Sub Command Handler for /find restart
  * 
  * @deprecated No longer used, will be removed in future versions
  * @author myzticbean
