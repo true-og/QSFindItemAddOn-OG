@@ -1,0 +1,52 @@
+name: ${project.name}
+version: ${version}
+main: io.myzticbean.finditemaddon.FindItemAddOnOG
+api-version: '${apiVersion}'
+authors: [myzticbean]
+description: Search items from QuickShop shops with /find.
+website: https://github.com/myzticbean/QSFindItemAddOn
+softdepend:
+  - QuickShop-OG
+  - QuickShop-OG-Alt
+  - Essentials
+  - WorldGuard
+  - PlayerWarps
+commands:
+  find:
+    description: Search for items from all shops using an interactive GUI.
+    usage: /find
+    aliases: [shopsearch, searchshop, searchitem]
+    permission: finditem.use
+  finditemadmin:
+    description: Admin command for Shop Search addon.
+    usage: /finditemadmin
+    aliases: [fiadmin]
+    permission: finditem.admin
+permissions:
+  finditem.use:
+    description: Allows using /find.
+    default: true
+  finditem.hideshop:
+    description: Allows hiding your own shops from /find search results.
+    default: op
+  finditem.admin:
+    description: Full admin access to /finditemadmin.
+    default: op
+    children:
+      finditem.reload: true
+      finditem.restart: true
+  finditem.reload:
+    description: Allows reloading this plugin using /finditemadmin reload.
+    default: op
+  finditem.restart:
+    description: Legacy restart subcommand permission.
+    default: op
+  finditem.shoptp:
+    description: Allows teleporting to shops from the search GUI.
+    default: true
+  finditem.shoptp.own:
+    description: Allows teleporting to your own shops.
+    default: op
+  finditem.shoptp-delay.bypass:
+    description: Bypasses any configured shop teleport delay.
+    default: op
