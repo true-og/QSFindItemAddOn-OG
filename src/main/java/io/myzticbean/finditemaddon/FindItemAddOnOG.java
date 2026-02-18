@@ -403,28 +403,32 @@ public final class FindItemAddOnOG extends JavaPlugin {
 
             final String sub = args[0].toLowerCase();
             final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+            final SellSubCmd sellSubCmd = new SellSubCmd();
+            final BuySubCmd buySubCmd = new BuySubCmd();
+            final HideShopSubCmd hideShopSubCmd = new HideShopSubCmd();
+            final RevealShopSubCmd revealShopSubCmd = new RevealShopSubCmd();
 
-            if ("sell".equals(sub)) {
+            if (matchesSubCommand(sub, "sell", sellSubCmd)) {
 
-                return invokeSubCommand(new SellSubCmd(), sender, command, label, subArgs);
-
-            }
-
-            if ("buy".equals(sub)) {
-
-                return invokeSubCommand(new BuySubCmd(), sender, command, label, subArgs);
+                return invokeSubCommand(sellSubCmd, sender, command, label, subArgs);
 
             }
 
-            if ("hide".equals(sub) || "hideshop".equals(sub)) {
+            if (matchesSubCommand(sub, "buy", buySubCmd)) {
 
-                return invokeSubCommand(new HideShopSubCmd(), sender, command, label, subArgs);
+                return invokeSubCommand(buySubCmd, sender, command, label, subArgs);
 
             }
 
-            if ("reveal".equals(sub) || "revealshop".equals(sub)) {
+            if (matchesSubCommand(sub, "hide", hideShopSubCmd) || "hideshop".equals(sub)) {
 
-                return invokeSubCommand(new RevealShopSubCmd(), sender, command, label, subArgs);
+                return invokeSubCommand(hideShopSubCmd, sender, command, label, subArgs);
+
+            }
+
+            if (matchesSubCommand(sub, "reveal", revealShopSubCmd) || "revealshop".equals(sub)) {
+
+                return invokeSubCommand(revealShopSubCmd, sender, command, label, subArgs);
 
             }
 
@@ -436,9 +440,16 @@ public final class FindItemAddOnOG extends JavaPlugin {
         @Override
         public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
+            final SellSubCmd sellSubCmd = new SellSubCmd();
+            final BuySubCmd buySubCmd = new BuySubCmd();
+            final HideShopSubCmd hideShopSubCmd = new HideShopSubCmd();
+            final RevealShopSubCmd revealShopSubCmd = new RevealShopSubCmd();
+
             if (args.length == 1) {
 
-                return partialMatches(args[0], Arrays.asList("sell", "buy", "hide", "reveal", "help"));
+                return partialMatches(args[0], Arrays.asList(getSubCommandName(sellSubCmd), getSubCommandName(buySubCmd),
+                        getSubCommandName(hideShopSubCmd), getSubCommandName(revealShopSubCmd), "sell", "buy", "hide",
+                        "reveal", "help", "hideshop", "revealshop"));
 
             }
 
@@ -447,27 +458,27 @@ public final class FindItemAddOnOG extends JavaPlugin {
                 final String sub = args[0].toLowerCase();
                 final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
 
-                if ("sell".equals(sub)) {
+                if (matchesSubCommand(sub, "sell", sellSubCmd)) {
 
-                    return invokeTabComplete(new SellSubCmd(), sender, command, alias, subArgs);
-
-                }
-
-                if ("buy".equals(sub)) {
-
-                    return invokeTabComplete(new BuySubCmd(), sender, command, alias, subArgs);
+                    return invokeTabComplete(sellSubCmd, sender, command, alias, subArgs);
 
                 }
 
-                if ("hide".equals(sub) || "hideshop".equals(sub)) {
+                if (matchesSubCommand(sub, "buy", buySubCmd)) {
 
-                    return invokeTabComplete(new HideShopSubCmd(), sender, command, alias, subArgs);
+                    return invokeTabComplete(buySubCmd, sender, command, alias, subArgs);
 
                 }
 
-                if ("reveal".equals(sub) || "revealshop".equals(sub)) {
+                if (matchesSubCommand(sub, "hide", hideShopSubCmd) || "hideshop".equals(sub)) {
 
-                    return invokeTabComplete(new RevealShopSubCmd(), sender, command, alias, subArgs);
+                    return invokeTabComplete(hideShopSubCmd, sender, command, alias, subArgs);
+
+                }
+
+                if (matchesSubCommand(sub, "reveal", revealShopSubCmd) || "revealshop".equals(sub)) {
+
+                    return invokeTabComplete(revealShopSubCmd, sender, command, alias, subArgs);
 
                 }
 
@@ -487,13 +498,13 @@ public final class FindItemAddOnOG extends JavaPlugin {
             final List<Object> subCommands = Arrays.asList(new SellSubCmd(), new BuySubCmd(), new HideShopSubCmd(),
                     new RevealShopSubCmd());
 
-            subCommands.forEach(subCommand -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&#ff9933"
-                    + getSubCommandSyntax(subCommand) + " &#a3a3c2" + getSubCommandDescription(subCommand))));
+            subCommands.forEach(subCommand -> commandSender.sendMessage(UtilitiesOG.trueogColorize("<#ff9933>"
+                    + getSubCommandSyntax(subCommand) + " <#a3a3c2>" + getSubCommandDescription(subCommand))));
 
             commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
-            commandSender.sendMessage(UtilitiesOG.trueogColorize("&#b3b300Command alias:"));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("<#b3b300>Command alias:"));
             aliases.forEach(
-                    alias_i -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&8&l» &#2db300/" + alias_i)));
+                    alias_i -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&8&l» <#2db300>/" + alias_i)));
             commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
 
         }
@@ -583,13 +594,13 @@ public final class FindItemAddOnOG extends JavaPlugin {
 
             final List<Object> subCommands = Collections.singletonList(new ReloadSubCmd());
 
-            subCommands.forEach(subCommand -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&#ff1a1a"
-                    + getSubCommandSyntax(subCommand) + " &#a3a3c2" + getSubCommandDescription(subCommand))));
+            subCommands.forEach(subCommand -> commandSender.sendMessage(UtilitiesOG.trueogColorize("<#ff1a1a>"
+                    + getSubCommandSyntax(subCommand) + " <#a3a3c2>" + getSubCommandDescription(subCommand))));
 
             commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
-            commandSender.sendMessage(UtilitiesOG.trueogColorize("&#b3b300Command alias:"));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("<#b3b300>Command alias:"));
             aliases.forEach(
-                    alias_i -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&8&l» &#2db300/" + alias_i)));
+                    alias_i -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&8&l» <#2db300>/" + alias_i)));
             commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
 
         }
@@ -702,6 +713,35 @@ public final class FindItemAddOnOG extends JavaPlugin {
         }
 
         return "";
+
+    }
+
+    private static String getSubCommandName(Object subCommand) {
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("getName");
+            final Object res = m.invoke(subCommand);
+            return res == null ? "" : String.valueOf(res);
+
+        } catch (Throwable ignored) {
+
+        }
+
+        return "";
+
+    }
+
+    private static boolean matchesSubCommand(String input, String fallbackCommand, Object subCommand) {
+
+        if (fallbackCommand.equalsIgnoreCase(input)) {
+
+            return true;
+
+        }
+
+        final String subCommandName = getSubCommandName(subCommand);
+        return !subCommandName.isBlank() && subCommandName.equalsIgnoreCase(input);
 
     }
 

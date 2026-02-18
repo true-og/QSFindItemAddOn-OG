@@ -11,7 +11,7 @@
 # Requires finditem.admin permission node for admin commands (/finditemadmin reload)
 # Do '/finditemadmin reload' to reload this config and update your changes
 # Color codes and Hexcodes are supported below
-# For a hexcode such as #55a800Q you can use &#55a800Q below
+# For a hexcode such as #55a800Q, use MiniMessage format like <#55a800>Q below
 # If you want to keep a field empty, make it as ""
 # DON'T leave it empty without quotes, or bad and soul crushing things might happen!
 
