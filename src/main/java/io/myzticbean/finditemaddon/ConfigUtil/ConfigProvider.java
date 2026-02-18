@@ -7,12 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import io.myzticbean.finditemaddon.Utils.LoggerUtils;
-import net.kyori.adventure.text.TextComponent;
-import net.trueog.utilitiesog.UtilitiesOG;
 
 public class ConfigProvider {
 
-    public final TextComponent PLUGIN_PREFIX = UtilitiesOG.trueogColorize(ConfigSetup.get().getString("plugin-prefix"));
+    public final String PLUGIN_PREFIX = ConfigSetup.get().getString("plugin-prefix");
     public final List<String> FIND_ITEM_COMMAND_ALIAS = (List<String>) ConfigSetup.get()
             .getList("find-item-command.command-alias");
     public final String FIND_ITEM_TO_BUY_AUTOCOMPLETE = ConfigSetup.get()
