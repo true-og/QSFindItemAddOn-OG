@@ -447,9 +447,10 @@ public final class FindItemAddOnOG extends JavaPlugin {
 
             if (args.length == 1) {
 
-                return partialMatches(args[0], Arrays.asList(getSubCommandName(sellSubCmd), getSubCommandName(buySubCmd),
-                        getSubCommandName(hideShopSubCmd), getSubCommandName(revealShopSubCmd), "sell", "buy", "hide",
-                        "reveal", "help", "hideshop", "revealshop"));
+                return partialMatches(args[0],
+                        Arrays.asList(getSubCommandName(sellSubCmd), getSubCommandName(buySubCmd),
+                                getSubCommandName(hideShopSubCmd), getSubCommandName(revealShopSubCmd), "sell", "buy",
+                                "hide", "reveal", "help", "hideshop", "revealshop"));
 
             }
 
