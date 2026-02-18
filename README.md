@@ -1,7 +1,6 @@
-# Shop Search AddOn For QuickShop
-### Version: 2.0.5.4-SNAPSHOT
+# QSFindItemAddOn-OG
 
-An unofficial add-on for the QuickShop Hikari and Reremake spigot plugin.
+A 1.19.4 fork of QSFindItemAddOn, an unofficial add-on for the QuickShop Hikari and Reremake spigot plugin.
 Adds a `/find` command in game for searching through all the shops on the server.
 
 ![MC](https://img.shields.io/badge/Minecraft-Java%20Edition:%201.16.5%20--%201.20.1-brightgreen)
