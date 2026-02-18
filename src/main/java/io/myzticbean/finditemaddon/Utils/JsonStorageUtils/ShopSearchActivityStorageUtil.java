@@ -36,7 +36,6 @@ import io.myzticbean.finditemaddon.Models.PlayerShopVisitModel;
 import io.myzticbean.finditemaddon.Models.ShopSearchActivityModel;
 import io.myzticbean.finditemaddon.Utils.LoggerUtils;
 import lombok.Getter;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
 
 public class ShopSearchActivityStorageUtil {
 
@@ -105,14 +104,12 @@ public class ShopSearchActivityStorageUtil {
 
                 if (isCooldownTimeElapsed) {
 
-                    LoggerUtils.logDebugInfo(
-                            ColorTranslator.translateColorCodes("&6" + player.getName() + " is out of cooldown"));
+                    LoggerUtils.logDebugInfo(("&6" + player.getName() + " is out of cooldown"));
                     return true;
 
                 } else {
 
-                    LoggerUtils.logDebugInfo(
-                            ColorTranslator.translateColorCodes("&6" + player.getName() + " still has cooldown"));
+                    LoggerUtils.logDebugInfo(("&6" + player.getName() + " still has cooldown"));
                     return false;
 
                 }
@@ -121,8 +118,7 @@ public class ShopSearchActivityStorageUtil {
 
         }
 
-        LoggerUtils.logDebugInfo(
-                ColorTranslator.translateColorCodes("&6Shop not found, returning false for cooldown check"));
+        LoggerUtils.logDebugInfo(("&6Shop not found, returning false for cooldown check"));
         return false;
 
     }

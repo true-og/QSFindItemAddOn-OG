@@ -1,11 +1,20 @@
 package io.myzticbean.finditemaddon;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,18 +31,15 @@ import io.myzticbean.finditemaddon.Dependencies.WGPlugin;
 import io.myzticbean.finditemaddon.Handlers.GUIHandler.PlayerMenuUtility;
 import io.myzticbean.finditemaddon.Listeners.MenuListener;
 import io.myzticbean.finditemaddon.Listeners.PlayerCommandSendEventListener;
-import io.myzticbean.finditemaddon.Listeners.PlayerJoinEventListener;
 import io.myzticbean.finditemaddon.Listeners.PluginEnableEventListener;
 import io.myzticbean.finditemaddon.QuickShopHandler.QSApi;
 import io.myzticbean.finditemaddon.QuickShopHandler.QSHikariAPIHandler;
 import io.myzticbean.finditemaddon.QuickShopHandler.QSReremakeAPIHandler;
 import io.myzticbean.finditemaddon.ScheduledTasks.Task15MinInterval;
 import io.myzticbean.finditemaddon.Utils.LoggerUtils;
-import io.myzticbean.finditemaddon.Utils.UpdateChecker;
 import io.myzticbean.finditemaddon.Utils.Defaults.PlayerPerms;
 import io.myzticbean.finditemaddon.Utils.JsonStorageUtils.ShopSearchActivityStorageUtil;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
-import me.kodysimpson.simpapi.command.CommandManager;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 public final class FindItemAddOnOG extends JavaPlugin {
 
@@ -55,7 +61,7 @@ public final class FindItemAddOnOG extends JavaPlugin {
     private static final int SPIGOT_PLUGIN_ID = 95104;
     private static final int REPEATING_TASK_SCHEDULE_MINS = 15 * 60 * 20;
     private static ConfigProvider configProvider;
-    private static boolean isPluginOutdated = false;
+    private static final boolean isPluginOutdated = false;
     private static boolean qSReremakeInstalled = false;
     private static boolean qSHikariInstalled = false;
     @SuppressWarnings("rawtypes")
@@ -207,32 +213,6 @@ public final class FindItemAddOnOG extends JavaPlugin {
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Task15MinInterval(), 0,
                 REPEATING_TASK_SCHEDULE_MINS);
 
-        // Check for plugin updates
-        new UpdateChecker(SPIGOT_PLUGIN_ID).getLatestVersion(version -> {
-
-            if (this.getPluginMeta().getVersion().equalsIgnoreCase(version)) {
-
-                LoggerUtils.logInfo("Oh awesome! Plugin is up to date");
-
-            } else {
-
-                isPluginOutdated = true;
-                if (version.toLowerCase().contains("snapshot")) {
-
-                    LoggerUtils.logWarning("Plugin has a new snapshot version available! (Version: " + version + ")");
-
-                } else {
-
-                    LoggerUtils.logWarning("Plugin has a new update available! (Version: " + version + ")");
-
-                }
-
-                LoggerUtils.logWarning("Download here: https://www.spigotmc.org/resources/" + SPIGOT_PLUGIN_ID + "/");
-
-            }
-
-        });
-
     }
 
     private void initCommands() {
@@ -249,7 +229,6 @@ public final class FindItemAddOnOG extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PluginEnableEventListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerCommandSendEventListener(), this);
         this.getServer().getPluginManager().registerEvents(new MenuListener(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerJoinEventListener(), this);
 
     }
 
@@ -309,82 +288,449 @@ public final class FindItemAddOnOG extends JavaPlugin {
 
         }
 
-        // Register the subcommands under a core command
-        try {
-
-            CommandManager.createCoreCommand(this, "find", "Search for items from all shops using an interactive GUI",
-                    "/find", (commandSender, subCommandList) ->
-                    {
-
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&7------------------------"));
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&6&lShop Search Commands"));
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&7------------------------"));
-                        subCommandList.forEach(
-                                subCommand -> commandSender.sendMessage(ColorTranslator.translateColorCodes("&#ff9933"
-                                        + subCommand.getSyntax() + " &#a3a3c2" + subCommand.getDescription())));
-
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes("&#b3b300Command alias:"));
-                        alias.forEach(alias_i -> commandSender
-                                .sendMessage(ColorTranslator.translateColorCodes("&8&l» &#2db300/" + alias_i)));
-                        commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-
-                    }, alias, SellSubCmd.class, BuySubCmd.class, HideShopSubCmd.class, RevealShopSubCmd.class);
-            LoggerUtils.logInfo("Registered /find command");
-
-        } catch (NoSuchFieldException | IllegalAccessException error) {
-
-            LoggerUtils.logError(error.getMessage());
-            error.printStackTrace();
-
-        }
+        LoggerUtils.logInfo("Registering /find command");
+        registerBukkitCommand("find", alias, "Search for items from all shops using an interactive GUI", "/find",
+                new FindCommandExecutor(alias), new FindCommandExecutor(alias));
+        LoggerUtils.logInfo("Registered /find command");
 
     }
 
     private void initFindItemAdminCmd() {
 
         final List<String> alias = List.of("fiadmin");
-        try {
+        LoggerUtils.logInfo("Registering /finditemadmin command");
+        registerBukkitCommand("finditemadmin", alias, "Admin command for Shop Search addon", "/finditemadmin",
+                new FindItemAdminCommandExecutor(alias), new FindItemAdminCommandExecutor(alias));
+        LoggerUtils.logInfo("Registered /finditemadmin command");
 
-            CommandManager.createCoreCommand(this, "finditemadmin", "Admin command for Shop Search addon",
-                    "/finditemadmin", (commandSender, subCommandList) ->
-                    {
+    }
 
-                        if ((commandSender.isOp()) || (!commandSender.isOp()
-                                && (commandSender.hasPermission(PlayerPerms.FINDITEM_ADMIN.value())
-                                        || commandSender.hasPermission(PlayerPerms.FINDITEM_RELOAD.value()))))
-                    {
+    private void registerBukkitCommand(String name, List<String> aliases, String description, String usage,
+            CommandExecutor executor, TabCompleter completer)
+    {
 
-                            commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-                            commandSender.sendMessage(
-                                    ColorTranslator.translateColorCodes("&7-----------------------------"));
-                            commandSender
-                                    .sendMessage(ColorTranslator.translateColorCodes("&6&lShop Search Admin Commands"));
-                            commandSender.sendMessage(
-                                    ColorTranslator.translateColorCodes("&7-----------------------------"));
+        PluginCommand cmd = this.getCommand(name);
+        if (cmd == null) {
 
-                            subCommandList.forEach(subCommand -> commandSender
-                                    .sendMessage(ColorTranslator.translateColorCodes("&#ff1a1a" + subCommand.getSyntax()
-                                            + " &#a3a3c2" + subCommand.getDescription())));
-
-                            commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-                            commandSender.sendMessage(ColorTranslator.translateColorCodes("&#b3b300Command alias:"));
-                            alias.forEach(alias_i -> commandSender
-                                    .sendMessage(ColorTranslator.translateColorCodes("&8&l» &#2db300/" + alias_i)));
-                            commandSender.sendMessage(ColorTranslator.translateColorCodes(""));
-
-                        }
-
-                    }, alias, ReloadSubCmd.class);
-            LoggerUtils.logInfo("Registered /finditemadmin command");
-
-        } catch (NoSuchFieldException | IllegalAccessException error) {
-
-            LoggerUtils.logError(error.getMessage());
-            error.printStackTrace();
+            cmd = registerDynamicPluginCommand(name);
 
         }
+
+        if (cmd == null) {
+
+            LoggerUtils.logError("Failed to register command: " + name);
+            return;
+
+        }
+
+        cmd.setDescription(description);
+        cmd.setUsage(usage);
+
+        if (aliases != null) {
+
+            cmd.setAliases(aliases);
+
+        }
+
+        cmd.setExecutor(executor);
+        cmd.setTabCompleter(completer);
+
+    }
+
+    private PluginCommand registerDynamicPluginCommand(String name) {
+
+        try {
+
+            final CommandMap commandMap = getCommandMap();
+            if (commandMap == null) {
+
+                return null;
+
+            }
+
+            final Constructor<PluginCommand> ctor = PluginCommand.class.getDeclaredConstructor(String.class,
+                    Plugin.class);
+            ctor.setAccessible(true);
+
+            final PluginCommand cmd = ctor.newInstance(name, this);
+            commandMap.register(this.getPluginMeta().getName(), cmd);
+            return cmd;
+
+        } catch (Throwable t) {
+
+            LoggerUtils.logError(t.getMessage());
+            t.printStackTrace();
+            return null;
+
+        }
+
+    }
+
+    private CommandMap getCommandMap() {
+
+        try {
+
+            final Method m = Bukkit.getServer().getClass().getMethod("getCommandMap");
+            return (CommandMap) m.invoke(Bukkit.getServer());
+
+        } catch (Throwable t) {
+
+            LoggerUtils.logError(t.getMessage());
+            t.printStackTrace();
+            return null;
+
+        }
+
+    }
+
+    private record FindCommandExecutor(List<String> aliases) implements CommandExecutor, TabCompleter {
+
+        private FindCommandExecutor(List<String> aliases) {
+
+            this.aliases = aliases == null ? Collections.emptyList() : aliases;
+
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+            if (args.length == 0 || "help".equalsIgnoreCase(args[0])) {
+
+                sendHelp(sender);
+                return true;
+
+            }
+
+            final String sub = args[0].toLowerCase();
+            final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+
+            if ("sell".equals(sub)) {
+
+                return invokeSubCommand(new SellSubCmd(), sender, command, label, subArgs);
+
+            }
+
+            if ("buy".equals(sub)) {
+
+                return invokeSubCommand(new BuySubCmd(), sender, command, label, subArgs);
+
+            }
+
+            if ("hide".equals(sub) || "hideshop".equals(sub)) {
+
+                return invokeSubCommand(new HideShopSubCmd(), sender, command, label, subArgs);
+
+            }
+
+            if ("reveal".equals(sub) || "revealshop".equals(sub)) {
+
+                return invokeSubCommand(new RevealShopSubCmd(), sender, command, label, subArgs);
+
+            }
+
+            sendHelp(sender);
+            return true;
+
+        }
+
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+            if (args.length == 1) {
+
+                return partialMatches(args[0], Arrays.asList("sell", "buy", "hide", "reveal", "help"));
+
+            }
+
+            if (args.length >= 2) {
+
+                final String sub = args[0].toLowerCase();
+                final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+
+                if ("sell".equals(sub)) {
+
+                    return invokeTabComplete(new SellSubCmd(), sender, command, alias, subArgs);
+
+                }
+
+                if ("buy".equals(sub)) {
+
+                    return invokeTabComplete(new BuySubCmd(), sender, command, alias, subArgs);
+
+                }
+
+                if ("hide".equals(sub) || "hideshop".equals(sub)) {
+
+                    return invokeTabComplete(new HideShopSubCmd(), sender, command, alias, subArgs);
+
+                }
+
+                if ("reveal".equals(sub) || "revealshop".equals(sub)) {
+
+                    return invokeTabComplete(new RevealShopSubCmd(), sender, command, alias, subArgs);
+
+                }
+
+            }
+
+            return Collections.emptyList();
+
+        }
+
+        private void sendHelp(CommandSender commandSender) {
+
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&7------------------------"));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&6&lShop Search Commands"));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&7------------------------"));
+
+            final List<Object> subCommands = Arrays.asList(new SellSubCmd(), new BuySubCmd(), new HideShopSubCmd(),
+                    new RevealShopSubCmd());
+
+            subCommands.forEach(subCommand -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&#ff9933"
+                    + getSubCommandSyntax(subCommand) + " &#a3a3c2" + getSubCommandDescription(subCommand))));
+
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&#b3b300Command alias:"));
+            aliases.forEach(
+                    alias_i -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&8&l» &#2db300/" + alias_i)));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
+
+        }
+
+    }
+
+    private record FindItemAdminCommandExecutor(List<String> aliases) implements CommandExecutor, TabCompleter {
+
+        private FindItemAdminCommandExecutor(List<String> aliases) {
+
+            this.aliases = aliases == null ? Collections.emptyList() : aliases;
+
+        }
+
+        @Override
+        public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+            if (!((sender.isOp()) || (!sender.isOp() && (sender.hasPermission(PlayerPerms.FINDITEM_ADMIN.value())
+                    || sender.hasPermission(PlayerPerms.FINDITEM_RELOAD.value())))))
+            {
+
+                return true;
+
+            }
+
+            if (args.length == 0 || "help".equalsIgnoreCase(args[0])) {
+
+                sendHelp(sender);
+                return true;
+
+            }
+
+            final String sub = args[0].toLowerCase();
+            final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+
+            if ("reload".equals(sub)) {
+
+                return invokeSubCommand(new ReloadSubCmd(), sender, command, label, subArgs);
+
+            }
+
+            sendHelp(sender);
+            return true;
+
+        }
+
+        @Override
+        public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+
+            if (!((sender.isOp()) || (!sender.isOp() && (sender.hasPermission(PlayerPerms.FINDITEM_ADMIN.value())
+                    || sender.hasPermission(PlayerPerms.FINDITEM_RELOAD.value())))))
+            {
+
+                return Collections.emptyList();
+
+            }
+
+            if (args.length == 1) {
+
+                return partialMatches(args[0], Arrays.asList("reload", "help"));
+
+            }
+
+            if (args.length >= 2) {
+
+                final String sub = args[0].toLowerCase();
+                final String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+
+                if ("reload".equals(sub)) {
+
+                    return invokeTabComplete(new ReloadSubCmd(), sender, command, alias, subArgs);
+
+                }
+
+            }
+
+            return Collections.emptyList();
+
+        }
+
+        private void sendHelp(CommandSender commandSender) {
+
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&7-----------------------------"));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&6&lShop Search Admin Commands"));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&7-----------------------------"));
+
+            final List<Object> subCommands = Collections.singletonList(new ReloadSubCmd());
+
+            subCommands.forEach(subCommand -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&#ff1a1a"
+                    + getSubCommandSyntax(subCommand) + " &#a3a3c2" + getSubCommandDescription(subCommand))));
+
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize("&#b3b300Command alias:"));
+            aliases.forEach(
+                    alias_i -> commandSender.sendMessage(UtilitiesOG.trueogColorize("&8&l» &#2db300/" + alias_i)));
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(""));
+
+        }
+
+    }
+
+    private static boolean invokeSubCommand(Object subCommand, CommandSender sender, Command command, String label,
+            String[] args)
+    {
+
+        if (subCommand instanceof CommandExecutor) {
+
+            return ((CommandExecutor) subCommand).onCommand(sender, command, label, args);
+
+        }
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("execute", CommandSender.class, String[].class);
+            final Object res = m.invoke(subCommand, sender, args);
+            if (res instanceof Boolean) {
+
+                return (Boolean) res;
+
+            }
+
+            return true;
+
+        } catch (Throwable ignored) {
+
+        }
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("execute", CommandSender.class, Command.class,
+                    String.class, String[].class);
+            final Object res = m.invoke(subCommand, sender, command, label, args);
+            if (res instanceof Boolean) {
+
+                return (Boolean) res;
+
+            }
+
+            return true;
+
+        } catch (Throwable ignored) {
+
+        }
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("onCommand", CommandSender.class, Command.class,
+                    String.class, String[].class);
+            final Object res = m.invoke(subCommand, sender, command, label, args);
+            if (res instanceof Boolean) {
+
+                return (Boolean) res;
+
+            }
+
+            return true;
+
+        } catch (Throwable t) {
+
+            LoggerUtils.logError(t.getMessage());
+            t.printStackTrace();
+            return true;
+
+        }
+
+    }
+
+    private static List<String> invokeTabComplete(Object subCommand, CommandSender sender, Command command,
+            String label, String[] args)
+    {
+
+        if (subCommand instanceof TabCompleter) {
+
+            final List<String> res = ((TabCompleter) subCommand).onTabComplete(sender, command, label, args);
+            return res == null ? Collections.emptyList() : res;
+
+        }
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("onTabComplete", CommandSender.class, Command.class,
+                    String.class, String[].class);
+            @SuppressWarnings("unchecked")
+            final List<String> res = (List<String>) m.invoke(subCommand, sender, command, label, args);
+            return res == null ? Collections.emptyList() : res;
+
+        } catch (Throwable ignored) {
+
+        }
+
+        return Collections.emptyList();
+
+    }
+
+    private static String getSubCommandSyntax(Object subCommand) {
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("getSyntax");
+            final Object res = m.invoke(subCommand);
+            return res == null ? "" : String.valueOf(res);
+
+        } catch (Throwable ignored) {
+
+        }
+
+        return "";
+
+    }
+
+    private static String getSubCommandDescription(Object subCommand) {
+
+        try {
+
+            final Method m = subCommand.getClass().getMethod("getDescription");
+            final Object res = m.invoke(subCommand);
+            return res == null ? "" : String.valueOf(res);
+
+        } catch (Throwable ignored) {
+
+        }
+
+        return "";
+
+    }
+
+    private static List<String> partialMatches(String token, List<String> options) {
+
+        if (token == null || token.isEmpty()) {
+
+            return options;
+
+        }
+
+        final String lower = token.toLowerCase();
+        return options.stream().filter(s -> s.toLowerCase().startsWith(lower)).toList();
 
     }
 

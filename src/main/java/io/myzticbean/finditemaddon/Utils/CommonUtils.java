@@ -1,28 +1,28 @@
 package io.myzticbean.finditemaddon.Utils;
 
-import me.kodysimpson.simpapi.colors.ColorTranslator;
-import net.md_5.bungee.api.ChatMessageType;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import net.kyori.adventure.text.Component;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 public class CommonUtils {
 
-    public static String parseColors(String msg) {
-
-        return ChatColor.translateAlternateColorCodes('&', msg);
-
-    }
-
     public static void sendPlayerActionBar(Player player, String msg) {
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                ColorTranslator.translateColorCodesToTextComponent(msg));
+        if (player == null || msg == null) {
+
+            return;
+
+        }
+
+        final Component component = UtilitiesOG.trueogColorize(msg);
+        player.sendActionBar(component);
 
     }
 
     public static String capitalizeFirstLetters(String str) {
 
-        char[] array = str.toCharArray();
+        final char[] array = str.toCharArray();
 
         // Uppercase first letter.
         array[0] = Character.toUpperCase(array[0]);

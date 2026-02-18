@@ -1,11 +1,13 @@
 package io.myzticbean.finditemaddon.Commands.SAPICommands;
 
-import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
-import me.kodysimpson.simpapi.command.SubCommand;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.List;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
+import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
 
 /**
  * Sub Command Handler for /find restart
@@ -14,7 +16,7 @@ import java.util.List;
  * @author myzticbean
  */
 @Deprecated
-public class RestartSubCmd extends SubCommand {
+public class RestartSubCmd implements CommandExecutor, TabCompleter {
 
     private final CmdExecutorHandler cmdExecutor;
 
@@ -24,28 +26,24 @@ public class RestartSubCmd extends SubCommand {
 
     }
 
-    @Override
     public String getName() {
 
         return "restart";
 
     }
 
-    @Override
     public List<String> getAliases() {
 
         return null;
 
     }
 
-    @Override
     public String getDescription() {
 
         return "Restarts the plugin (NOT recommended in most cases, restart server if necessary)";
 
     }
 
-    @Override
     public String getSyntax() {
 
         return "/finditemadmin restart";
@@ -53,16 +51,17 @@ public class RestartSubCmd extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender commandSender, String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
         cmdExecutor.handlePluginRestart(commandSender);
+        return true;
 
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        return null;
+        return List.of();
 
     }
 

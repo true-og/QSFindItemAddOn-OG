@@ -1,14 +1,7 @@
 package io.myzticbean.finditemaddon.Handlers.CommandHandler;
 
-import io.myzticbean.finditemaddon.ConfigUtil.ConfigSetup;
-import io.myzticbean.finditemaddon.FindItemAddOnOG;
-import io.myzticbean.finditemaddon.Handlers.GUIHandler.Menus.FoundShopsMenu;
-import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
-import io.myzticbean.finditemaddon.Utils.Defaults.PlayerPerms;
-import io.myzticbean.finditemaddon.Utils.JsonStorageUtils.HiddenShopStorageUtil;
-import io.myzticbean.finditemaddon.Utils.LoggerUtils;
-import io.myzticbean.finditemaddon.Utils.WarpUtils.WarpUtils;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,7 +11,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.maxgamer.quickshop.api.shop.Shop;
 
-import java.util.List;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
+import io.myzticbean.finditemaddon.ConfigUtil.ConfigSetup;
+import io.myzticbean.finditemaddon.Handlers.GUIHandler.Menus.FoundShopsMenu;
+import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
+import io.myzticbean.finditemaddon.Utils.LoggerUtils;
+import io.myzticbean.finditemaddon.Utils.Defaults.PlayerPerms;
+import io.myzticbean.finditemaddon.Utils.JsonStorageUtils.HiddenShopStorageUtil;
+import io.myzticbean.finditemaddon.Utils.WarpUtils.WarpUtils;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 /**
  * Handler for different parameters of /find command
@@ -47,9 +48,8 @@ public class CmdExecutorHandler {
 
                 if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_SEARCH_LOADING_MSG)) {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().SHOP_SEARCH_LOADING_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().SHOP_SEARCH_LOADING_MSG));
 
                 }
 
@@ -87,8 +87,8 @@ public class CmdExecutorHandler {
 
                         if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().NO_SHOP_FOUND_MSG)) {
 
-                            player.sendMessage(ColorTranslator
-                                    .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            player.sendMessage(
+                                    UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                             + FindItemAddOnOG.getConfigProvider().NO_SHOP_FOUND_MSG));
 
                         }
@@ -97,18 +97,18 @@ public class CmdExecutorHandler {
 
                 } else {
 
-                    Material mat = Material.getMaterial(itemArg.toUpperCase());
+                    final Material mat = Material.getMaterial(itemArg.toUpperCase());
                     if (mat != null) {
 
                         LoggerUtils.logDebugInfo("Material found: " + mat.toString());
-                        List<FoundShopItemModel> searchResultList = FindItemAddOnOG.getQsApiInstance()
+                        final List<FoundShopItemModel> searchResultList = FindItemAddOnOG.getQsApiInstance()
                                 .findItemBasedOnTypeFromAllShops(new ItemStack(mat), isBuying, player);
                         if (searchResultList.size() > 0) {
 
                             Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOnOG.getInstance(), () -> {
 
-                                FoundShopsMenu menu = new FoundShopsMenu(FindItemAddOnOG.getPlayerMenuUtility(player),
-                                        searchResultList);
+                                final FoundShopsMenu menu = new FoundShopsMenu(
+                                        FindItemAddOnOG.getPlayerMenuUtility(player), searchResultList);
                                 Bukkit.getScheduler().runTask(FindItemAddOnOG.getInstance(),
                                         () -> menu.open(searchResultList));
 
@@ -118,8 +118,8 @@ public class CmdExecutorHandler {
 
                             if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().NO_SHOP_FOUND_MSG)) {
 
-                                player.sendMessage(ColorTranslator
-                                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                                player.sendMessage(
+                                        UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                                 + FindItemAddOnOG.getConfigProvider().NO_SHOP_FOUND_MSG));
 
                             }
@@ -135,8 +135,8 @@ public class CmdExecutorHandler {
 
                             Bukkit.getScheduler().runTaskAsynchronously(FindItemAddOnOG.getInstance(), () -> {
 
-                                FoundShopsMenu menu = new FoundShopsMenu(FindItemAddOnOG.getPlayerMenuUtility(player),
-                                        searchResultList);
+                                final FoundShopsMenu menu = new FoundShopsMenu(
+                                        FindItemAddOnOG.getPlayerMenuUtility(player), searchResultList);
                                 Bukkit.getScheduler().runTask(FindItemAddOnOG.getInstance(),
                                         () -> menu.open(searchResultList));
 
@@ -144,12 +144,12 @@ public class CmdExecutorHandler {
 
                         } else {
 
-                            // Invalid Material
+                            // Invalid Material.
                             if (!StringUtils
                                     .isEmpty(FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG))
                             {
 
-                                player.sendMessage(ColorTranslator.translateColorCodes(
+                                player.sendMessage(UtilitiesOG.trueogColorize(
                                         FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + FindItemAddOnOG
                                                 .getConfigProvider().FIND_ITEM_CMD_INVALID_MATERIAL_MSG));
 
@@ -163,8 +163,8 @@ public class CmdExecutorHandler {
 
             } else {
 
-                player.sendMessage(ColorTranslator
-                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
 
             }
 
@@ -202,8 +202,8 @@ public class CmdExecutorHandler {
 
             } else {
 
-                player.sendMessage(ColorTranslator
-                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
 
             }
 
@@ -241,8 +241,8 @@ public class CmdExecutorHandler {
 
             } else {
 
-                player.sendMessage(ColorTranslator
-                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
 
             }
 
@@ -262,9 +262,9 @@ public class CmdExecutorHandler {
      * Player player = (Player) commandSender;
      * if(player.hasPermission(PlayerPerms.FINDITEM_ADMIN.toString())) {
      * HiddenShopStorageUtil.saveHiddenShopsToFile();
-     * player.sendMessage(ColorTranslator.translateColorCodes(
+     * player.sendMessage(UtilitiesOG.trueogColorize(
      * FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&aSaved hidden shops!"));
-     * } else { player.sendMessage( ColorTranslator.translateColorCodes(
+     * } else { player.sendMessage( UtilitiesOG.trueogColorize(
      * FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!")); } } }
      */
 
@@ -280,9 +280,9 @@ public class CmdExecutorHandler {
      * Player player = (Player) commandSender;
      * if(player.hasPermission(PlayerPerms.FINDITEM_ADMIN.toString())) {
      * HiddenShopStorageUtil.loadHiddenShopsFromFile();
-     * player.sendMessage(ColorTranslator.translateColorCodes(
+     * player.sendMessage(UtilitiesOG.trueogColorize(
      * FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&aSaved hidden shops!"));
-     * } else { player.sendMessage( ColorTranslator.translateColorCodes(
+     * } else { player.sendMessage( UtilitiesOG.trueogColorize(
      * FindItemAddOn.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!")); } } }
      */
 
@@ -324,20 +324,18 @@ public class CmdExecutorHandler {
                 ConfigSetup.checkForMissingProperties();
                 ConfigSetup.saveConfig();
                 FindItemAddOnOG.initConfigProvider();
-                player.sendMessage(ColorTranslator
-                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&aConfig reloaded!"));
-                List allServerShops = FindItemAddOnOG.getQsApiInstance().getAllShops();
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&aConfig reloaded!"));
+                final List allServerShops = FindItemAddOnOG.getQsApiInstance().getAllShops();
                 if (allServerShops.size() == 0) {
 
-                    player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG
-                            .getConfigProvider().PLUGIN_PREFIX
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                             + "&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!"));
 
                 } else {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + "&aFound &e" + allServerShops.size() + " &ashops on the server."));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + "&aFound &e" + allServerShops.size() + " &ashops on the server."));
 
                 }
 
@@ -345,8 +343,8 @@ public class CmdExecutorHandler {
 
             } else {
 
-                player.sendMessage(ColorTranslator
-                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
 
             }
 
@@ -387,27 +385,25 @@ public class CmdExecutorHandler {
 
                 Bukkit.getPluginManager().disablePlugin(FindItemAddOnOG.getInstance());
                 Bukkit.getPluginManager().enablePlugin(FindItemAddOnOG.getPlugin(FindItemAddOnOG.class));
-                player.sendMessage(ColorTranslator.translateColorCodes(
-                        FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&aPlugin restarted!"));
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&aPlugin restarted!"));
                 List allServerShops = FindItemAddOnOG.getQsApiInstance().getAllShops();
                 if (allServerShops.size() == 0) {
 
-                    player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG
-                            .getConfigProvider().PLUGIN_PREFIX
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                             + "&6Found &e0 &6shops on the server. If you ran &e/qs reload &6recently, please restart your server!"));
 
                 } else {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + "&aFound &e" + allServerShops.size() + " &ashops on the server."));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + "&aFound &e" + allServerShops.size() + " &ashops on the server."));
 
                 }
 
             } else {
 
-                player.sendMessage(ColorTranslator
-                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
+                player.sendMessage(UtilitiesOG
+                        .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cNo permission!"));
 
             }
 
@@ -431,28 +427,26 @@ public class CmdExecutorHandler {
                 if (!HiddenShopStorageUtil.isShopHidden(shop)) {
 
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, true);
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG));
 
                 } else {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG));
 
                 }
 
             } else {
 
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                         + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
 
             }
 
         } else {
 
-            player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+            player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                     + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
 
         }
@@ -475,28 +469,26 @@ public class CmdExecutorHandler {
                 if (!HiddenShopStorageUtil.isShopHidden(shop)) {
 
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, true);
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_HIDE_SUCCESS_MSG));
 
                 } else {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_HIDDEN_MSG));
 
                 }
 
             } else {
 
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                         + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
 
             }
 
         } else {
 
-            player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+            player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                     + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
 
         }
@@ -519,28 +511,26 @@ public class CmdExecutorHandler {
                 if (HiddenShopStorageUtil.isShopHidden(shop)) {
 
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, false);
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG));
 
                 } else {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG));
 
                 }
 
             } else {
 
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                         + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
 
             }
 
         } else {
 
-            player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+            player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                     + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
 
         }
@@ -563,28 +553,26 @@ public class CmdExecutorHandler {
                 if (HiddenShopStorageUtil.isShopHidden(shop)) {
 
                     HiddenShopStorageUtil.handleShopSearchVisibilityAsync(shop, false);
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_REVEAL_SUCCESS_MSG));
 
                 } else {
 
-                    player.sendMessage(
-                            ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG));
+                    player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_SHOP_ALREADY_PUBLIC_MSG));
 
                 }
 
             } else {
 
-                player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                         + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_HIDING_SHOP_OWNER_INVALID_MSG));
 
             }
 
         } else {
 
-            player.sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+            player.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                     + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INVALID_SHOP_BLOCK_MSG));
 
         }

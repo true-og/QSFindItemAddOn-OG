@@ -1,20 +1,22 @@
 package io.myzticbean.finditemaddon.Commands.SAPICommands;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
 import io.myzticbean.finditemaddon.FindItemAddOnOG;
 import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
-import me.kodysimpson.simpapi.command.SubCommand;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 /**
  * Sub Command Handler for /finditemadmin revealshop
  * 
  * @author myzticbean
  */
-public class RevealShopSubCmd extends SubCommand {
+public class RevealShopSubCmd implements CommandExecutor, TabCompleter {
 
     private final String revealShopSubCommand;
     private final CmdExecutorHandler cmdExecutor;
@@ -37,28 +39,24 @@ public class RevealShopSubCmd extends SubCommand {
 
     }
 
-    @Override
     public String getName() {
 
         return revealShopSubCommand;
 
     }
 
-    @Override
     public List<String> getAliases() {
 
         return null;
 
     }
 
-    @Override
     public String getDescription() {
 
         return "Run this command while looking at a hidden shop to make it public again";
 
     }
 
-    @Override
     public String getSyntax() {
 
         return "/find " + revealShopSubCommand;
@@ -66,16 +64,17 @@ public class RevealShopSubCmd extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender commandSender, String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
         cmdExecutor.handleRevealShop(commandSender);
+        return true;
 
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        return null;
+        return List.of();
 
     }
 

@@ -25,7 +25,7 @@ java {
 /* ----------------------------- Metadata ------------------------------ */
 group = "io.myzticbean.FindItemAddOnOG" // Declare bundle identifier.
 
-version = "1.0" // Declare plugin version (will be in .jar).
+version = "1.0.1" // Declare plugin version (will be in .jar).
 
 val apiVersion = "1.19" // Declare minecraft server target version.
 val platformApi = "org.purpurmc.purpur:purpur-api:1.19.4-R0.1-SNAPSHOT"
@@ -85,6 +85,7 @@ dependencies {
         exclude(group = "me.xanium", module = "GemsEconomy")
     }
     compileOnly(platformApi) // Declare Purpur API version to be packaged.
+    compileOnlyApi(project(":libs:Utilities-OG")) // Import TrueOG Network Utilities-OG Java API (from source).
     compileOnly("com.ghostchu:quickshop-api:5.2.0.7") { // Import QuickShop-Hikari Core API.
         exclude(group = "org.jetbrains", module = "annotations")
         exclude(group = "net.kyori", module = "adventure-platform-bukkit")
@@ -96,7 +97,6 @@ dependencies {
     compileOnly("com.github.true-og.OpenInv:openinvapi:a85e8ebc28")
     compileOnly("org.maxgamer:QuickShop:5.1.2.5-SNAPSHOT") { isTransitive = false }
     implementation("io.papermc:paperlib:1.0.7")
-    implementation("com.github.KodySimpson:SimpAPI:4.6.1")
     compileOnly("net.essentialsx:EssentialsX:2.19.4") { isTransitive = false }
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.8") { // Import WorldGuard API.
         exclude(group = "com.google.code.findbugs", module = "annotations")

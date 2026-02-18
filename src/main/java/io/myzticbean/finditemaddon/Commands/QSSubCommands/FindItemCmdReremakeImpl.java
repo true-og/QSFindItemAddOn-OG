@@ -1,9 +1,8 @@
 package io.myzticbean.finditemaddon.Commands.QSSubCommands;
 
-import io.myzticbean.finditemaddon.FindItemAddOnOG;
-import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
-import io.myzticbean.finditemaddon.Utils.Defaults.PlayerPerms;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,8 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
+import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
+import io.myzticbean.finditemaddon.Utils.Defaults.PlayerPerms;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 public class FindItemCmdReremakeImpl implements CommandHandler<Player> {
 
@@ -55,8 +56,8 @@ public class FindItemCmdReremakeImpl implements CommandHandler<Player> {
 
         if (args.length == 0) {
 
-            commandSender.sendMessage(ColorTranslator
-                    .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!"));
+            commandSender.sendMessage(UtilitiesOG
+                    .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!"));
 
         } else if (args.length == 1) {
 
@@ -72,16 +73,15 @@ public class FindItemCmdReremakeImpl implements CommandHandler<Player> {
 
                 } else {
 
-                    commandSender.sendMessage(ColorTranslator.translateColorCodes(
-                            FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!"));
+                    commandSender.sendMessage(UtilitiesOG
+                            .trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX + "&cIncorrect usage!"));
 
                 }
 
             } else {
 
-                commandSender.sendMessage(
-                        ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                + "&cYou don't have permission to use that!"));
+                commandSender.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                        + "&cYou don't have permission to use that!"));
 
             }
 

@@ -1,7 +1,7 @@
 package io.myzticbean.finditemaddon.Handlers.GUIHandler;
 
-import io.myzticbean.finditemaddon.FindItemAddOnOG;
-import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -11,7 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
+import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 
 /**
  * Based on an awesome tutorial from https://www.youtube.com/watch?v=xebH6M_7k18
@@ -38,14 +41,14 @@ public abstract class Menu implements InventoryHolder {
         }
 
         GUI_FILLER_ITEM = new ItemStack(fillerMaterial);
-        ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
+        final ItemMeta FILLER_GLASS_meta = this.GUI_FILLER_ITEM.getItemMeta();
         assert FILLER_GLASS_meta != null;
-        FILLER_GLASS_meta.setDisplayName(" ");
+        FILLER_GLASS_meta.displayName(Component.text(" "));
         this.GUI_FILLER_ITEM.setItemMeta(FILLER_GLASS_meta);
 
     }
 
-    public abstract String getMenuName();
+    public abstract TextComponent getMenuName();
 
     public abstract int getSlots();
 

@@ -1,23 +1,26 @@
 package io.myzticbean.finditemaddon.Commands.SAPICommands;
 
-import io.myzticbean.finditemaddon.FindItemAddOnOG;
-import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
-import me.kodysimpson.simpapi.command.SubCommand;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
+import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 /**
  * Sub Command Handler for /find TO_SELL
  * 
  * @author myzticbean
  */
-public class SellSubCmd extends SubCommand {
+public class SellSubCmd implements CommandExecutor, TabCompleter {
 
     private final String sellSubCommand;
     private final List<String> itemsList = new ArrayList<>();
@@ -50,28 +53,24 @@ public class SellSubCmd extends SubCommand {
 
     }
 
-    @Override
     public String getName() {
 
         return sellSubCommand;
 
     }
 
-    @Override
     public List<String> getAliases() {
 
         return null;
 
     }
 
-    @Override
     public String getDescription() {
 
         return "Find shops that sell a specific item";
 
     }
 
-    @Override
     public String getSyntax() {
 
         return "/find " + sellSubCommand + " {item type | item name}";
@@ -79,32 +78,51 @@ public class SellSubCmd extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender commandSender, String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
-        if (args.length != 2)
-            commandSender
-                    .sendMessage(ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                            + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG));
-        else
-            cmdExecutor.handleShopSearch(sellSubCommand, commandSender, args[1]);
+        final String itemArg;
+        if (args.length == 1) {
+
+            itemArg = args[0];
+
+        } else if (args.length == 2 && sellSubCommand.equalsIgnoreCase(args[0])) {
+
+            itemArg = args[1];
+
+        } else {
+
+            commandSender.sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                    + FindItemAddOnOG.getConfigProvider().FIND_ITEM_CMD_INCORRECT_USAGE_MSG));
+            return true;
+
+        }
+
+        cmdExecutor.handleShopSearch(sellSubCommand, commandSender, itemArg);
+        return true;
 
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        List<String> result = new ArrayList<>();
-        for (String a : itemsList) {
+        final String token;
+        if (args.length == 1) {
 
-            if (a.toLowerCase().startsWith(args[1].toLowerCase())) {
+            token = args[0];
 
-                result.add(a);
+        } else if (args.length == 2 && sellSubCommand.equalsIgnoreCase(args[0])) {
 
-            }
+            token = args[1];
+
+        } else {
+
+            return List.of();
 
         }
 
-        return result;
+        final String lower = token == null ? "" : token.toLowerCase();
+        return new ArrayList<>(
+                itemsList.stream().filter(a -> a.toLowerCase().startsWith(lower)).collect(Collectors.toList()));
 
     }
 

@@ -1,17 +1,18 @@
 package io.myzticbean.finditemaddon.ConfigUtil;
 
-import io.myzticbean.finditemaddon.Utils.LoggerUtils;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+
+import io.myzticbean.finditemaddon.Utils.LoggerUtils;
+import net.kyori.adventure.text.TextComponent;
+import net.trueog.utilitiesog.UtilitiesOG;
+
 public class ConfigProvider {
 
-    public final String PLUGIN_PREFIX = ColorTranslator
-            .translateColorCodes(ConfigSetup.get().getString("plugin-prefix"));
+    public final TextComponent PLUGIN_PREFIX = UtilitiesOG.trueogColorize(ConfigSetup.get().getString("plugin-prefix"));
     public final List<String> FIND_ITEM_COMMAND_ALIAS = (List<String>) ConfigSetup.get()
             .getList("find-item-command.command-alias");
     public final String FIND_ITEM_TO_BUY_AUTOCOMPLETE = ConfigSetup.get()

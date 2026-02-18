@@ -1,7 +1,19 @@
 rootProject.name = "QSFindItemAddOn-OG"
 
+ProcessBuilder("sh", "bootstrap.sh").directory(rootDir).inheritIO().start().let {
+    if (it.waitFor() != 0) throw GradleException("bootstrap.sh failed")
+}
+
+file("libs")
+    .listFiles()
+    ?.filter { it.isDirectory && !it.name.startsWith(".") }
+    ?.forEach { dir ->
+        include(":libs:${dir.name}")
+        project(":libs:${dir.name}").projectDir = dir
+    }
+
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     /* ---------------------------- Repos ---------------------------------- */
     repositories {
         mavenCentral() // Import the Maven Central Maven Repository.

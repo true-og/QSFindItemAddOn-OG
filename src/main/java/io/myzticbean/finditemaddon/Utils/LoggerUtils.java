@@ -1,8 +1,7 @@
 package io.myzticbean.finditemaddon.Utils;
 
 import io.myzticbean.finditemaddon.FindItemAddOnOG;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
-import org.bukkit.Bukkit;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 public class LoggerUtils {
 
@@ -10,7 +9,7 @@ public class LoggerUtils {
 
         if (FindItemAddOnOG.getConfigProvider().DEBUG_MODE) {
 
-            Bukkit.getLogger().warning(ColorTranslator.translateColorCodes("[QSFindItemAddOn-DebugLog] " + text));
+            UtilitiesOG.logToConsole("[QSFindItemAddOn-OG] Debug:", text);
 
         }
 
@@ -18,20 +17,19 @@ public class LoggerUtils {
 
     public static void logInfo(String text) {
 
-        Bukkit.getLogger().info(ColorTranslator.translateColorCodes("[QSFindItemAddOn] " + text));
+        UtilitiesOG.logToConsole("[QSFindItemAddOn-OG] Info:", text);
 
     }
 
     public static void logError(String text) {
 
-        Bukkit.getLogger().severe(ColorTranslator.translateColorCodes("[QSFindItemAddOn] " + text));
+        UtilitiesOG.logToConsole("[QSFindItemAddOn-OG] Error:", text);
 
     }
 
     public static void logWarning(String text) {
 
-//        Bukkit.getConsoleSender().sendMessage(ColorTranslator.translateColorCodes("[QSFindItemAddOn] &6" + text));
-        Bukkit.getLogger().warning(ColorTranslator.translateColorCodes("[QSFindItemAddOn] " + text));
+        UtilitiesOG.logToConsole("[QSFindItemAddOn-OG] Warning:", text);
 
     }
 

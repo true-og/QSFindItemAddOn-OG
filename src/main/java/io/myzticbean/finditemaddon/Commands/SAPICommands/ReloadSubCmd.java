@@ -1,18 +1,20 @@
 package io.myzticbean.finditemaddon.Commands.SAPICommands;
 
-import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
-import me.kodysimpson.simpapi.command.SubCommand;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.List;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
+import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
 
 /**
  * Sub Command Handler for /finditemadmin reload
  * 
  * @author myzticbean
  */
-public class ReloadSubCmd extends SubCommand {
+public class ReloadSubCmd implements CommandExecutor, TabCompleter {
 
     private final CmdExecutorHandler cmdExecutor;
 
@@ -22,28 +24,24 @@ public class ReloadSubCmd extends SubCommand {
 
     }
 
-    @Override
     public String getName() {
 
         return "reload";
 
     }
 
-    @Override
     public List<String> getAliases() {
 
         return null;
 
     }
 
-    @Override
     public String getDescription() {
 
         return "Reloads config.yml";
 
     }
 
-    @Override
     public String getSyntax() {
 
         return "/finditemadmin reload";
@@ -51,16 +49,17 @@ public class ReloadSubCmd extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender commandSender, String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
         cmdExecutor.handlePluginReload(commandSender);
+        return true;
 
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        return null;
+        return List.of();
 
     }
 

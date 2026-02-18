@@ -34,7 +34,9 @@ import io.myzticbean.finditemaddon.Utils.JsonStorageUtils.ShopSearchActivityStor
 import io.myzticbean.finditemaddon.Utils.WarpUtils.EssentialWarpsUtil;
 import io.myzticbean.finditemaddon.Utils.WarpUtils.WGRegionUtils;
 import io.papermc.lib.PaperLib;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 /**
  * Handler class for FoundShops GUI
@@ -45,7 +47,6 @@ public class FoundShopsMenu extends PaginatedMenu {
 
     private final String NO_WARP_NEAR_SHOP_ERROR_MSG = "No Warp near this shop";
     private final String NO_WG_REGION_NEAR_SHOP_ERROR_MSG = "No WG Region near this shop";
-    String nearestEWarp;
 
     public FoundShopsMenu(PlayerMenuUtility playerMenuUtility, List<FoundShopItemModel> searchResult) {
 
@@ -54,15 +55,15 @@ public class FoundShopsMenu extends PaginatedMenu {
     }
 
     @Override
-    public String getMenuName() {
+    public TextComponent getMenuName() {
 
         if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_SEARCH_GUI_TITLE)) {
 
-            return ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().SHOP_SEARCH_GUI_TITLE);
+            return UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().SHOP_SEARCH_GUI_TITLE);
 
         } else {
 
-            return ColorTranslator.translateColorCodes("&l» &rShops");
+            return UtilitiesOG.trueogColorize("&l» &rShops");
 
         }
 
@@ -108,72 +109,88 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             event.getWhoClicked().closeInventory();
 
-        } else if (event.getCurrentItem().getType().equals(Material.AIR)) {
-
-            // do nothing
-            LoggerUtils.logDebugInfo(event.getWhoClicked().getName() + " just clicked on AIR!");
-
         } else {
 
-            Player player = (Player) event.getWhoClicked();
-            ItemStack item = event.getCurrentItem();
-            ItemMeta meta = item.getItemMeta();
-            NamespacedKey key = new NamespacedKey(FindItemAddOnOG.getInstance(), "locationData");
+            final ItemStack clicked = event.getCurrentItem();
+            if (clicked == null || clicked.getType() == Material.AIR) {
+
+                LoggerUtils.logDebugInfo(event.getWhoClicked().getName() + " just clicked on AIR!");
+                return;
+
+            }
+
+            final Player player = (Player) event.getWhoClicked();
+            final ItemMeta meta = clicked.getItemMeta();
+            if (meta == null) {
+
+                LoggerUtils.logError("Clicked item has no ItemMeta!");
+                return;
+
+            }
+
+            final NamespacedKey key = new NamespacedKey(FindItemAddOnOG.getInstance(), "locationData");
             if (!meta.getPersistentDataContainer().isEmpty()
                     && meta.getPersistentDataContainer().has(key, PersistentDataType.STRING))
             {
 
-                String locData = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
-                List<String> locDataList = Arrays.asList(locData.split("\\s*,\\s*"));
+                final String locData = meta.getPersistentDataContainer().get(key, PersistentDataType.STRING);
+                if (locData == null) {
+
+                    LoggerUtils.logError("PersistentDataContainer locationData is null!");
+                    return;
+
+                }
+
+                final List<String> locDataList = Arrays.asList(locData.split("\\s*,\\s*"));
                 if (FindItemAddOnOG.getConfigProvider().TP_PLAYER_DIRECTLY_TO_SHOP) {
 
                     if (playerMenuUtility.getOwner().hasPermission(PlayerPerms.FINDITEM_SHOPTP.value())) {
 
-                        World world = Bukkit.getWorld(locDataList.get(0));
-                        int locX = Integer.parseInt(locDataList.get(1));
-                        int locY = Integer.parseInt(locDataList.get(2));
-                        int locZ = Integer.parseInt(locDataList.get(3));
-                        Location shopLocation = new Location(world, locX, locY, locZ);
-                        UUID shopOwner = ShopSearchActivityStorageUtil.getShopOwnerUUID(shopLocation);
+                        final World world = Bukkit.getWorld(locDataList.get(0));
+                        if (world == null) {
+
+                            LoggerUtils.logError("World not found: " + locDataList.get(0));
+                            return;
+
+                        }
+
+                        final int locX = Integer.parseInt(locDataList.get(1));
+                        final int locY = Integer.parseInt(locDataList.get(2));
+                        final int locZ = Integer.parseInt(locDataList.get(3));
+                        final Location shopLocation = new Location(world, locX, locY, locZ);
+                        final UUID shopOwner = ShopSearchActivityStorageUtil.getShopOwnerUUID(shopLocation);
                         if (player.getUniqueId().equals(shopOwner) && !PlayerPerms.canPlayerTpToOwnShop(player)) {
 
-                            player.sendMessage(ColorTranslator
-                                    .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                            player.sendMessage(
+                                    UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                             + FindItemAddOnOG.getConfigProvider().SHOP_TP_NO_PERMISSION_MSG));
 
                         }
 
-                        Location locToTeleport = LocationUtils.findSafeLocationAroundShop(shopLocation);
+                        final Location locToTeleport = LocationUtils.findSafeLocationAroundShop(shopLocation);
                         if (locToTeleport != null) {
 
-                            // Add Player Visit Entry
                             ShopSearchActivityStorageUtil.addPlayerVisitEntryAsync(shopLocation, player);
 
-                            // Add Short Blindness effect... maybe?
-                            // TODO: 16/06/22 Make this an option in config -> player.addPotionEffect(new
-                            // PotionEffect(PotionEffectType.BLINDNESS, 10, 0, false, false, false));
-
-                            // If EssentialsX is enabled, register last location before teleporting to make
-                            // /back work
                             if (EssentialsXPlugin.isEnabled()) {
 
                                 EssentialsXPlugin.getAPI().getUser(player).setLastLocation();
 
                             }
 
-                            // Check for TP delay
                             if (StringUtils.isNumeric(FindItemAddOnOG.getConfigProvider().TP_DELAY_IN_SECONDS)
                                     && !"0".equals(FindItemAddOnOG.getConfigProvider().TP_DELAY_IN_SECONDS)
                                     && !PlayerPerms.hasShopTpDelayBypassPermOrAdmin(player))
                             {
 
-                                long delay = Long.parseLong(FindItemAddOnOG.getConfigProvider().TP_DELAY_IN_SECONDS);
+                                final long delay = Long
+                                        .parseLong(FindItemAddOnOG.getConfigProvider().TP_DELAY_IN_SECONDS);
                                 LoggerUtils.logDebugInfo("Teleporting delay is set to: " + delay);
-                                String tpDelayMsg = FindItemAddOnOG.getConfigProvider().TP_DELAY_MESSAGE;
+                                final String tpDelayMsg = FindItemAddOnOG.getConfigProvider().TP_DELAY_MESSAGE;
                                 if (!StringUtils.isEmpty(tpDelayMsg)) {
 
-                                    player.sendMessage(ColorTranslator
-                                            .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                                    player.sendMessage(
+                                            UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                                     + replaceDelayPlaceholder(tpDelayMsg, delay)));
 
                                 }
@@ -194,8 +211,8 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                             if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().UNSAFE_SHOP_AREA_MSG)) {
 
-                                player.sendMessage(ColorTranslator
-                                        .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                                player.sendMessage(
+                                        UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                                 + FindItemAddOnOG.getConfigProvider().UNSAFE_SHOP_AREA_MSG));
 
                             }
@@ -206,10 +223,9 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                         if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_TP_NO_PERMISSION_MSG)) {
 
-                            playerMenuUtility.getOwner()
-                                    .sendMessage(ColorTranslator
-                                            .translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
-                                                    + FindItemAddOnOG.getConfigProvider().SHOP_TP_NO_PERMISSION_MSG));
+                            playerMenuUtility.getOwner().sendMessage(
+                                    UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                                            + FindItemAddOnOG.getConfigProvider().SHOP_TP_NO_PERMISSION_MSG));
                             event.getWhoClicked().closeInventory();
 
                         }
@@ -218,12 +234,9 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                     player.closeInventory();
 
-                } else if (FindItemAddOnOG.getConfigProvider().TP_PLAYER_TO_NEAREST_WARP
-                        // if list size = 1, it contains Warp name
-                        && locDataList.size() == 1)
-                {
+                } else if (FindItemAddOnOG.getConfigProvider().TP_PLAYER_TO_NEAREST_WARP && locDataList.size() == 1) {
 
-                    String warpName = locDataList.get(0);
+                    final String warpName = locDataList.get(0);
                     if (FindItemAddOnOG.getConfigProvider().NEAREST_WARP_MODE == 1) {
 
                         Bukkit.dispatchCommand(player, "essentials:warp " + warpName);
@@ -254,8 +267,8 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_NAV_LAST_PAGE_ALERT_MSG)) {
 
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                event.getWhoClicked()
+                        .sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                 + FindItemAddOnOG.getConfigProvider().SHOP_NAV_LAST_PAGE_ALERT_MSG));
 
             }
@@ -270,8 +283,8 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_NAV_FIRST_PAGE_ALERT_MSG)) {
 
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                event.getWhoClicked()
+                        .sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                 + FindItemAddOnOG.getConfigProvider().SHOP_NAV_FIRST_PAGE_ALERT_MSG));
 
             }
@@ -291,8 +304,8 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_NAV_FIRST_PAGE_ALERT_MSG)) {
 
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                event.getWhoClicked()
+                        .sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                 + FindItemAddOnOG.getConfigProvider().SHOP_NAV_FIRST_PAGE_ALERT_MSG));
 
             }
@@ -330,8 +343,8 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_NAV_LAST_PAGE_ALERT_MSG)) {
 
-                event.getWhoClicked().sendMessage(
-                        ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
+                event.getWhoClicked()
+                        .sendMessage(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().PLUGIN_PREFIX
                                 + FindItemAddOnOG.getConfigProvider().SHOP_NAV_LAST_PAGE_ALERT_MSG));
 
             }
@@ -377,30 +390,40 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             if (foundShops.get(index) != null) {
 
-                // Place Search Results here
                 final FoundShopItemModel foundShop_i = foundShops.get(index);
                 final NamespacedKey key = new NamespacedKey(FindItemAddOnOG.getInstance(), "locationData");
                 final ItemStack item = new ItemStack(foundShop_i.getItem().getType());
+
                 ItemMeta meta = item.getItemMeta();
-                final List<String> lore;
-                lore = new ArrayList<>();
+                if (meta == null) {
+
+                    guiSlotCounter++;
+                    continue;
+
+                }
+
+                final List<Component> lore = new ArrayList<>();
                 if (foundShop_i.getItem().hasItemMeta()) {
 
-                    meta = foundShop_i.getItem().getItemMeta();
-                    if (foundShop_i.getItem().getItemMeta().hasLore()) {
+                    final ItemMeta foundMeta = foundShop_i.getItem().getItemMeta();
+                    if (foundMeta != null) {
 
-                        foundShop_i.getItem().getItemMeta().getLore().forEach(s -> {
+                        meta = foundMeta;
+                        final List<Component> existingLore = foundMeta.lore();
+                        if (existingLore != null && !existingLore.isEmpty()) {
 
-                            lore.add(ColorTranslator.translateColorCodes(s));
+                            lore.addAll(existingLore);
 
-                        });
+                        }
 
                     }
 
                 }
 
                 final List<String> shopItemLore = FindItemAddOnOG.getConfigProvider().SHOP_GUI_ITEM_LORE;
-                shopItemLore.forEach(shopItemLore_i -> {
+                String nearestEWarp = null;
+
+                for (String shopItemLore_i : shopItemLore) {
 
                     if (shopItemLore_i.contains(ShopLorePlaceholders.NEAREST_WARP.value())) {
 
@@ -408,48 +431,40 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                             case 1 -> {
 
-                                // EssentialWarp: Check nearest warp
+                                String replacement = NO_WARP_NEAR_SHOP_ERROR_MSG;
                                 if (EssentialsXPlugin.isEnabled()) {
 
                                     nearestEWarp = new EssentialWarpsUtil()
                                             .findNearestWarp(foundShop_i.getShopLocation());
                                     if (nearestEWarp != null && !StringUtils.isEmpty(nearestEWarp)) {
 
-                                        lore.add(ColorTranslator.translateColorCodes(shopItemLore_i
-                                                .replace(ShopLorePlaceholders.NEAREST_WARP.value(), nearestEWarp)));
-
-                                    } else {
-
-                                        lore.add(ColorTranslator.translateColorCodes(
-                                                shopItemLore_i.replace(ShopLorePlaceholders.NEAREST_WARP.value(),
-                                                        NO_WARP_NEAR_SHOP_ERROR_MSG)));
+                                        replacement = nearestEWarp;
 
                                     }
 
                                 }
 
+                                lore.add(UtilitiesOG.trueogColorize(shopItemLore_i
+                                        .replace(ShopLorePlaceholders.NEAREST_WARP.value(), replacement)));
+
                             }
                             case 2 -> {
 
-                                // WG Region: Check nearest WG Region
+                                String replacement = NO_WG_REGION_NEAR_SHOP_ERROR_MSG;
                                 if (WGPlugin.isEnabled()) {
 
                                     final String nearestWGRegion = new WGRegionUtils()
                                             .findNearestWGRegion((foundShop_i.getShopLocation()));
                                     if (nearestWGRegion != null && !StringUtils.isEmpty(nearestWGRegion)) {
 
-                                        lore.add(ColorTranslator.translateColorCodes(shopItemLore_i
-                                                .replace(ShopLorePlaceholders.NEAREST_WARP.value(), nearestWGRegion)));
-
-                                    } else {
-
-                                        lore.add(ColorTranslator.translateColorCodes(
-                                                shopItemLore_i.replace(ShopLorePlaceholders.NEAREST_WARP.value(),
-                                                        NO_WG_REGION_NEAR_SHOP_ERROR_MSG)));
+                                        replacement = nearestWGRegion;
 
                                     }
 
                                 }
+
+                                lore.add(UtilitiesOG.trueogColorize(shopItemLore_i
+                                        .replace(ShopLorePlaceholders.NEAREST_WARP.value(), replacement)));
 
                             }
                             default -> LoggerUtils.logDebugInfo("Invalid value in 'nearest-warp-mode' in config.yml!");
@@ -458,28 +473,23 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                     } else {
 
-                        lore.add(ColorTranslator
-                                .translateColorCodes(replaceLorePlaceholders(shopItemLore_i, foundShop_i)));
+                        lore.add(UtilitiesOG.trueogColorize(replaceLorePlaceholders(shopItemLore_i, foundShop_i)));
 
                     }
 
-                });
+                }
 
                 if (FindItemAddOnOG.getConfigProvider().TP_PLAYER_DIRECTLY_TO_SHOP
                         && playerMenuUtility.getOwner().hasPermission(PlayerPerms.FINDITEM_SHOPTP.value()))
                 {
 
-                    lore.add(ColorTranslator
-                            .translateColorCodes(FindItemAddOnOG.getConfigProvider().CLICK_TO_TELEPORT_MSG));
+                    lore.add(UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().CLICK_TO_TELEPORT_MSG));
 
                 }
 
-                assert meta != null;
-                meta.setLore(lore);
+                meta.lore(lore);
 
-                // storing location data in item persistent storage
                 String locData = StringUtils.EMPTY;
-                // store the coordinates
                 if (FindItemAddOnOG.getConfigProvider().TP_PLAYER_DIRECTLY_TO_SHOP) {
 
                     locData = Objects.requireNonNull(foundShop_i.getShopLocation().getWorld()).getName() + ","
@@ -491,7 +501,6 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                     final boolean condition = FindItemAddOnOG.getConfigProvider().NEAREST_WARP_MODE == 1
                             && nearestEWarp != null;
-                    // if Nearest Warp is set to EssentialsX Warps, store the warp name
                     if (condition) {
 
                         locData = nearestEWarp;
@@ -502,7 +511,6 @@ public class FoundShopsMenu extends PaginatedMenu {
 
                 meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, locData);
 
-                // handling custom model data
                 if (Objects.requireNonNull(foundShop_i.getItem().getItemMeta()).hasCustomModelData()) {
 
                     meta.setCustomModelData(foundShop_i.getItem().getItemMeta().getCustomModelData());
@@ -559,7 +567,6 @@ public class FoundShopsMenu extends PaginatedMenu {
 
             } else {
 
-                // set a generic name for shops with no owner name
                 text = text.replace(ShopLorePlaceholders.SHOP_OWNER.value(), "Admin");
 
             }
@@ -580,7 +587,6 @@ public class FoundShopsMenu extends PaginatedMenu {
 
         }
 
-        // Added in v2.0
         if (text.contains(ShopLorePlaceholders.SHOP_VISITS.value())) {
 
             text = text.replace(ShopLorePlaceholders.SHOP_VISITS.value(),

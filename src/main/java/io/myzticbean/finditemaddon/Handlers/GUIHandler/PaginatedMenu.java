@@ -1,17 +1,18 @@
 package io.myzticbean.finditemaddon.Handlers.GUIHandler;
 
-import io.myzticbean.finditemaddon.FindItemAddOnOG;
-import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
-import io.myzticbean.finditemaddon.Utils.LoggerUtils;
-import me.kodysimpson.simpapi.colors.ColorTranslator;
+import java.util.List;
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
-import java.util.UUID;
+import io.myzticbean.finditemaddon.FindItemAddOnOG;
+import io.myzticbean.finditemaddon.Models.FoundShopItemModel;
+import io.myzticbean.finditemaddon.Utils.LoggerUtils;
+import net.trueog.utilitiesog.UtilitiesOG;
 
 public abstract class PaginatedMenu extends Menu {
 
@@ -88,8 +89,8 @@ public abstract class PaginatedMenu extends Menu {
         assert backButtonMeta != null;
         if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT)) {
 
-            backButtonMeta.setDisplayName(
-                    ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT));
+            backButtonMeta.displayName(
+                    UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().SHOP_GUI_BACK_BUTTON_TEXT));
 
         }
 
@@ -103,7 +104,7 @@ public abstract class PaginatedMenu extends Menu {
 
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException eror) {
 
             LoggerUtils.logDebugInfo("Invalid Custom Model Data for Back Button in config.yml");
 
@@ -131,8 +132,8 @@ public abstract class PaginatedMenu extends Menu {
         assert nextButtonMeta != null;
         if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT)) {
 
-            nextButtonMeta.setDisplayName(
-                    ColorTranslator.translateColorCodes(FindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT));
+            nextButtonMeta.displayName(
+                    UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().SHOP_GUI_NEXT_BUTTON_TEXT));
 
         }
 
@@ -146,7 +147,7 @@ public abstract class PaginatedMenu extends Menu {
 
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException error) {
 
             LoggerUtils.logDebugInfo("Invalid Custom Model Data for Next Button in config.yml");
 
@@ -167,8 +168,8 @@ public abstract class PaginatedMenu extends Menu {
         ItemMeta firstPageButtonMeta = firstPageButton.getItemMeta();
         if (firstPageButtonMeta != null
                 && !StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT))
-            firstPageButtonMeta.setDisplayName(ColorTranslator
-                    .translateColorCodes(FindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT));
+            firstPageButtonMeta.displayName(UtilitiesOG
+                    .trueogColorize(FindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_FIRST_PAGE_BUTTON_TEXT));
         int firstPageButtonCMD;
         try {
 
@@ -182,7 +183,7 @@ public abstract class PaginatedMenu extends Menu {
 
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException error) {
 
             LoggerUtils.logDebugInfo("Invalid Custom Model Data for Goto First Page Button in config.yml");
 
@@ -203,8 +204,8 @@ public abstract class PaginatedMenu extends Menu {
         ItemMeta lastPageButtonMeta = lastPageButton.getItemMeta();
         if (lastPageButtonMeta != null
                 && !StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT))
-            lastPageButtonMeta.setDisplayName(ColorTranslator
-                    .translateColorCodes(FindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT));
+            lastPageButtonMeta.displayName(UtilitiesOG
+                    .trueogColorize(FindItemAddOnOG.getConfigProvider().SHOP_GUI_GOTO_LAST_PAGE_BUTTON_TEXT));
         int lastPageButtonCMD;
         try {
 
@@ -218,7 +219,7 @@ public abstract class PaginatedMenu extends Menu {
 
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException error) {
 
             LoggerUtils.logDebugInfo("Invalid Custom Model Data for Goto Last Page Button in config.yml");
 
@@ -243,8 +244,8 @@ public abstract class PaginatedMenu extends Menu {
         assert closeInvMeta != null;
         if (!StringUtils.isEmpty(FindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT)) {
 
-            closeInvMeta.setDisplayName(ColorTranslator
-                    .translateColorCodes(FindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT));
+            closeInvMeta.displayName(
+                    UtilitiesOG.trueogColorize(FindItemAddOnOG.getConfigProvider().SHOP_GUI_CLOSE_BUTTON_TEXT));
 
         }
 
@@ -258,7 +259,7 @@ public abstract class PaginatedMenu extends Menu {
 
             }
 
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException error) {
 
             LoggerUtils.logDebugInfo("Invalid Custom Model Data for Close Button in config.yml");
 

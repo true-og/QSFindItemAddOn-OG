@@ -1,20 +1,22 @@
 package io.myzticbean.finditemaddon.Commands.SAPICommands;
 
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+
 import io.myzticbean.finditemaddon.FindItemAddOnOG;
 import io.myzticbean.finditemaddon.Handlers.CommandHandler.CmdExecutorHandler;
-import me.kodysimpson.simpapi.command.SubCommand;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 /**
  * Sub Command Handler for /find hideshop
  * 
  * @author myzticbean
  */
-public class HideShopSubCmd extends SubCommand {
+public class HideShopSubCmd implements CommandExecutor, TabCompleter {
 
     private final String hideSubCommand;
     private final CmdExecutorHandler cmdExecutor;
@@ -35,21 +37,18 @@ public class HideShopSubCmd extends SubCommand {
 
     }
 
-    @Override
     public String getName() {
 
         return hideSubCommand;
 
     }
 
-    @Override
     public List<String> getAliases() {
 
         return null;
 
     }
 
-    @Override
     public String getDescription() {
 
         return "Run this command while looking at the shop (NOT the shop sign) you wish to hide and it will no"
@@ -57,7 +56,6 @@ public class HideShopSubCmd extends SubCommand {
 
     }
 
-    @Override
     public String getSyntax() {
 
         return "/find " + hideSubCommand;
@@ -65,16 +63,17 @@ public class HideShopSubCmd extends SubCommand {
     }
 
     @Override
-    public void perform(CommandSender commandSender, String[] args) {
+    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
         cmdExecutor.handleHideShop(commandSender);
+        return true;
 
     }
 
     @Override
-    public List<String> getSubcommandArguments(Player player, String[] strings) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
-        return null;
+        return List.of();
 
     }
 
