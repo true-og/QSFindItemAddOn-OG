@@ -97,7 +97,7 @@ dependencies {
     compileOnly("com.github.true-og.OpenInv:openinvapi:a85e8ebc28")
     compileOnly("org.maxgamer:QuickShop:5.1.2.5-SNAPSHOT") { isTransitive = false }
     implementation("io.papermc:paperlib:1.0.7")
-    compileOnly("net.essentialsx:EssentialsX:2.19.4") { isTransitive = false }
+    compileOnly("net.essentialsx:EssentialsX:2.21.0") { isTransitive = false }
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.8") { // Import WorldGuard API.
         exclude(group = "com.google.code.findbugs", module = "annotations")
         exclude(group = "net.java.truecommons", module = "truecommons-logging")

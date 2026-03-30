@@ -21,12 +21,12 @@ public class EssentialsXPlugin {
 
     public static void setup() {
 
-        if (Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Essentials-OG")) {
 
-            essAPI = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
+            essAPI = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials-OG");
             if (essAPI != null) {
 
-                LoggerUtils.logInfo("Found Essentials");
+                LoggerUtils.logInfo("Found Essentials-OG...");
 
             }
 
