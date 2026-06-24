@@ -68,12 +68,17 @@ shop-gui-next-button-custom-model-data: ''
 shop-gui-goto-first-page-button-custom-model-data: ''
 shop-gui-goto-last-page-button-custom-model-data: ''
 shop-gui-close-button-custom-model-data: ''
-shop-navigation-first-page-alert-message: '&cYou are already on first page!'
-shop-navigation-last-page-alert-message: '&cYou are already on last page!'
+shop-navigation-first-page-alert-message: '&cYou are already on the first page!'
+shop-navigation-last-page-alert-message: '&cYou are already on the last page!'
 shop-player-visit-cooldown-in-minutes: 5
 ignore-empty-chests: true
 blacklisted-worlds:
-- world_number_1
-- world_number_2
+- "HB1-hub"
+- "SP1-hub"
+- "Shake_It"
+- "Ancient_Plateau"
+
+# Enabling this will spam your console with logs from the plugin
+# Set this to true only for debugging purposes
 debug-mode: false
 config-version: 13

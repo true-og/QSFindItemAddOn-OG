@@ -148,8 +148,8 @@ shop-gui-goto-first-page-button-custom-model-data: ""
 shop-gui-goto-last-page-button-custom-model-data: ""
 
 # Alert shown when player is already on first/last page and clicks back/next button
-shop-navigation-first-page-alert-message: "&cYou are already on first page!"
-shop-navigation-last-page-alert-message: "&cYou are already on last page!"
+shop-navigation-first-page-alert-message: "&cYou are already on the first page!"
+shop-navigation-last-page-alert-message: "&cYou are already on the last page!"
 
 # Specify (in minutes) how long the plugin will wait before incrementing the player
 # shop visit when teleporting to it from Search GUI
@@ -160,8 +160,10 @@ ignore-empty-chests: true
 
 # When fetching shops, the below worlds will be ignored
 blacklisted-worlds:
-  - "world_number_1"
-  - "world_number_2"
+  - "HB1-hub"
+  - "SP1-hub"
+  - "Shake_It"
+  - "Ancient_Plateau"
 
 # Enabling this will spam your console with logs from the plugin
 # Set this to true only for debugging purposes
